@@ -2,11 +2,11 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .serializers import (
-    GameSerializer, GameDetailSerializer, 
-    StepSerializer, StepDetailSerializer,
-    ScenarioSerializer, ScenarioDetailSerializer, 
-    ScenarioNodeSerializer, ScenarioNodeDetailSerializer,
-    ClueSerializer, ClueDetailSerializer
+    GameDetailSerializer, GameListSerializer,
+    StepListSerializer, StepDetailSerializer,
+    ScenarioListSerializer, ScenarioDetailSerializer, 
+    ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
+    ClueListSerializer, ClueDetailSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor
@@ -28,64 +28,59 @@ class MultipleSerializerMixin:
     
 
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
-
-    #Works only with detailed view
+    """Return games created by request user"""
+    #Works only with detailed view, now that there is a filter, useless or not ? To be tester for all objects
     permission_classes = [IsGameAuthor]
 
-    serializer_class = GameSerializer
+    serializer_class = GameListSerializer
 
     detail_serializer_class = GameDetailSerializer
 
-    #TO DO there should be a filter for user
     def get_queryset(self):
         
-        queryset = Game.objects.all()
+        queryset = Game.objects.filter(author=self.request.user)
         return queryset
     
 class StepViewSet(MultipleSerializerMixin,ModelViewSet):
 
-    serializer_class = StepSerializer
+    serializer_class = StepListSerializer
 
     detail_serializer_class = StepDetailSerializer
 
-    #TO DO there should be a filter for user
     def get_queryset(self):
         
-        queryset = Step.objects.all()
+        queryset = Step.objects.filter(game__author=self.request.user)
         return queryset
     
 class ScenarioViewSet(MultipleSerializerMixin,ModelViewSet):
 
-    serializer_class = ScenarioSerializer
+    serializer_class = ScenarioListSerializer
 
     detail_serializer_class = ScenarioDetailSerializer
 
-    #TO DO there should be a filter for user
     def get_queryset(self):
         
-        queryset = Scenario.objects.all()
+        queryset = Scenario.objects.filter(game__author=self.request.user)
         return queryset
     
 class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
 
-    serializer_class = ScenarioNodeSerializer
+    serializer_class = ScenarioNodeListSerializer
 
     detail_serializer_class = ScenarioNodeDetailSerializer
 
-    #TO DO there should be a filter for user
     def get_queryset(self):
         
-        queryset = ScenarioNode.objects.all()
+        queryset = ScenarioNode.objects.filter(scenario__game__author=self.request.user)
         return queryset
     
 class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
 
-    serializer_class = ClueSerializer
+    serializer_class = ClueListSerializer
 
     detail_serializer_class = ClueDetailSerializer
 
-    #TO DO there should be a filter for user
     def get_queryset(self):
         
-        queryset = Clue.objects.all()
+        queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset

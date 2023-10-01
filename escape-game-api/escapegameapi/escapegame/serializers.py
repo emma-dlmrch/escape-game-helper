@@ -5,7 +5,7 @@ from .models import Scenario, Game, ScenarioNode, Clue, Step
 
 #ToDO: Implement unit tests
 #Todo: remove scenarios, useless for game list
-class GameSerializer(ModelSerializer):
+class GameListSerializer(ModelSerializer):
 
     scenarios = serializers.SerializerMethodField()
     
@@ -16,7 +16,7 @@ class GameSerializer(ModelSerializer):
     def get_scenarios(self, instance):
         
         queryset = instance.scenarios.all()
-        serializer = ScenarioSerializer(queryset, many=True)
+        serializer = ScenarioListSerializer(queryset, many=True)
         return serializer.data
 
 
@@ -34,18 +34,18 @@ class GameDetailSerializer(ModelSerializer):
     def get_scenarios(self, instance):
         
         queryset = instance.scenarios.all()
-        serializer = ScenarioSerializer(queryset, many=True)
+        serializer = ScenarioListSerializer(queryset, many=True)
         return serializer.data
     
         
     def get_steps(self, instance):
         
         queryset = instance.steps.all()
-        serializer = StepSerializer(queryset, many=True)
+        serializer = StepListSerializer(queryset, many=True)
         return serializer.data
 
 
-class StepSerializer(ModelSerializer):
+class StepListSerializer(ModelSerializer):
     
     class Meta:
         model = Step
@@ -58,7 +58,7 @@ class StepDetailSerializer(ModelSerializer):
         fields = ['id', 'game', 'title', 'text', 'answer']
 
 
-class ScenarioSerializer(ModelSerializer):
+class ScenarioListSerializer(ModelSerializer):
     
     class Meta:
         model = Scenario
@@ -75,11 +75,11 @@ class ScenarioDetailSerializer(ModelSerializer):
     def get_scenario_nodes(self, instance):
         
         queryset = instance.scenario_nodes.all()
-        serializer = ScenarioNodeSerializer(queryset, many=True)
+        serializer = ScenarioNodeListSerializer(queryset, many=True)
         return serializer.data
 
 
-class ScenarioNodeSerializer(ModelSerializer):
+class ScenarioNodeListSerializer(ModelSerializer):
 
     step_title = serializers.SerializerMethodField()
     
@@ -106,10 +106,10 @@ class ScenarioNodeDetailSerializer(ModelSerializer):
     
     def get_child_nodes(self, instance):
         queryset = ScenarioNode.objects.filter(parent_node= instance)
-        serializer = ScenarioNodeSerializer(queryset, many=True)
+        serializer = ScenarioNodeListSerializer(queryset, many=True)
         return serializer.data
 
-class ClueSerializer(ModelSerializer):
+class ClueListSerializer(ModelSerializer):
 
     class Meta:
         model = Clue
