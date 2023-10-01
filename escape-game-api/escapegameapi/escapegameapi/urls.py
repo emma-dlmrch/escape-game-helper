@@ -19,7 +19,6 @@ from django.urls import path, include
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet
 
 router = routers.SimpleRouter()
