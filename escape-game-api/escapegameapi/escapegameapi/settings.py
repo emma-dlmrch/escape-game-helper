@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'escapegame',
     'authentication',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

@@ -14,7 +14,7 @@ class Game(models.Model):
 
 class Step(models.Model):
     """Game step, either a riddle or only text if no answer is expected"""
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=5000)
     #image = models.ImageField(verbose_name='Game step picture')
@@ -26,7 +26,7 @@ class Step(models.Model):
 
 class Clue(models.Model):
 
-    step = models.ForeignKey(Step, on_delete=models.CASCADE)
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='clues')
     title = models.CharField(max_length=128)
     text = models.CharField(max_length=1000)
 
@@ -38,7 +38,7 @@ class Scenario(models.Model):
 
     name = models.CharField(max_length=255)
 
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='scenarios')
 
     # if steps were linear
     # def list_ordered_steps(self):
@@ -50,8 +50,8 @@ class Scenario(models.Model):
         return self.name 
     
 class ScenarioNode(models.Model):
-    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
-    step = models.ForeignKey(Step, on_delete=models.CASCADE)
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name='scenario_nodes')
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='steps')
     parent_node = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
