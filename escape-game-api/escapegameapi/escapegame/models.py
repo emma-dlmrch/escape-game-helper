@@ -33,29 +33,42 @@ class Clue(models.Model):
     def __str__(self):
         return self.title 
 
-class GameBranch(models.Model):
+class Scenario(models.Model):
+    """A scenario is the order of steps/riddles. Scenario can be ramificated"""
 
     name = models.CharField(max_length=255)
 
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
-    #to add in TU
-    def list_ordered_steps(self):
-        """Return list of ordered steps for a specific game branch"""
-        return self.game_branch_entrys.order_by('rank')
+    # if steps were linear
+    # def list_ordered_steps(self):
+    #     """Return list of ordered steps for a specific game branch"""
+    #     return self.game_branch_entrys.order_by('rank')
+
        
     def __str__(self):
         return self.name 
-
-class GameBranchEntry(models.Model):
-
-    game_branch = models.ForeignKey(GameBranch, on_delete=models.CASCADE)
+    
+class ScenarioNode(models.Model):
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
     step = models.ForeignKey(Step, on_delete=models.CASCADE)
-    rank = models.IntegerField()
-
-    class Meta:
-        unique_together = ('game_branch', 'rank',)
+    parent_node = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return (self.game_branch.name + " - " + self.step.title + " - " + str(self.rank))
+        if self.parent_node:
+            return self.scenario.name + " : " + self.parent_node.step.title + " -> " + self.step.title
+        return self.scenario.name + ", start : "  + self.step.title
+        
+#if steps were linear
+# class GameBranchEntry(models.Model):
+
+#     game_branch = models.ForeignKey(GameBranch, on_delete=models.CASCADE)
+#     step = models.ForeignKey(Step, on_delete=models.CASCADE)
+#     rank = models.IntegerField()
+
+#     class Meta:
+#         unique_together = ('game_branch', 'rank',)
+
+#     def __str__(self):
+#         return (self.game_branch.name + " - " + self.step.title + " - " + str(self.rank))
 
