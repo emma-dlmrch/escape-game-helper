@@ -9,6 +9,7 @@ from .serializers import (
     ClueSerializer, ClueDetailSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
+from .permissions import IsGameAuthor
 # Create your views here.
 
 class MultipleSerializerMixin:
@@ -27,6 +28,9 @@ class MultipleSerializerMixin:
     
 
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
+
+    #Works only with detailed view
+    permission_classes = [IsGameAuthor]
 
     serializer_class = GameSerializer
 

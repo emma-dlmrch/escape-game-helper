@@ -11,7 +11,7 @@ class GameSerializer(ModelSerializer):
     
     class Meta:
         model = Game
-        fields = ['id', 'name', 'description', 'date_created', 'date_updated', 'scenarios']
+        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'scenarios']
     
     def get_scenarios(self, instance):
         
@@ -28,7 +28,7 @@ class GameDetailSerializer(ModelSerializer):
     
     class Meta:
         model = Game
-        fields = ['id', 'name', 'description', 'date_created', 'date_updated', 'steps', 'scenarios']
+        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'steps', 'scenarios']
     
         
     def get_scenarios(self, instance):
