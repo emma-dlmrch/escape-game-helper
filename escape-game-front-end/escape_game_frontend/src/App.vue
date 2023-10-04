@@ -1,15 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <TestTest msg="Welcome to Your Vue.js App"/>
+  <GameList msg="La liste de jeux"/>
+  <GameCreate msg="La liste de jeux"/>
 </template>
 
 <script>
-import TestTest from './components/TestTest.vue'
+import GameList from './components/GameList.vue'
+import GameCreate from './components/GameCreate.vue';
 
 export default {
   name: 'App',
   components: {
-    TestTest
+    GameList, GameCreate
   }
 }
 </script>
