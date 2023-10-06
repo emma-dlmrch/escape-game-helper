@@ -23,7 +23,11 @@ export default {
     async getData() {
       try {
         const response = await axios.get(
-          "game/"
+          "game/", {
+            headers: {
+              'Accept': 'application/json'
+            }
+          }
         );
         // JSON responses are automatically parsed.
         this.games = response.data;

@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.views import APIView
 from .serializers import (
     GameDetailSerializer, GameListSerializer,
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer
+    ClueListSerializer, ClueDetailSerializer,
+    UserSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor
@@ -29,7 +31,7 @@ class MultipleSerializerMixin:
 
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     """Return games created by request user"""
-    #Works only with detailed view, now that there is a filter, useless or not ? To be tester for all objects
+    #Works only with detailed view, now that there is a filter, useless or not ? To be tested for all objects
     #permission_classes = [IsGameAuthor]
     pagination_class = None #added 
 
@@ -39,7 +41,7 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
 
     def get_queryset(self):
         
-        #queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
+        # queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
         queryset = Game.objects.all()
         return queryset
     
@@ -86,3 +88,11 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         
         queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset
+    
+class SignUpView(APIView):
+    def post(self, request):
+        print(request.data)
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)

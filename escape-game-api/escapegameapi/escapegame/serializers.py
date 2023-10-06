@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 from .models import Scenario, Game, ScenarioNode, Clue, Step
 
@@ -120,3 +121,17 @@ class ClueDetailSerializer(ModelSerializer):
     class Meta:
         model = Clue
         fields = ['id','step', 'title', 'text']
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "username", "password"]
+
+    def create(self, validated_data):
+        user = User.objects.create(email=validated_data['email'],
+                                       username=validated_data['username']
+                                        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user

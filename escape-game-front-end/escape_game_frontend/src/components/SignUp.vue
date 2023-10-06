@@ -17,8 +17,6 @@
 <script>
 import axios from 'axios';
 
-//import axios from 'axios';
-
 export default {
     name: 'SignUp',
     data(){
@@ -30,14 +28,14 @@ export default {
     },
     methods:{
         submitForm(){
-            const formData = {
+            let formData = {
                 username: this.username,
                 password: this.password,
-                email: this.username
+                email: this.email
             }
 
             axios
-                .post('users/', formData)
+                .post('signup/', formData)
                 .then(response => {
                     this.$router.push('/login')
                     console.log(response)

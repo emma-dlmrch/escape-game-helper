@@ -134,5 +134,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#for local testing -> to be removed ?
-CORS_ORIGIN_ALLOW_ALL = True
+#for local testing
+CORS_ALLOWED_ORIGINS = [
+   'http://localhost:8080',
+   'http://127.0.0.1:8000'
+]
