@@ -1,23 +1,26 @@
 <template>
-  <nav>
-    <router-link to="/signup">S'inscrire</router-link>
-    <router-link to="/login">Se connecter</router-link>
+    <NavBar msg="Navbar" />
     <router-view/>
-  </nav>
-  <GameList msg="La liste de jeux"/>
-  <GameCreate msg="La liste de jeux"/>
-
 </template>
 
 <script>
-import GameList from './components/GameList.vue'
-import GameCreate from './components/GameCreate.vue';
 import axios from 'axios';
+import NavBar from './components/NavBar.vue';
 
 export default {
   name: 'App',
   components: {
-    GameList, GameCreate
+    NavBar
+  },
+  data(){
+        return {
+        }
+    },
+  
+  computed: {
+    authenticated(){
+      return this.$store.state.isAuthenticated
+    }
   },
 
   beforeCreate(){
@@ -27,9 +30,16 @@ export default {
     if (token ) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + token
     } else {
-    //   axios.defaults.headers.common['Authorization'] = ''
+      delete axios.defaults.headers.common["Authorization"]
     }
+  },
+
+  methods:{
+      logout(){
+        this.$store.commit('removeToken')
   }
+    }
+
 }
 </script>
 

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
     name: 'LogIn',
@@ -36,7 +36,9 @@ export default {
                     const token = response.data.access
                     this.$store.commit('setToken', token)
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token
-                    localStorage.setItem("token", token)
+                    console.log(response.data.id)
+                    // this.$router.push({ name: 'games', params: { userId: '123' } })
+                    this.$router.push('games')
                 })
                 .catch(error => {console.log(error)})
         }

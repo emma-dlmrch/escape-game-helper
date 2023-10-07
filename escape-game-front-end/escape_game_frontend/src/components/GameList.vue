@@ -1,4 +1,5 @@
 <template>
+  <!-- <NavBar msg="Navbar" /> -->
     <div>
       <div v-for="game in games" v-bind:key="game.id">
         <h2>{{ game.name }}</h2>
@@ -6,13 +7,19 @@
         <p><button @click="deleteGame(game.id)">Supprimer ce jeu</button></p>
       </div>
     </div>
+    <GameCreate msg="La liste de jeux"/>
   </template>
 
 <script>
 import axios from 'axios';
+// import NavBar from './NavBar.vue';
+import GameCreate from './GameCreate.vue';
 
 export default {
   name: 'GameList',
+  components: {
+    GameCreate
+  },
   data() {
     return {
       games: [],
