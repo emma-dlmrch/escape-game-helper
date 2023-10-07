@@ -31,8 +31,9 @@ class MultipleSerializerMixin:
 
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     """Return games created by request user"""
-    #Works only with detailed view, now that there is a filter, useless or not ? To be tested for all objects
+    #Works only with detailed view, test what happens for modif and deletion
     #permission_classes = [IsGameAuthor]
+
     pagination_class = None #added 
 
     serializer_class = GameListSerializer
@@ -41,8 +42,8 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
 
     def get_queryset(self):
         
-        # queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
-        queryset = Game.objects.all()
+        queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
+        # queryset = Game.objects.all()
         return queryset
     
 class StepViewSet(MultipleSerializerMixin,ModelViewSet):

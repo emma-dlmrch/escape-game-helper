@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+import jwt_decode from "jwt-decode"
 
 export default {
     name: 'LogIn',
@@ -32,12 +33,11 @@ export default {
             axios
                 .post('token/', formData)
                 .then(response => {
-                    console.log(response)
                     const token = response.data.access
                     this.$store.commit('setToken', token)
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token
-                    console.log(response.data.id)
-                    // this.$router.push({ name: 'games', params: { userId: '123' } })
+                    const userId = jwt_decode(token).user_id
+                    this.$store.commit('setUserId', userId)
                     this.$router.push('games')
                 })
                 .catch(error => {console.log(error)})

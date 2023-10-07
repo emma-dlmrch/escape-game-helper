@@ -18,10 +18,11 @@ export default {
   },
 
   methods:{
-      logout(){
+    logout(){
         this.$store.commit('removeToken')
-  }
+        this.$router.push('/login')
     }
+}
 
 }
 </script>
