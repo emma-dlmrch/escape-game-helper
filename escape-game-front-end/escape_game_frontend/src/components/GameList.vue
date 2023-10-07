@@ -1,4 +1,5 @@
 <template>
+    <h1>Mes jeux</h1>
     <div>
       <div>Bonjour tu es le user numéro {{ userId }}</div>
       <div v-for="game in games" v-bind:key="game.id">
@@ -8,37 +9,41 @@
         <p><button @click="modifyGame(game.id)">Modifier ce jeu</button></p>
       </div>
     </div>
-    <div>hello, voici un jeu test {{ gameTest }}</div>
-    <GameCreate msg="La liste de jeux"/>
+    <h2>Créer un nouveau jeu</h2>
+    <form @submit.prevent="createNewGame">
+        <label for="name">Nom du jeu</label>
+        <input name="name" v-model="newGame.name">
+        <label for="description">Description du jeu</label>
+        <textarea name="description" v-model="newGame.description"></textarea>
+        <button type="submit">OK</button>
+    </form>
   </template>
 
 <script>
 import axios from 'axios';
-import GameCreate from './GameCreate.vue';
 
 export default {
   name: 'GameList',
   components: {
-    GameCreate
+
   },
   data() {
     return {
       games: [],
       userId: this.$store.state.userId,
-      gameTest : null
+      gameTest : null,
+
+      newGame: {
+                name: '',
+                description: '',
+                author: '',
+            }
+
     };
   },
 
   methods: {
-    // async getData() {
-    //   try {
-    //     const response = await axios.get("game/");
-    //     // JSON responses are automatically parsed.
-    //     this.games = response.data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
+
     getData(){
       axios.get("game/")
         .then(response => {
@@ -64,21 +69,25 @@ export default {
 
     },
 
-    getGameTest(){
-      axios.get("game/1")
-        .then(response => {
-          this.games = response.data
-        }, (error) => {
-          console.log(error)
-        })
-    }
+    createNewGame() {
+      try {
+        this.newGame.author = this.$store.state.userId
+        axios.post('game/', this.newGame).then((response) => {
+          console.log(response)
+          this.getData()
+        });
+      } catch (error) {
+          console.error("Error during form submission:", error);
+      }
+    },
+
 
   },
+
 
   created() {
     //fetch tasks on page load
     this.getData();
-    this.getGameTest();
   },
 };
 </script>
