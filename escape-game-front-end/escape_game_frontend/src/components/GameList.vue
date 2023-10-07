@@ -1,23 +1,30 @@
 <template>
-    <h1>Mes jeux</h1>
-    <div>
-      <div>Bonjour tu es le user numéro {{ userId }}</div>
-      <div v-for="game in games" v-bind:key="game.id">
-        <h2>{{ game.name }}</h2>
-        <p>{{ game.description }}</p>
-        <p><button @click="deleteGame(game.id)">Supprimer ce jeu</button></p>
-        <p><button @click="modifyGame(game.id)">Modifier ce jeu</button></p>
-      </div>
-    </div>
-    <h2>Créer un nouveau jeu</h2>
-    <form @submit.prevent="createNewGame">
-        <label for="name">Nom du jeu</label>
-        <input name="name" v-model="newGame.name">
-        <label for="description">Description du jeu</label>
-        <textarea name="description" v-model="newGame.description"></textarea>
-        <button type="submit">OK</button>
-    </form>
-  </template>
+  <h1>Tableau de bord</h1>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Mes jeux</th>
+          <th scope="col">Description</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="game in games" v-bind:key="game.id">
+          <th scope="row">{{ game.name }}</th>
+          <td>{{ game.description.substring(0, 20) }} ...</td>
+          <td><button @click="modifyGame(game.id)" type="button" class="btn btn-dark btn-sm">Gérer</button> <button
+              @click="deleteGame(game.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button></td>
+        </tr>
+        <tr>
+          <th><input type ="text" v-model="newGame.name" placeholder="Nouveau jeu" maxlength="50"></th>
+          <td><input type ="text" v-model="newGame.description" placeholder="Entre une description" maxlength="50"/></td>
+          <td><button @click="createNewGame" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
 
 <script>
 import axios from 'axios';
@@ -31,20 +38,20 @@ export default {
     return {
       games: [],
       userId: this.$store.state.userId,
-      gameTest : null,
+      gameTest: null,
 
       newGame: {
-                name: '',
-                description: '',
-                author: '',
-            }
+        name: '',
+        description: '',
+        author: '',
+      }
 
     };
   },
 
   methods: {
 
-    getData(){
+    getData() {
       axios.get("game/")
         .then(response => {
           this.games = response.data
@@ -53,31 +60,32 @@ export default {
         })
     },
 
-    deleteGame(gameId){
+    deleteGame(gameId) {
       axios.delete('game/' + gameId + "/")
-        .then(response => { 
+        .then(response => {
           console.log(response);
           this.getData();
         },
-        (error) => { console.log("Error", error) });
+          (error) => { console.log("Error", error) });
 
-     },
-     
-    modifyGame(gameId){
+    },
+
+    modifyGame(gameId) {
       this.$store.commit('setGameId', gameId)
-      this.$router.push('/game-details', {gameId: gameId})
+      this.$router.push('/game-details', { gameId: gameId })
 
     },
 
     createNewGame() {
       try {
+        if (this.newGame.name.length <1) {this.newGame.name = 'Jeu sans nom'}
         this.newGame.author = this.$store.state.userId
         axios.post('game/', this.newGame).then((response) => {
           console.log(response)
           this.getData()
         });
       } catch (error) {
-          console.error("Error during form submission:", error);
+        console.error("Error during form submission:", error);
       }
     },
   },

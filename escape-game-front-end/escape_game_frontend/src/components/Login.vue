@@ -1,15 +1,22 @@
 <template>
     <div>
-        <h1>Login</h1>
+        <h1>Se connecter</h1>
         <form @submit.prevent="submitForm">
-        <label for="username">Pseudo</label>
-        <input type="text" name ="username" v-model="username">
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" v-model ="password">
-        <button type="submit">Se connecter</button>
-        <p v-if="error.code ==='ERR_BAD_REQUEST'">Les identifiants entrés sont invalides</p>
-        <p v-if="error.code ==='ERR_NETWORK'">Oops, le web service n'est pas accessible</p>
-    </form>
+            <div class="form-group">
+                <label for="inputUsername">Nom d'utilisateur</label>
+                <input type="text" v-model="username" class="form-control" id="inputUsername" placeholder="Ton p'tit nom">
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" v-model="password" class="form-control" id="inputPassword"
+                    placeholder="Ton p'tit mot d'passe">
+                <small id="emailHelp" v-if="error.code === 'ERR_BAD_REQUEST'" class="form-text text-muted">Les identifiants
+                    entrés sont invalides</small>
+                <small id="emailHelp" v-if="error.code === 'ERR_NETWORK'" class="form-text text-muted">Oops, le web service
+                    n'est pas accessible</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
     </div>
 </template>
 
@@ -19,15 +26,15 @@ import jwt_decode from "jwt-decode"
 
 export default {
     name: 'LogIn',
-    data(){
+    data() {
         return {
-            username:'',
-            password:'',
-            error:'',
+            username: '',
+            password: '',
+            error: '',
         }
     },
-    methods:{
-        submitForm(){
+    methods: {
+        submitForm() {
             const formData = {
                 username: this.username,
                 password: this.password

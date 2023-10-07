@@ -3,6 +3,7 @@ import SignUp from '../components/SignUp.vue'
 import LogIn from '../components/LogIn.vue'
 import GameList from '../components/GameList.vue'
 import GameDetails from '../components/GameDetails.vue'
+import UpdateAccount from '../components/UpdateAccount.vue'
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: '/login',
         name: 'LogIn',
         component: LogIn
+    },
+    { 
+        path: '/update-account',
+        name: 'UpdateAccount',
+        component: UpdateAccount
     },
     {
         path: '/games',

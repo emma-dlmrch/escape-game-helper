@@ -1,16 +1,25 @@
 <template>
     <div>
-        <h1>S'inscrire</h1>
+        <h1>Créer un compte</h1>
     </div>
-    <!-- prvents stops the page to refresh -->
     <form @submit.prevent="submitForm">
-        <label for="username">Pseudo</label>
-        <input type="text" name ="username" v-model="username">
-        <label for="email">Email</label>
-        <input type="email" name ="email" v-model="email">
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" v-model ="password">
-        <button type="submit">S'inscrire</button>
+        <div class="form-group">
+            <label for="inputUsername">Nom d'utilisateur</label>
+            <input type="text" v-model="username" class="form-control" id="inputUsername" placeholder="Ton p'tit nom">
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Adresse e-mail</label>
+            <input type="email" v-model="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+                placeholder="Ton p'tit mail">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Mot de passe</label>
+            <input type="password" v-model="password" class="form-control" id="inputPassword" placeholder="Ton p'tit mot d'passe">
+            <small id="emailHelp" v-if="error.code === 'ERR_BAD_REQUEST'" class="form-text text-muted">Oops, avez-vous déjà un compte ?</small>
+
+        </div>
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
 </template>
 
@@ -19,15 +28,16 @@ import axios from 'axios';
 
 export default {
     name: 'SignUp',
-    data(){
+    data() {
         return {
-            email:'',
-            username:'',
-            password:'',
+            email: '',
+            username: '',
+            password: '',
+            error:'',
         }
     },
-    methods:{
-        submitForm(){
+    methods: {
+        submitForm() {
             let formData = {
                 username: this.username,
                 password: this.password,
@@ -40,7 +50,9 @@ export default {
                     this.$router.push('/login')
                     console.log(response)
                 })
-                .catch(error => {console.log(error)})
+                .catch(error => {
+                    this.error = error
+                    console.log(error) })
         }
     }
 

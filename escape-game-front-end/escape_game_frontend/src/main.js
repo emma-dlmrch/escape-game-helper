@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 import axios from 'axios';
 import router from './router';
+import "bootstrap/dist/css/bootstrap.css"
 
 //axios.defaults.withCredentials = true
 //axios.defaults.headers.common['Content-Type'] = "application/json"
@@ -13,3 +14,4 @@ const app = createApp(App);
 
 app.use(store).use(router).mount('#app')
 
+import "bootstrap/dist/js/bootstrap.js"
