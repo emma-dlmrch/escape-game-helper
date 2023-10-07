@@ -19,7 +19,8 @@ from django.urls import path, include
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet, SignUpView
+from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet
+from authentication.views import SignUpView, GetUserView
 
 router = routers.SimpleRouter()
 
@@ -37,4 +38,5 @@ urlpatterns = [
     path('api/signup/', SignUpView.as_view(), name="sign_up"),
     #path('api/game/<int:game_id>', GameDetailsAPIView.as_view(), name = 'game_details'),
     #path('api/game/', GameListAPIView.as_view(), name = 'game_list'),
+    path('api/user/<int:user_id>', GetUserView.as_view(), name = 'get_user_info')
 ]

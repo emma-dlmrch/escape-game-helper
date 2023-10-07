@@ -26,6 +26,7 @@ export default {
         getGameData() {
             axios.get("game/"+ this.$store.state.gameId )
             .then(response => {
+                console.log('ça marche ?')
                 this.game = response.data;
             }, (error) => {console.log(error)}
             )

@@ -1,6 +1,5 @@
 from django.http import Http404
 from django.shortcuts import render
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from .serializers import (
@@ -8,8 +7,7 @@ from .serializers import (
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer,
-    UserSerializer
+    ClueListSerializer, ClueDetailSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor
@@ -112,10 +110,3 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset
     
-class SignUpView(APIView):
-    def post(self, request):
-        print(request.data)
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)

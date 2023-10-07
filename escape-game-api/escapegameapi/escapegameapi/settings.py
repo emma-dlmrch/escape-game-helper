@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'escapegame',
     'corsheaders',
+    'authentication'
     
 ]
 
@@ -139,3 +140,5 @@ CORS_ALLOWED_ORIGINS = [
    'http://localhost:8080',
    'http://127.0.0.1:8000'
 ]
+
+AUTH_USER_MODEL = 'authentication.User'
