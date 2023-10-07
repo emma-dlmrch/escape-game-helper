@@ -80,10 +80,7 @@ export default {
           console.error("Error during form submission:", error);
       }
     },
-
-
   },
-
 
   created() {
     //fetch tasks on page load

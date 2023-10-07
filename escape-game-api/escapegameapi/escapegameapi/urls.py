@@ -35,4 +35,6 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/signup/', SignUpView.as_view(), name="sign_up"),
+    #path('api/game/<int:game_id>', GameDetailsAPIView.as_view(), name = 'game_details'),
+    #path('api/game/', GameListAPIView.as_view(), name = 'game_list'),
 ]

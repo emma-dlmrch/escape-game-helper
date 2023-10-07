@@ -7,6 +7,8 @@
         <label for="password">Mot de passe</label>
         <input type="password" name="password" v-model ="password">
         <button type="submit">Se connecter</button>
+        <p v-if="error.code ==='ERR_BAD_REQUEST'">Les identifiants entrés sont invalides</p>
+        <p v-if="error.code ==='ERR_NETWORK'">Oops, le web service n'est pas accessible</p>
     </form>
     </div>
 </template>
@@ -21,6 +23,7 @@ export default {
         return {
             username:'',
             password:'',
+            error:'',
         }
     },
     methods:{
@@ -40,7 +43,10 @@ export default {
                     this.$store.commit('setUserId', userId)
                     this.$router.push('games')
                 })
-                .catch(error => {console.log(error)})
+                .catch(error => {
+                    console.log(error)
+                    this.error = error
+                })
         }
     }
 }

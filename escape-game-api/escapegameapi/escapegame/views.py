@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -32,7 +33,7 @@ class MultipleSerializerMixin:
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     """Return games created by request user"""
     #Works only with detailed view, test what happens for modif and deletion
-    #permission_classes = [IsGameAuthor]
+    permission_classes = [IsGameAuthor]
 
     pagination_class = None #added 
 
@@ -45,6 +46,27 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
         queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
         # queryset = Game.objects.all()
         return queryset
+    
+# Issue with detailed view, try to refactor, does not solve the issue
+# class GameListAPIView(APIView):
+ 
+#     def get(self, *args, **kwargs):
+#         games = Game.objects.filter(author=self.request.user)
+#         serializer = GameListSerializer(games, many=True)
+#         return Response(serializer.data)
+
+# class GameDetailsAPIView(APIView):
+
+#     def get_object(self, game_id):
+#         try:
+#             return Game.objects.get(id = game_id)
+#         except Game.DoesNotExist:
+#             raise Http404
+
+#     def get(self, request, game_id, format=None):
+#         game = self.get_object(game_id)
+#         serializer = GameDetailSerializer(game)
+#         return Response(serializer.data)
     
 class StepViewSet(MultipleSerializerMixin,ModelViewSet):
 
