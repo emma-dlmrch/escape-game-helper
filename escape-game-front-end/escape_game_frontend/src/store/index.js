@@ -5,14 +5,16 @@ export default createStore({
     state: {
         token:'',
         isAuthenticated: false,
-        userId: null, //this is just for displaying purposes. If absence of need is confirmed, remove library jwt decode from the project
-        gameId: null
+        userId: '',
+        gameId: '',
     },
     mutations: {
         initializeStore(state){
             if (localStorage.getItem('token') ) {
                 state.token = localStorage.getItem('token')
                 state.isAuthenticated = true
+                state.userId = localStorage.getItem('userId')
+
             } else {
                 state.token = ''
                 state.isAuthenticated = false
@@ -30,6 +32,11 @@ export default createStore({
         },
         setUserId(state, userId){
             state.userId = userId
+            localStorage.setItem('userId', userId)
+        },
+        removeUserId(state){
+            state.userId = ''
+            localStorage.removeItem('userId')
         },
         setGameId(state, gameId){
             state.gameId = gameId
@@ -37,7 +44,7 @@ export default createStore({
     },
     actions : {
         getGameDetails(state, gameId){
-            axios.get("/game/" + gameId)
+            axios.get("game/" + gameId)
             .then(response => {
                 console.log(response);
             })

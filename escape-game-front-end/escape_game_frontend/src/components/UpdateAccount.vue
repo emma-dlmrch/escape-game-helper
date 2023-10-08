@@ -24,16 +24,21 @@ export default {
                 username: '',
                 password: '',
                 email: '',
-            }
+            },
+            userId: this.$store.state.userId,
         };
     },
+
+    computed: {
+    },
+
     methods: {
         submitForm() {
             console.log('il faut écrire cette fonction dans le backend')
         },
 
         getUserData() {
-            axios.get("/user/1")
+            axios.get("user/" + this.userId)
                 .then(response => {
                     console.log(response.data)
                     this.user = response.data

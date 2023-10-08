@@ -1,26 +1,26 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" v-if="!authenticated" href="/login" >Escape Game Helper Project</a>
-    <a class="navbar-brand" v-if="authenticated" href="/games" >Escape Game Helper Project</a>
+    <router-link to="/login" class="navbar-brand" v-if="!authenticated">Escape Game Helper Project</router-link>
+    <router-link to="/games" class="navbar-brand" v-if="authenticated">Escape Game Helper Project</router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item" v-if="!authenticated">
-        <a class="nav-link" href="/signup">S'inscrire</a>
+        <router-link to="/signup" class="nav-link" >S'inscrire</router-link>
       </li>
       <li class="nav-item" v-if="!authenticated" >
-        <a class="nav-link" href="/login">Se connecter</a>
+        <router-link to="/login" class="nav-link" >Se connecter</router-link>
       </li>
       <li class="nav-item" v-if="authenticated">
-        <a class="nav-link"  href="/games">Accueil</a>
+        <router-link to="/games" class="nav-link" >Accueil</router-link>
       </li>
       <li class="nav-item" v-if="authenticated">
         <a class="nav-link" @click="logout()">Se déconnecter</a>
       </li>
       <li class="nav-item" v-if="authenticated">
-        <a class="nav-link" href="/update-account">Mon compte</a>
+        <router-link to="/update-account" class="nav-link" >Mon compte</router-link>
       </li>
     </ul>
   </div>
@@ -41,6 +41,7 @@ export default {
   methods:{
     logout(){
         this.$store.commit('removeToken')
+        this.$store.commit('removeUserId')
         this.$router.push('/login')
     }
 }
