@@ -11,6 +11,7 @@ from .serializers import (
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor
+import logging
 # Create your views here.
 
 class MultipleSerializerMixin:

@@ -82,6 +82,8 @@ export default {
         this.newGame.author = this.$store.state.userId
         axios.post('game/', this.newGame).then((response) => {
           console.log(response)
+          this.newGame.name = "";
+          this.newGame.description = "";
           this.getData()
         });
       } catch (error) {

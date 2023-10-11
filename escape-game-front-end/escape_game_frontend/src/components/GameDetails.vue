@@ -24,23 +24,13 @@ export default {
 
     methods: {
         getGameData() {
-            axios.get("game/"+ this.$store.state.gameId )
+            axios.get("game/"+ this.$store.state.gameId + "/")
             .then(response => {
-                console.log('ça marche ?')
                 this.game = response.data;
-            }, (error) => {console.log(error)}
+            }, (error) => {
+                console.log(error)
+            }
             )
-            // try {
-            //     const response = await axios.get("game/"+ this.$store.state.gameId,
-            //     { 
-            //         headers: {
-            //             'Content-Type':'multipart/form-data'
-            //         }
-            //     })
-            //     this.game = response.data
-            // } catch (error) {
-            //     console.log(error);
-            // }
         },
     },
 
