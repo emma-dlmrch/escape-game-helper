@@ -14,7 +14,7 @@ export default createStore({
                 state.token = localStorage.getItem('token')
                 state.isAuthenticated = true
                 state.userId = localStorage.getItem('userId')
-                state.gameId = localStorage.getItem('gameId')
+                // state.gameId = localStorage.getItem('gameId')
 
             } else {
                 state.token = ''
@@ -39,10 +39,10 @@ export default createStore({
             state.userId = ''
             localStorage.removeItem('userId')
         },
-        setGameId(state, gameId){
-            state.gameId = gameId
-            localStorage.setItem('gameId', gameId)
-        }
+        // setGameId(state, gameId){
+        //     state.gameId = gameId
+        //     localStorage.setItem('gameId', gameId)
+        // }
     },
     actions : {
         getGameDetails(state, gameId){

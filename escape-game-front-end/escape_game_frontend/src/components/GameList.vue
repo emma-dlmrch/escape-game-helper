@@ -71,8 +71,8 @@ export default {
     },
 
     modifyGame(gameId) {
-      this.$store.commit('setGameId', gameId)
-      this.$router.push('/game-details', { gameId: gameId })
+      //this.$store.commit('setGameId', gameId)
+      this.$router.push({name: 'GameDetails', params: {id: gameId}})
 
     },
 

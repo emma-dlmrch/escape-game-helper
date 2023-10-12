@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 import logging
 from pathlib import Path
 
@@ -148,3 +149,30 @@ logging.basicConfig(
     level = logging.DEBUG,
     format = '%(asctime)s %(levelname)s %(message)s',
 )
+
+SIMPLE_JWT = {
+'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+# 'REFRESH_TOKEN_LIFETIME': timedelta(days=20),
+# 'ROTATE_REFRESH_TOKENS': False,
+# 'BLACKLIST_AFTER_ROTATION': True,
+
+# 'ALGORITHM': 'HS256',
+# 'SIGNING_KEY': settings.SECRET_KEY,
+# 'VERIFYING_KEY': None,
+# 'AUDIENCE': None,
+# 'ISSUER': None,
+
+# 'AUTH_HEADER_TYPES': ('Bearer',),
+# 'USER_ID_FIELD': 'id',
+# 'USER_ID_CLAIM': 'user_id',
+
+# 'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+# 'TOKEN_TYPE_CLAIM': 'token_type',
+
+# 'JTI_CLAIM': 'jti',
+# 'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+# 'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+# 'SLIDING_TOKEN_LIFETIME': timedelta(days=10),
+# 'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=20),
+}

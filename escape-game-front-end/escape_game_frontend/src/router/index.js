@@ -5,6 +5,7 @@ import GameList from '../components/GameList.vue'
 import GameDetails from '../components/GameDetails.vue'
 import UpdateAccount from '../components/UpdateAccount.vue'
 import store from '../store/index.js'
+import StepDetails from '../components/StepDetails.vue'
 
 const routes = [
     {
@@ -31,9 +32,15 @@ const routes = [
         meta: { requiresLogin: true }
     },
     { 
-        path: '/game-details',
+        path: '/games/:id',
         name: 'GameDetails',
         component: GameDetails,
+        meta: { requiresLogin: true }
+    },
+    { 
+        path: '/games/:gameId/step/:stepId',
+        name: 'StepDetails',
+        component: StepDetails,
         meta: { requiresLogin: true }
     },
 ]
