@@ -15,6 +15,7 @@
     "jwt-decode": "^3.1.2",
     "vue": "^3.2.13",
     "vue-router": "^4.2.5",
+    "vue3-blocks-tree": "^0.6.1",
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {

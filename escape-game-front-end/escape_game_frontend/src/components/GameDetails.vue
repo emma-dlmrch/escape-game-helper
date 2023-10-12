@@ -35,6 +35,28 @@
             </tbody>
         </table>
     </div>
+    <h2>Organiser mes étapes</h2>
+    <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Scénario</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
+          <th scope="row">{{ scenario.name }}</th>
+          <td><button @click="modifyScenario(scenario.id)" type="button" class="btn btn-dark btn-sm">Gérer</button> <button
+              @click="deleteScenario(scenario.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button></td>
+        </tr>
+        <tr>
+          <th><input type ="text" v-model="newScenario.name" placeholder="Nouveau scénario" maxlength="50"></th>
+          <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -54,6 +76,11 @@ export default {
             newStep: {
                 title: '',
                 game: '',
+            },
+            scenarios: [],
+            newScenario: {
+                name:'',
+                game:''
             }
         }
 
@@ -65,8 +92,9 @@ export default {
         getGameData() {
             axios.get("game/" + this.gameId + "/")
                 .then(response => {
-                    this.game = response.data;
+                    this.game = response.data
                     this.steps = response.data.steps
+                    this.scenarios = response.data.scenarios
                 }, (error) => {
                     console.log(error)
                 }
@@ -87,6 +115,29 @@ export default {
             }
         },
 
+        createNewScenario() {
+            try {
+                if (this.newScenario.name.length < 1) { this.newScenario.name = 'Scenario sans nom' }
+                this.newScenario.game = this.gameId
+                axios.post('scenario/', this.newScenario).then((response) => {
+                    console.log(response)
+                    this.newScenario.title = "";
+                    this.getGameData()
+                });
+            } catch (error) {
+                console.error("Error during form submission:", error);
+            }
+        },
+
+        deleteScenario(scenarioId) {
+            axios.delete('scenario/' + scenarioId + "/")
+                .then(response => {
+                    console.log(response);
+                    this.getGameData();
+                },
+                    (error) => { console.log("Error", error) });
+        },
+
         deleteStep(stepId) {
             axios.delete('step/' + stepId + "/")
                 .then(response => {
@@ -98,6 +149,10 @@ export default {
 
         modifyStep(stepId){
             this.$router.push({name: 'StepDetails', params: {stepId: stepId, gameId: this.gameId}})
+        },
+
+        modifyScenario(scenarioId){
+            this.$router.push({name: 'ScenarioDetails', params: {gameId: this.gameId, scenarioId: scenarioId}})
         }
     },
 

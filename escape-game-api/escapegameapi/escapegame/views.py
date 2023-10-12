@@ -7,7 +7,7 @@ from .serializers import (
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer
+    ClueListSerializer, ClueDetailSerializer, ScenarioNodeTreeSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor
@@ -23,7 +23,7 @@ class MultipleSerializerMixin:
     def get_serializer_class(self):
         # Notre mixin détermine quel serializer à utiliser
         # même si elle ne sait pas ce que c'est ni comment l'utiliser
-        if self.action == 'retrieve' and self.detail_serializer_class is not None:
+        if (self.action == 'retrieve' or self.action == 'update' ) and self.detail_serializer_class is not None:
             # Si l'action demandée est le détail alors nous retournons le serializer de détail
             return self.detail_serializer_class
         return super().get_serializer_class()
@@ -74,7 +74,7 @@ class StepViewSet(MultipleSerializerMixin,ModelViewSet):
     detail_serializer_class = StepDetailSerializer
 
     def get_queryset(self):
-        
+        #queryset = Step.objects.all()
         queryset = Step.objects.filter(game__author=self.request.user)
         return queryset
     
@@ -85,7 +85,7 @@ class ScenarioViewSet(MultipleSerializerMixin,ModelViewSet):
     detail_serializer_class = ScenarioDetailSerializer
 
     def get_queryset(self):
-        
+        #queryset = Scenario.objects.all()
         queryset = Scenario.objects.filter(game__author=self.request.user)
         return queryset
     
@@ -93,7 +93,8 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
 
     serializer_class = ScenarioNodeListSerializer
 
-    detail_serializer_class = ScenarioNodeDetailSerializer
+    # detail_serializer_class = ScenarioNodeDetailSerializer #We can come back to the details serializer now that treeSerializer is called at Scenario level
+    detail_serializer_class = ScenarioNodeTreeSerializer
 
     def get_queryset(self):
         

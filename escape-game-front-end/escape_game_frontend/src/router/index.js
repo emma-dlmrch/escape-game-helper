@@ -6,6 +6,7 @@ import GameDetails from '../components/GameDetails.vue'
 import UpdateAccount from '../components/UpdateAccount.vue'
 import store from '../store/index.js'
 import StepDetails from '../components/StepDetails.vue'
+import ScenarioDetails from '../components/ScenarioDetails.vue'
 
 const routes = [
     {
@@ -41,6 +42,12 @@ const routes = [
         path: '/games/:gameId/step/:stepId',
         name: 'StepDetails',
         component: StepDetails,
+        meta: { requiresLogin: true }
+    },
+    { 
+        path: '/games/:gameId/scenario/:scenarioId',
+        name: 'ScenarioDetails',
+        component: ScenarioDetails,
         meta: { requiresLogin: true }
     },
 ]

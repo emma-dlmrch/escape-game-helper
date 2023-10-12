@@ -63,7 +63,9 @@ class ScenarioListSerializer(ModelSerializer):
     
     class Meta:
         model = Scenario
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'game']
+    
+
 
 class ScenarioDetailSerializer(ModelSerializer):
 
@@ -71,26 +73,55 @@ class ScenarioDetailSerializer(ModelSerializer):
     
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'scenario_nodes']
+        fields = ['id', 'name', 'game', 'scenario_nodes']
     
     def get_scenario_nodes(self, instance):
-        
-        queryset = instance.scenario_nodes.all()
-        serializer = ScenarioNodeListSerializer(queryset, many=True)
+        # that's ok for a list, now we want a tree view from first parent node
+        # queryset = instance.scenario_nodes.all()
+        # serializer = ScenarioNodeListSerializer(queryset, many=True)
+        # return serializer.data
+        queryset = instance.scenario_nodes.exclude(parent_node__isnull=False)
+        serializer = ScenarioNodeTreeSerializer(queryset, many=True)
         return serializer.data
 
 
 class ScenarioNodeListSerializer(ModelSerializer):
 
     step_title = serializers.SerializerMethodField()
+    parent_node_title = serializers.SerializerMethodField()
     
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'step_title', 'parent_node']
+        fields = ['id','scenario', 'step', 'step_title', 'parent_node', 'parent_node_title']
     
     def get_step_title(self, instance):
 
         return instance.step.title
+    
+    def get_parent_node_title(self, instance):  
+        if instance.parent_node is not None:
+            parent_node = ScenarioNode.objects.get(id=instance.parent_node.id)
+            return parent_node.step.title
+        return 'root'
+
+#test a serializer that calls itself -> OK, now how to send this with first node ?    
+class ScenarioNodeTreeSerializer(ModelSerializer):
+    step_title = serializers.SerializerMethodField()
+    child_nodes = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = ScenarioNode
+        fields = ['id','scenario', 'step', 'step_title', 'parent_node', 'child_nodes']
+    
+    def get_step_title(self, instance):
+
+        return instance.step.title
+    
+    def get_child_nodes(self, instance):
+        queryset = ScenarioNode.objects.filter(parent_node= instance)
+        serializer = ScenarioNodeTreeSerializer(queryset, many=True)
+        return serializer.data
+
 
 class ScenarioNodeDetailSerializer(ModelSerializer):
 

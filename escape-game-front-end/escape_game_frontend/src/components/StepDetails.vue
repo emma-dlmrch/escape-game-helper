@@ -14,7 +14,7 @@
             <input type="text"  class="form-control" v-model="step.answer">
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Mettre à jour l'étape</button>
+            <button @click="modifyStep" type="submit" class="btn btn-primary">Mettre à jour l'étape</button>
         </div>
     </form>
 </template>
@@ -40,6 +40,7 @@ export default {
         getStepData() {
             axios.get("step/" + this.stepId + "/")
                 .then(response => {
+                    console.log(this.step.text)
                     this.step = response.data;
                     //this.clues = response.data.clue ajouter les clues dans le serializer !!
                     console.log(response)
@@ -52,7 +53,9 @@ export default {
         
         modifyStep(){
             try {
-                axios.put('step/', this.step).then((response) => {
+                console.log("texte qui va etre envoyé")
+                console.log(this.step.text)
+                axios.put('step/' + this.stepId + "/", this.step).then((response) => {
                     console.log(response)
                     this.getStepData()
                 });
