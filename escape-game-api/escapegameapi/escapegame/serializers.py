@@ -106,18 +106,20 @@ class ScenarioNodeListSerializer(ModelSerializer):
 
 #test a serializer that calls itself -> OK, now how to send this with first node ?    
 class ScenarioNodeTreeSerializer(ModelSerializer):
-    step_title = serializers.SerializerMethodField()
-    child_nodes = serializers.SerializerMethodField()
+    #step_title = serializers.SerializerMethodField()
+    #child_nodes = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
     
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'step_title', 'parent_node', 'child_nodes']
+        fields = ['id','scenario', 'step', 'label', 'parent_node', 'children'] #ajout label pour voir au lieu de step_title
     
-    def get_step_title(self, instance):
+    def get_label(self, instance):
 
         return instance.step.title
     
-    def get_child_nodes(self, instance):
+    def get_children(self, instance):
         queryset = ScenarioNode.objects.filter(parent_node= instance)
         serializer = ScenarioNodeTreeSerializer(queryset, many=True)
         return serializer.data
