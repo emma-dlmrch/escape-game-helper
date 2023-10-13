@@ -11,12 +11,38 @@
         </div>
         <div class="form-group">
             <label>Réponse attendue</label>
-            <input type="text"  class="form-control" v-model="step.answer">
+            <input type="text" class="form-control" v-model="step.answer">
         </div>
         <div>
-            <button @click="modifyStep" type="submit" class="btn btn-primary">Mettre à jour l'étape</button>
+            <button @click="modifyStep" type="submit" class="btn btn-dark">Mettre à jour l'étape</button>
+            <button @click="cancel" type="submit" class="btn btn-light">Retour</button>
         </div>
     </form>
+
+    <h2>Les indices</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Texte</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="clue in clues" v-bind:key="clue.id">
+                <th scope="row">{{ clue.title }}</th>
+                <td>{{ clue.text.substring(0, 20) }} ...</td>
+                <td><button @click="modifyClue(clue.id)" type="button" class="btn btn-dark btn-sm">Modifier</button> <button
+                        @click="deleteClue(clue.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button>
+                </td>
+            </tr>
+            <tr>
+                <th><input type="text" v-model="newClue.title" placeholder="Nouvel indice" maxlength="50"></th>
+                <td><input type="text" v-model="newClue.text" placeholder="Entre un texte" maxlength="50" /></td>
+                <td><button @click="createNewClue" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -33,6 +59,11 @@ export default {
                 answer: '',
             },
             clues: [],
+            newClue: {
+                title: '',
+                text: '',
+                step: ''
+            }
         }
     },
 
@@ -42,7 +73,7 @@ export default {
                 .then(response => {
                     console.log(this.step.text)
                     this.step = response.data;
-                    //this.clues = response.data.clue ajouter les clues dans le serializer !!
+                    this.clues = response.data.clues
                     console.log(response)
                 }, (error) => {
                     console.log(error)
@@ -50,24 +81,51 @@ export default {
                 )
 
         },
-        
-        modifyStep(){
+
+        modifyStep() {
             try {
-                console.log("texte qui va etre envoyé")
-                console.log(this.step.text)
                 axios.put('step/' + this.stepId + "/", this.step).then((response) => {
+                    console.log(response)
+                }
+                );
+                this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
+            } catch (error) {
+                console.error("Error during form submission:", error);
+            }
+        },
+
+        cancel() {
+            this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
+        },
+        createNewClue() {
+
+            try {
+                if (this.newClue.title.length < 1) { this.newClue.title = 'Indice sans nom' }
+                if (this.newClue.text.length < 1) { this.newClue.text = 'Pas de description' }
+                this.newClue.step = this.stepId
+                axios.post('clue/', this.newClue).then((response) => {
                     console.log(response)
                     this.getStepData()
                 });
             } catch (error) {
                 console.error("Error during form submission:", error);
             }
+
+        },
+
+        deleteClue(clueId){
+            axios.delete('clue/' + clueId + "/")
+                .then(response => {
+                    console.log(response);
+                    this.getStepData();
+                },
+                    (error) => { console.log("Error", error) });
         }
 
 
     },
     created() {
-            this.getStepData();
-        },
+        this.getStepData();
+    },
 }
 </script>

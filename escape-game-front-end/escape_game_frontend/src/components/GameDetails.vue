@@ -1,14 +1,15 @@
 <template>
-    <h1>{{ game.name }}</h1>
+    <h1 >{{ game.name }}</h1>
     <form>
         <div class="form-group">
-            <label>Nom</label>
-            <input type="text" id="disabledInput" class="form-control" v-bind:placeholder="game.name">
+            <label for="name">Nom</label>
+            <input type="text" id="name" class="form-control" v-model.lazy="game.name">
         </div>
         <div class="form-group">
-            <label>Text descriptif</label>
-            <textarea class="form-control" v-bind:placeholder="game.description" rows="3"></textarea>
+            <label for="description">Text descriptif</label>
+            <textarea class="form-control" v-model="game.description" id="description" rows="3"></textarea>
         </div>
+        <button @click="modifyGame" type="button" class="btn btn-light btn-sm">Modifier</button>
     </form>
 
     <h2>Liste d'étapes</h2>
@@ -23,9 +24,9 @@
             <tbody>
                 <tr v-for="step in this.steps" v-bind:key="step.id">
                     <th scope="row">{{ step.title }}</th>
-                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm">Gérer</button>
-                        <button @click="deleteStep(step.id)" type="button"
-                            class="btn btn-outline-dark btn-sm">Supprimer</button>
+                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm">Gérer</button> <button
+                         @click="deleteStep(step.id)" type="button"
+                            class="btn btn-light btn-sm">Supprimer</button>
                     </td>
                 </tr>
                 <tr>
@@ -48,7 +49,7 @@
         <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
           <th scope="row">{{ scenario.name }}</th>
           <td><button @click="modifyScenario(scenario.id)" type="button" class="btn btn-dark btn-sm">Gérer</button> <button
-              @click="deleteScenario(scenario.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button></td>
+              @click="deleteScenario(scenario.id)" type="button" class="btn btn-light btn-sm">Supprimer</button></td>
         </tr>
         <tr>
           <th><input type ="text" v-model="newScenario.name" placeholder="Nouveau scénario" maxlength="50"></th>
@@ -153,7 +154,18 @@ export default {
 
         modifyScenario(scenarioId){
             this.$router.push({name: 'ScenarioDetails', params: {gameId: this.gameId, scenarioId: scenarioId}})
-        }
+        },
+        modifyGame(){
+            try {
+                axios.put('game/' + this.gameId + "/", this.game).then((response) => {
+                    console.log(response)
+                }
+                );
+                this.getGameData();
+            } catch (error) {
+                console.error("Error during form submission:", error);
+            }
+        },
     },
 
     created() {

@@ -54,9 +54,16 @@ class StepListSerializer(ModelSerializer):
 
 class StepDetailSerializer(ModelSerializer):
     
+    clues = serializers.SerializerMethodField()
+
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'answer']
+        fields = ['id', 'game', 'title', 'text', 'answer', 'clues']
+
+    def get_clues(self, instance):
+        queryset = instance.clues.all()
+        serializer = ClueListSerializer(queryset, many=True)
+        return serializer.data
 
 
 class ScenarioListSerializer(ModelSerializer):
