@@ -93,12 +93,13 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
 
     serializer_class = ScenarioNodeListSerializer
 
-    # detail_serializer_class = ScenarioNodeDetailSerializer #We can come back to the details serializer now that treeSerializer is called at Scenario level
-    detail_serializer_class = ScenarioNodeTreeSerializer
+    detail_serializer_class = ScenarioNodeDetailSerializer #We can come back to the details serializer now that treeSerializer is called at Scenario level
+    #detail_serializer_class = ScenarioNodeTreeSerializer
 
     def get_queryset(self):
         
         queryset = ScenarioNode.objects.filter(scenario__game__author=self.request.user)
+        # queryset = ScenarioNode.objects.all()
         return queryset
     
 class ClueViewSet(MultipleSerializerMixin,ModelViewSet):

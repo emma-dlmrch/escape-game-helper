@@ -70,33 +70,36 @@ class ScenarioListSerializer(ModelSerializer):
 class ScenarioDetailSerializer(ModelSerializer):
 
     scenario_nodes = serializers.SerializerMethodField()
+    scenario_nodes_flat = serializers.SerializerMethodField()
     
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'game', 'scenario_nodes']
+        fields = ['id', 'name', 'game', 'scenario_nodes', 'scenario_nodes_flat'] #I gave up trying to flatten the data at frond end level
     
     def get_scenario_nodes(self, instance):
-        # that's ok for a list, now we want a tree view from first parent node
-        # queryset = instance.scenario_nodes.all()
-        # serializer = ScenarioNodeListSerializer(queryset, many=True)
-        # return serializer.data
         queryset = instance.scenario_nodes.exclude(parent_node__isnull=False)
         serializer = ScenarioNodeTreeSerializer(queryset, many=True)
+        return serializer.data
+
+    def get_scenario_nodes_flat(self, instance):
+        queryset = instance.scenario_nodes.all()
+        serializer = ScenarioNodeListSerializer(queryset, many=True)
         return serializer.data
 
 
 class ScenarioNodeListSerializer(ModelSerializer):
 
-    step_title = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
+    # label = serializers.CharField()
     parent_node_title = serializers.SerializerMethodField()
     
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'step_title', 'parent_node', 'parent_node_title']
+        fields = ['id','scenario', 'step', 'label', 'parent_node', 'parent_node_title']
     
-    def get_step_title(self, instance):
-
-        return instance.step.title
+    def get_label(self, instance):
+        label = "(parent: {}) {}".format(self.get_parent_node_title(instance),instance.step.title)
+        return label
     
     def get_parent_node_title(self, instance):  
         if instance.parent_node is not None:
@@ -113,7 +116,7 @@ class ScenarioNodeTreeSerializer(ModelSerializer):
     
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'label', 'parent_node', 'children'] #ajout label pour voir au lieu de step_title
+        fields = ['id','scenario', 'step', 'label', 'parent_node', 'children',] #ajout label pour voir au lieu de step_title
     
     def get_label(self, instance):
 
