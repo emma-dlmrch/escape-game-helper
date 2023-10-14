@@ -1,15 +1,15 @@
 <template>
     <h1 >{{ game.name }}</h1>
-    <form>
+    <form @submit="modifyGame">
         <div class="form-group">
             <label for="name">Nom</label>
-            <input type="text" id="name" class="form-control" v-model.lazy="game.name">
+            <input type="text" id="name" class="form-control" v-model.lazy="game.name" required>
         </div>
         <div class="form-group">
             <label for="description">Text descriptif</label>
-            <textarea class="form-control" v-model="game.description" id="description" rows="3"></textarea>
+            <textarea class="form-control" v-model="game.description" id="description" rows="3" required></textarea>
         </div>
-        <button @click="modifyGame" type="button" class="btn btn-light btn-sm">Modifier</button>
+        <button type="submit" class="btn btn-light btn-sm">Modifier</button>
     </form>
 
     <h2>Liste d'étapes</h2>

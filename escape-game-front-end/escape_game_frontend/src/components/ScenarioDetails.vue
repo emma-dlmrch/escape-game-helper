@@ -1,24 +1,33 @@
 <template>
     <h1>{{ scenario.name }}</h1>
+    <div><button @click="cancel" class="btn btn-dark btn-sm">Retour</button></div>
+    <h2>Renommer le scénario</h2>
+    <form @submit.prevent="renameScenario">
+        <div class="form-group">
+            <label for="name">Nom du scénario</label>
+            <input type="text" id="name" class="form-control" v-model.lazy="scenario.name" required>
+        </div>
+        <button type="submit" class="btn btn-dark btn-sm">OK</button>
+    </form>
     <h2>Gérer mes noeuds</h2>
-
     <h3>Créer un noeud</h3>
-    <form>
+    <form @submit.prevent="createNewNode">
         <div class="form-group">
             <label>Etape</label>
-            <select v-model="newNode.step" class="form-control form-control-sm">
+            <select v-model="newNode.step" class="form-control form-control-sm" required>
                 <option disabled selected value> -- choisis une étape -- </option>
                 <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
             </select>
         </div>
         <div>
             <label>Noeud Parent</label>
-            <select v-model="newNode.parent_node" class="form-control form-control-sm">
+            <select v-model="newNode.parent_node" class="form-control form-control-sm" required>
                 <option disabled selected value> -- choisis un noeud parent -- </option>
+                <option v-if="scenarioNodesFlat.length === 0" :value="-1">Première étape</option>
                 <option v-for="node in scenarioNodesFlat" v-bind:key="node.id" :value="node.id">{{ node.label }}</option>
             </select>
         </div>
-        <button type="button" class="btn btn-dark btn-sm" @click="createNewNode">OK</button>
+        <button type="submit" class="btn btn-dark btn-sm">OK</button>
     </form>
     <h3>Liste des noeuds</h3>
     <table class="table">
@@ -33,6 +42,13 @@
             <tr v-for="node in scenarioNodesFlat" v-bind:key="node.id">
                 <th scope="row">{{ node.label }}</th>
                 <td>{{ node.parent_node_title }}</td>
+                <!-- <td>
+                    <select v-model="node.parent_node" class="form-control form-control-sm">
+                        <option v-for="nodeEntry in scenarioNodesFlat" v-bind:key="nodeEntry.id" :value="nodeEntry.id">{{
+                            nodeEntry.label }}</option>
+                    </select>
+
+                </td> -->
                 <td><button @click="modifyNode(node.id)" type="button" class="btn btn-dark btn-sm">Modifier</button> <button
                         @click="deleteNode(node.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button>
                 </td>
@@ -78,7 +94,7 @@ export default {
             newNode: {
                 parent_node: '',
                 step: '',
-                scenario:''
+                scenario: ''
             },
             stepList: [],
             gameId: this.$route.params.gameId,
@@ -115,6 +131,10 @@ export default {
             if ((!this.newNode.step) || (!this.newNode.parent_node)) {
                 console.log("ça va pas le faire")
             } else {
+                if (this.newNode.parent_node === -1) {
+                    console.log("PREMIERE ETAPE")
+                    this.newNode.parent_node = ''
+                }
                 try {
                     this.newNode.scenario = this.scenarioId
                     axios.post('scenario_node/', this.newNode).then((response) => {
@@ -125,9 +145,10 @@ export default {
                     console.error("Error during form submission:", error);
                 }
             }
+
         },
 
-        deleteNode(nodeId){
+        deleteNode(nodeId) {
             axios.delete('scenario_node/' + nodeId + "/")
                 .then(response => {
                     console.log(response);
@@ -135,11 +156,33 @@ export default {
                 },
                     (error) => { console.log("Error", error) });
         },
+        renameScenario() {
+            axios.put('scenario/' + this.scenarioId + "/", this.scenario)
+                .then(response => {
+                    console.log(response);
+                    this.getData();
+                },
+                    (error) => { console.log("Error", error) });
+        },
+        cancel() {
+            this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
+        },
 
-        getData(){
+        getData() {
             this.getScenarioData()
             this.getStepList()
-        }
+        },
+        modifyNode(nodeId) {
+            console.log(nodeId)
+            // let node = this.scenarioNodesFlat[nodeId]
+            // axios.put('scenario_node/' + nodeId + "/", node)
+            //     .then(response => {
+            //         console.log(response);
+            //         this.getData();
+            //     },
+            //         (error) => { console.log("Error", error) });
+        },
+
 
     },
 
