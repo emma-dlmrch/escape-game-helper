@@ -7,6 +7,7 @@ import UpdateAccount from '../components/UpdateAccount.vue'
 import store from '../store/index.js'
 import StepDetails from '../components/StepDetails.vue'
 import ScenarioDetails from '../components/ScenarioDetails.vue'
+import UpdateNode from '../components/UpdateNode.vue'
 
 const routes = [
     {
@@ -48,6 +49,12 @@ const routes = [
         path: '/games/:gameId/scenario/:scenarioId',
         name: 'ScenarioDetails',
         component: ScenarioDetails,
+        meta: { requiresLogin: true }
+    },
+    { 
+        path: '/games/:gameId/scenario/:scenarioId/node/:nodeId',
+        name: 'UpdateNode',
+        component: UpdateNode,
         meta: { requiresLogin: true }
     },
 ]

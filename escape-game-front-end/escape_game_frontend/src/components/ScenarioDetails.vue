@@ -81,7 +81,7 @@ export default {
     components: {
         TreeView,
         // draggable
-    }, //might need to use computed values for select 
+    },
     data() {
         return {
             items: '',
@@ -132,7 +132,6 @@ export default {
                 console.log("ça va pas le faire")
             } else {
                 if (this.newNode.parent_node === -1) {
-                    console.log("PREMIERE ETAPE")
                     this.newNode.parent_node = ''
                 }
                 try {
@@ -173,7 +172,7 @@ export default {
             this.getStepList()
         },
         modifyNode(nodeId) {
-            console.log(nodeId)
+            this.$router.push({name: 'UpdateNode', params: {gameId: this.gameId, scenarioId: this.scenarioId, nodeId:nodeId}})
             // let node = this.scenarioNodesFlat[nodeId]
             // axios.put('scenario_node/' + nodeId + "/", node)
             //     .then(response => {
