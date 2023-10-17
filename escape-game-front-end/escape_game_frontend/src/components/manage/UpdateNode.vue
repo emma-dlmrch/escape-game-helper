@@ -19,6 +19,7 @@
         </div>
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
     </form>
+    <button @click="goBack" class="btn btn-dark btn-sm">Retour</button>
 </template>
 
 <script>
@@ -81,6 +82,10 @@ export default {
                     this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
                 },
                     (error) => { console.log("Error", error) });
+        },
+
+        goBack(){
+            this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
         },
         getData(){
             this.getScenarioData()

@@ -1,14 +1,14 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import SignUp from '../components/SignUp.vue'
-import LogIn from '../components/LogIn.vue'
-import GameList from '../components/GameList.vue'
-import GameDetails from '../components/GameDetails.vue'
-import UpdateAccount from '../components/UpdateAccount.vue'
+import SignUp from '../components/manage/SignUp.vue'
+import LogIn from '../components/manage/LogIn.vue'
+import GameList from '../components/manage/GameList.vue'
+import GameDetails from '../components/manage/GameDetails.vue'
+import UpdateAccount from '../components/manage/UpdateAccount.vue'
 import store from '../store/index.js'
-import StepDetails from '../components/StepDetails.vue'
-import ScenarioDetails from '../components/ScenarioDetails.vue'
-import UpdateNode from '../components/UpdateNode.vue'
-import CreateNode from '../components/CreateNode.vue'
+import StepDetails from '../components/manage/StepDetails.vue'
+import ScenarioDetails from '../components/manage/ScenarioDetails.vue'
+import UpdateNode from '../components/manage/UpdateNode.vue'
+import CreateNode from '../components/manage/CreateNode.vue'
 
 const routes = [
     {
