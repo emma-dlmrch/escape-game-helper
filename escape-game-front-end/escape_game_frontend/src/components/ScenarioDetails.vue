@@ -9,8 +9,23 @@
         </div>
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
     </form>
-    <h2>Gérer mes noeuds</h2>
-    <h3>Créer un noeud</h3>
+    <h2>Gérer mes noeuds de scénario</h2>
+
+    <div v-if="!scenarioNodesFlat.length">
+    <h3>Quelle sera votre étape d'introduction ?</h3>
+    <form @submit.prevent="createFirstNode">
+        <div class="form-group">
+            <label>Etape</label>
+            <select v-model="newNode.step" class="form-control form-control-sm" required>
+                <option disabled selected value> -- choisis une étape -- </option>
+                <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-dark btn-sm">OK</button>
+    </form>
+</div>
+
+    <!-- <h3>Créer un noeud</h3>
     <form @submit.prevent="createNewNode">
         <div class="form-group">
             <label>Etape</label>
@@ -28,8 +43,8 @@
             </select>
         </div>
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
-    </form>
-    <h3>Liste des noeuds</h3>
+    </form> -->
+    <!-- <h3>Liste des noeuds</h3>
     <table class="table">
         <thead>
             <tr>
@@ -42,31 +57,18 @@
             <tr v-for="node in scenarioNodesFlat" v-bind:key="node.id">
                 <th scope="row">{{ node.label }}</th>
                 <td>{{ node.parent_node_title }}</td>
-                <!-- <td>
-                    <select v-model="node.parent_node" class="form-control form-control-sm">
-                        <option v-for="nodeEntry in scenarioNodesFlat" v-bind:key="nodeEntry.id" :value="nodeEntry.id">{{
-                            nodeEntry.label }}</option>
-                    </select>
-
-                </td> -->
                 <td><button @click="modifyNode(node.id)" type="button" class="btn btn-dark btn-sm">Modifier</button> <button
                         @click="deleteNode(node.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button>
                 </td>
             </tr>
-            <!-- <tr>
-                <th><input type="text" v-model="newNode.step" placeholder="Etape" maxlength="50"></th>
-                <td><input type="text" v-model="newNode.parent" placeholder="Parent" maxlength="50" />
-                </td>
-                <td><button @click="createNewNode" type="button" class="btn btn-dark btn-sm">Créer</button></td>
-            </tr> -->
         </tbody>
-    </table>
+    </table> -->
 
 
-    <h3>Schéma</h3>
+    <!-- <h3>Schéma</h3> -->
     <!-- <draggable v-model="scenarioNodes"> -->
     <div class="tf-tree">
-        <tree-view :data="scenarioNodes"></tree-view>
+        <tree-view :data="scenarioNodes" :gameId="gameId" :scenarioId="scenarioId"></tree-view>
     </div>
     <!-- </draggable> -->
 </template>
@@ -128,12 +130,25 @@ export default {
         },
 
         createNewNode() {
-            if ((!this.newNode.step) || (!this.newNode.parent_node)) {
-                console.log("ça va pas le faire")
-            } else {
+            if (this.newNode.step && this.newNode.parent_node) {
                 if (this.newNode.parent_node === -1) {
                     this.newNode.parent_node = ''
                 }
+                try {
+                    this.newNode.scenario = this.scenarioId
+                    axios.post('scenario_node/', this.newNode).then((response) => {
+                        console.log(response)
+                        this.getData()
+                    });
+                } catch (error) {
+                    console.error("Error during form submission:", error);
+                }
+            }
+
+        },
+        createFirstNode() {
+            if (this.newNode.step) {
+                    this.newNode.parent_node = ''
                 try {
                     this.newNode.scenario = this.scenarioId
                     axios.post('scenario_node/', this.newNode).then((response) => {

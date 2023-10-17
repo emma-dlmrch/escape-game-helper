@@ -1,8 +1,15 @@
 <template>
   <ul>
     <li :key="idx" v-for="(item, idx) in treeData">
-      <span class="tf-nc">{{ item.label }} - <p @click="deleteNode(item.id)">X</p> - M - +</span>
-      <tree-node :treeData="item.children" />
+      <span class="tf-nc">
+        <div>{{ item.label }}</div>
+        <div class="tree-buttons">
+          <div><i @click="createNode(item.id)" class="bi bi-plus-square"></i></div>
+          <div><i @click="updateNode(item.id)" class="bi bi-pencil"></i></div>
+          <div><i @click="deleteNode(item.id)" class="bi bi-trash"></i></div>
+        </div>
+      </span>
+      <tree-node :treeData="item.children" :gameId="gameId" :scenarioId="scenarioId" />
     </li>
   </ul>
 </template>
@@ -13,10 +20,10 @@ import axios from 'axios';
 
 export default {
   name: "TreeNode",
-  props: ["treeData"],
+  props: ["treeData", "gameId", "scenarioId"],
   data() {
     return {
-      modalShow: false
+      // modalShow: false,
     }
   },
   methods: {
@@ -30,6 +37,18 @@ export default {
           (error) => { console.log("Error", error) });
     },
 
+    updateNode(nodeId) {
+      this.$router.push({ name: 'UpdateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, nodeId: nodeId } })
+    },
+
+    createNode(parentNodeId){
+      this.$router.push({ name: 'CreateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, parentNodeId: parentNodeId } })
+    }
   },
+
+
+
+  created() {
+  }
 }
 </script>

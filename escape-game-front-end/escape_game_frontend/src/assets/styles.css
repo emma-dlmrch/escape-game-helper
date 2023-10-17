@@ -1,0 +1,10 @@
+.tree-buttons {
+    display: flex;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.tree-buttons > div {
+    margin-left: 2px
+}

@@ -1,7 +1,7 @@
 <template>
     <div class="tree">
       <ul>
-          <tree-node :treeData="data" />
+          <tree-node :treeData="data" :gameId="gameId" :scenarioId="scenarioId" />
       </ul>
     </div>
   </template>
@@ -10,7 +10,7 @@
   import TreeNode from "./TreeNode.vue";
   
   export default {
-    props: ["data"],
+    props: ["data", "gameId", "scenarioId"],
     components: {
       TreeNode,
     }

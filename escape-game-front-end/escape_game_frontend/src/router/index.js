@@ -8,6 +8,7 @@ import store from '../store/index.js'
 import StepDetails from '../components/StepDetails.vue'
 import ScenarioDetails from '../components/ScenarioDetails.vue'
 import UpdateNode from '../components/UpdateNode.vue'
+import CreateNode from '../components/CreateNode.vue'
 
 const routes = [
     {
@@ -55,6 +56,12 @@ const routes = [
         path: '/games/:gameId/scenario/:scenarioId/node/:nodeId',
         name: 'UpdateNode',
         component: UpdateNode,
+        meta: { requiresLogin: true }
+    },
+    { 
+        path: '/games/:gameId/scenario/:scenarioId/node/new/:parentNodeId',
+        name: 'CreateNode',
+        component: CreateNode,
         meta: { requiresLogin: true }
     },
 ]
