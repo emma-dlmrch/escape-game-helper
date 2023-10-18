@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <router-link to="/login" class="navbar-brand" v-if="!authenticated">Escape Game Helper Project</router-link>
-    <router-link to="/games" class="navbar-brand" v-if="authenticated">Escape Game Helper Project</router-link>
+    <router-link to="/manage/login" class="navbar-brand" v-if="!authenticated">Escape Game Helper Project</router-link>
+    <router-link to="/manage/games" class="navbar-brand" v-if="authenticated">Escape Game Helper Project</router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
