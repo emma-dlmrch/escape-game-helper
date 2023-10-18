@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+// import PlayApp from './PlayApp.vue'
 import store from './store'
 import axios from 'axios'
 import router from './router'
@@ -23,4 +24,7 @@ const app = createApp(App);
 
 // app.use(store).use(router).use(VueBlocksTree,defaultoptions).mount('#app')
 app.use(store).use(router).mount('#app')
+
+// const playApp = createApp(PlayApp);
+// playApp.use(store).use(router).mount('#playApp')
 

@@ -1,17 +1,16 @@
 <template>
-    <!-- <NavBar msg="Navbar" /> -->
-    <!-- <router-view/> -->
+    <NavBar msg="Navbar" />
     <router-view />
 </template>
 
 <script>
 import axios from 'axios';
-// import NavBar from './components/manage/NavBar.vue';
+import NavBar from './NavBar.vue';
 
 export default {
-  name: 'App',
+  name: 'ManageApp',
   components: {
-    // NavBar
+    NavBar
   },
   data(){
         return {

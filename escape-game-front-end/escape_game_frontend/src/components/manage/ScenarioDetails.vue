@@ -70,6 +70,7 @@
     <div class="tf-tree">
         <tree-view :data="scenarioNodes" :gameId="gameId" :scenarioId="scenarioId"></tree-view>
     </div>
+    <!-- <UpdateNOd v-if="isEditingNode" -->
     <!-- </draggable> -->
 </template>
 
