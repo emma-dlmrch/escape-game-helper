@@ -19,21 +19,26 @@
         </div>
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
     </form>
-    <button @click="goBack" class="btn btn-dark btn-sm">Retour</button>
+    <!-- <button @click="goBack" class="btn btn-dark btn-sm">Retour</button> -->
 </template>
 
 <script>
 import axios from 'axios';
 export default {
     name: 'UpdateNode',
+    props: ["nodeId", "gameId", "scenarioId"],
+    emits: ['node-updated'],
+    // mounted(){
+    //     this.showModal()
+    // },
     components: {
 
     },
     data() {
         return {
-            nodeId: this.$route.params.nodeId,
-            scenarioId: this.$route.params.scenarioId,
-            gameId: this.$route.params.gameId,
+            // nodeId: this.$route.params.nodeId,
+            // scenarioId: this.$route.params.scenarioId,
+            // gameId: this.$route.params.gameId,
             stepList: [],
             allNodes: [],
             otherNodes: [],
@@ -79,7 +84,8 @@ export default {
             axios.put('scenario_node/' + this.nodeId + "/", this.node)
                 .then(response => {
                     console.log(response);
-                    this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+                    // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+                    this.$emit('node-updated')
                 },
                     (error) => { console.log("Error", error) });
         },
@@ -91,7 +97,11 @@ export default {
             this.getScenarioData()
             this.getNodeData()
             this.getStepList()
-        }
+        },
+        // showModal() {
+        //     this.$modal.show("modal")
+        //     // $('#modal').modal('show')
+        // }
 
     },
 

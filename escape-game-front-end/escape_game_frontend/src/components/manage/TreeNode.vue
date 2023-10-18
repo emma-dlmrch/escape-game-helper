@@ -9,21 +9,21 @@
           <div><i @click="deleteNode(item.id)" class="bi bi-trash"></i></div>
         </div>
       </span>
-      <tree-node :treeData="item.children" :gameId="gameId" :scenarioId="scenarioId" />
+      <tree-node :treeData="item.children" :item="item"
+       @create-node="transmitCreateNodeEvent" @update-node="transmitUpdateNodeEvent"/>
     </li>
   </ul>
 </template>
 
 <script>
 import axios from 'axios';
-// import LogIn from './LogIn.vue';
 
 export default {
   name: "TreeNode",
-  props: ["treeData", "gameId", "scenarioId"],
+  props: ["treeData"],
+  emits: ['create-node','update-node'],
   data() {
     return {
-      // modalShow: false,
     }
   },
   methods: {
@@ -36,14 +36,22 @@ export default {
         },
           (error) => { console.log("Error", error) });
     },
-
-    updateNode(nodeId) {
-      this.$router.push({ name: 'UpdateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, nodeId: nodeId } })
+    createNode(parentNodeId){
+      // this.$router.push({ name: 'CreateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, parentNodeId: parentNodeId } })
+      this.$emit('create-node', parentNodeId)
+    },
+    transmitCreateNodeEvent(parentNodeId){
+      this.$emit('create-node', parentNodeId)
     },
 
-    createNode(parentNodeId){
-      this.$router.push({ name: 'CreateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, parentNodeId: parentNodeId } })
-    }
+    updateNode(nodeId) {
+      // this.$router.push({ name: 'UpdateNode', params: { gameId: this.gameId, scenarioId: this.scenarioId, nodeId: nodeId } })
+      this.$emit('update-node', nodeId)
+    },
+    transmitUpdateNodeEvent(nodeId){
+      this.$emit('update-node', nodeId)
+    },
+    
   },
 
 

@@ -25,65 +25,26 @@
     </form>
 </div>
 
-    <!-- <h3>Créer un noeud</h3>
-    <form @submit.prevent="createNewNode">
-        <div class="form-group">
-            <label>Etape</label>
-            <select v-model="newNode.step" class="form-control form-control-sm" required>
-                <option disabled selected value> -- choisis une étape -- </option>
-                <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
-            </select>
-        </div>
-        <div>
-            <label>Noeud Parent</label>
-            <select v-model="newNode.parent_node" class="form-control form-control-sm" required>
-                <option disabled selected value> -- choisis un noeud parent -- </option>
-                <option v-if="scenarioNodesFlat.length === 0" :value="-1">Première étape</option>
-                <option v-for="node in scenarioNodesFlat" v-bind:key="node.id" :value="node.id">{{ node.label }}</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-dark btn-sm">OK</button>
-    </form> -->
-    <!-- <h3>Liste des noeuds</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Mes noeuds</th>
-                <th scope="col">Noeud parent</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="node in scenarioNodesFlat" v-bind:key="node.id">
-                <th scope="row">{{ node.label }}</th>
-                <td>{{ node.parent_node_title }}</td>
-                <td><button @click="modifyNode(node.id)" type="button" class="btn btn-dark btn-sm">Modifier</button> <button
-                        @click="deleteNode(node.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button>
-                </td>
-            </tr>
-        </tbody>
-    </table> -->
-
-
-    <!-- <h3>Schéma</h3> -->
-    <!-- <draggable v-model="scenarioNodes"> -->
     <div class="tf-tree">
-        <tree-view :data="scenarioNodes" :gameId="gameId" :scenarioId="scenarioId"></tree-view>
+        <tree-view :data="scenarioNodes" @create-node="receiveCreateNodeEvent" @update-node="receiveUpdateNodeEvent"></tree-view>
     </div>
-    <!-- <UpdateNOd v-if="isEditingNode" -->
-    <!-- </draggable> -->
+    <create-node :parentNodeId="parentNodeId" :gameId="gameId" :scenarioId="scenarioId" v-if="isCreationFormEnabled" @node-created="disableCreationForm"></create-node>
+    <update-node :nodeId="nodeToUpdate" :gameId="gameId" :scenarioId="scenarioId" v-if="isUpdateFormEnabled" @node-updated="disableUpdateForm"></update-node>
+
 </template>
 
 <script>
 import axios from 'axios'
 import TreeView from './TreeView.vue'
-// import draggable from 'vuedraggable'
+import CreateNode from './CreateNode.vue'
+import UpdateNode from './UpdateNode.vue'
 
 export default {
     name: 'ScenarioDetails',
     components: {
         TreeView,
-        // draggable
+        CreateNode,
+        UpdateNode
     },
     data() {
         return {
@@ -101,6 +62,10 @@ export default {
             },
             stepList: [],
             gameId: this.$route.params.gameId,
+            parentNodeId:'',
+            nodeToUpdate:'',
+            isCreationFormEnabled: false,
+            isUpdateFormEnabled: false
         }
 
     },
@@ -197,7 +162,24 @@ export default {
             //     },
             //         (error) => { console.log("Error", error) });
         },
+        receiveCreateNodeEvent(parentNodeId){
+            this.parentNodeId = parentNodeId
+            this.isCreationFormEnabled = true
 
+        },
+        receiveUpdateNodeEvent(nodeId){
+            this.nodeToUpdate = nodeId
+            this.isUpdateFormEnabled = true
+
+        },
+        disableCreationForm(){
+            this.isCreationFormEnabled = false
+            this.getData()
+        },
+        disableUpdateForm(){
+            this.isUpdateFormEnabled = false
+            this.getData()
+        }
 
     },
 

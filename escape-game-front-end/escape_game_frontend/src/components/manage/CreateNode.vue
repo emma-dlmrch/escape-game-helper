@@ -18,11 +18,10 @@ import axios from 'axios'
 
 export default {
     name: 'CreateNode',
+    props: ["parentNodeId", "gameId", "scenarioId"],
+    emits: ['node-created'],
     data() {
         return {
-            parentNodeId: this.$route.params.parentNodeId,
-            gameId: this.$route.params.gameId,
-            scenarioId: this.$route.params.scenarioId,
             stepList: [],
             parentNode: {
                 stepLabel: '',
@@ -61,7 +60,8 @@ export default {
                 this.newNode.parent_node = this.parentNodeId
                 axios.post('scenario_node/', this.newNode).then((response) => {
                     console.log(response)
-                    this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+                    // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+                    this.$emit('node-created')
                 });
             } catch (error) {
                 console.error("Error during form submission:", error);
