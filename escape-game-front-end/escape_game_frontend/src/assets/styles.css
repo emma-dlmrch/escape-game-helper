@@ -8,3 +8,8 @@
 .tree-buttons > div {
     margin-left: 2px
 }
+
+.modal {
+    display: block;
+    background-color: rgba(0.5, 0.5, 0.5, 0.4);
+}

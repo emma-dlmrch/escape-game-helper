@@ -1,25 +1,42 @@
 <template>
-    <h2>Modifier un noeud</h2>
+    <div class="modal fade show background-modal" @click="goBack">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLiveLabel">Modifier un noeud</h5>
+                <button type="button" class="close-btn close" @click="goBack" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form @submit.prevent="updateNode">
+            <div class="modal-body">
 
-    <form @submit.prevent="updateNode">
-        <div class="form-group">
-            <label>Etape</label>
-            <select v-model="node.step" class="form-control form-control-sm" required>
-                <option disabled selected value> -- choisis une étape -- </option>
-                <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
-            </select>
+                    <div class="form-group">
+                        <label>Etape</label>
+                        <select v-model="node.step" class="form-control form-control-sm" required>
+                            <option disabled selected value> -- choisis une étape -- </option>
+                            <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Noeud Parent</label>
+                        <select v-model="node.parent_node" class="form-control form-control-sm" required>
+                            <option disabled selected value> -- choisis un noeud parent -- </option>
+                            <!-- <option v-if="scenarioNodesFlat.length === 0" :value="-1">Première étape</option> -->
+                            <option v-for="node in otherNodes" v-bind:key="node.id" :value="node.id">{{ node.label }}</option>
+                        </select>
+                    </div>
+                    <!-- <button @click="goBack" class="btn btn-dark btn-sm">Retour</button> -->
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Close</button>
+                    <button type="submit" class="btn btn-dark btn-sm">Save changes</button>
+                </div>
+            </form>
+            </div>
         </div>
-        <div>
-            <label>Noeud Parent</label>
-            <select v-model="node.parent_node" class="form-control form-control-sm" required>
-                <option disabled selected value> -- choisis un noeud parent -- </option>
-                <!-- <option v-if="scenarioNodesFlat.length === 0" :value="-1">Première étape</option> -->
-                <option v-for="node in otherNodes" v-bind:key="node.id" :value="node.id">{{ node.label }}</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-dark btn-sm">OK</button>
-    </form>
-    <!-- <button @click="goBack" class="btn btn-dark btn-sm">Retour</button> -->
+    </div>
 </template>
 
 <script>
@@ -90,8 +107,11 @@ export default {
                     (error) => { console.log("Error", error) });
         },
 
-        goBack(){
-            this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+        goBack(e){
+            console.log(e)
+            if(e.target.className.includes("background-modal")||e.target.className.includes("close-btn")){
+                this.$emit('node-updated');
+            }
         },
         getData(){
             this.getScenarioData()
