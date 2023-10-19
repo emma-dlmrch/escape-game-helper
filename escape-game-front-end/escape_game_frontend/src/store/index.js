@@ -1,5 +1,4 @@
 import { createStore } from "vuex"
-import axios from "axios"
 
 export default createStore({
     state: {
@@ -45,16 +44,6 @@ export default createStore({
         // }
     },
     actions : {
-        getGameDetails(state, gameId){
-            axios.get("game/" + gameId)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-
-            })
-        },
     },
     modules: {
         
