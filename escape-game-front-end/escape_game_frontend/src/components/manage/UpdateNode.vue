@@ -96,8 +96,6 @@ export default {
         },
 
         goBack(e){
-            console.log(e.target.className.includes("close-btn"))
-
             if(e.target.className.includes("background-modal")||e.target.className.includes("close-btn")){
                 this.$emit('node-updated');
             }

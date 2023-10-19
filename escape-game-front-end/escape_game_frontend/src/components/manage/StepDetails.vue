@@ -3,7 +3,7 @@
     <form>
         <div class="form-group">
             <label>Nom de l'étape</label>
-            <input type="text" class="form-control" v-model="step.title">
+            <input type="text" class="form-control" v-model.lazy="step.title">
         </div>
         <div class="form-group">
             <label>Texte</label>
@@ -120,6 +120,10 @@ export default {
                     this.getStepData();
                 },
                     (error) => { console.log("Error", error) });
+        },
+        modifyClue(clueId){
+            console.log(clueId)
+            this.$router.push({ name: 'UpdateClue', params: { gameId: this.gameId, stepId: this.stepId, clueId:clueId } })
         }
 
 

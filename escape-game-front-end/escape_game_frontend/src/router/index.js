@@ -15,6 +15,7 @@ const routes = [
             {
                 path: '/login',
                 name: 'LogIn',
+                // alias: ['/games', '/'],
                 component: () => import("../components/manage/LogIn.vue")
             },
             { 
@@ -24,9 +25,9 @@ const routes = [
                 meta: { requiresLogin: true }
             },
             {
-                path: 'games',
+                path: '/games',
                 name: 'GameList',
-                // alias: ['/games', '/'],
+                alias: ['/games', '/',''], //pour l'instant pas de page d'accueil
                 component: () => import("../components/manage/GameList.vue"),
                 meta: { requiresLogin: true }
             },
@@ -40,6 +41,12 @@ const routes = [
                 path: '/games/:gameId/step/:stepId',
                 name: 'StepDetails',
                 component: () => import("../components/manage/StepDetails.vue"),
+                meta: { requiresLogin: true }
+            },
+            { 
+                path: '/games/:gameId/step/:stepId/clue/:clueId',
+                name: 'UpdateClue',
+                component: () => import("../components/manage/UpdateClue.vue"),
                 meta: { requiresLogin: true }
             },
             { 
@@ -91,18 +98,3 @@ router.beforeEach((to, from, next) => {
         next()
     }
 })
-
-
-// const mainRoutes = [
-//     {
-//         path: '/play',
-//         name: 'PlayApp',
-//          component: PlayApp
-//     },
-// ]
-
-// const mainRouter = createRouter({
-//     history: createWebHistory(process.env.BASE_URL),
-//     mainRoutes
-// })
-// export default mainRouter

@@ -48,7 +48,8 @@ export default {
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token
                     const userId = jwt_decode(token).user_id
                     this.$store.commit('setUserId', userId)
-                    this.$router.push('games')
+                    this.$router.push({ name: 'GameList' })
+                    
                 })
                 .catch(error => {
                     console.log(error)

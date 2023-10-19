@@ -10,7 +10,7 @@ from .serializers import (
     ClueListSerializer, ClueDetailSerializer, ScenarioNodeTreeSerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
-from .permissions import IsGameAuthor
+from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
 import logging
 # Create your views here.
 
@@ -69,6 +69,8 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     
 class StepViewSet(MultipleSerializerMixin,ModelViewSet):
 
+    permission_classes = [IsStepAuthor]
+
     serializer_class = StepListSerializer
 
     detail_serializer_class = StepDetailSerializer
@@ -80,6 +82,8 @@ class StepViewSet(MultipleSerializerMixin,ModelViewSet):
     
 class ScenarioViewSet(MultipleSerializerMixin,ModelViewSet):
 
+    permission_classes = [IsScenarioAuthor]
+
     serializer_class = ScenarioListSerializer
 
     detail_serializer_class = ScenarioDetailSerializer
@@ -90,6 +94,8 @@ class ScenarioViewSet(MultipleSerializerMixin,ModelViewSet):
         return queryset
     
 class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
+
+    permission_classes = [IsScenarioNodeAuthor]
 
     serializer_class = ScenarioNodeListSerializer
 
@@ -103,6 +109,8 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
         return queryset
     
 class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
+
+    permission_classes = [IsClueAuthor]
 
     serializer_class = ClueListSerializer
 

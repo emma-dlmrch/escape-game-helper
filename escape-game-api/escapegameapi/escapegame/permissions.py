@@ -7,3 +7,35 @@ class IsGameAuthor(BasePermission):
     def has_object_permission(self, request, view, game):
         
         return game.author == request.user
+    
+class IsScenarioAuthor(BasePermission):
+    """
+    Custom permission to only allow owners to edit resource.
+    """
+    def has_object_permission(self, request, view, scenario):
+        
+        return scenario.game.author == request.user
+    
+class IsStepAuthor(BasePermission):
+    """
+    Custom permission to only allow owners to edit resource.
+    """
+    def has_object_permission(self, request, view, step):
+        
+        return step.game.author == request.user
+    
+class IsClueAuthor(BasePermission):
+    """
+    Custom permission to only allow owners to edit resource.
+    """
+    def has_object_permission(self, request, view, clue):
+        
+        return clue.step.game.author == request.user
+    
+class IsScenarioNodeAuthor(BasePermission):
+    """
+    Custom permission to only allow owners to edit resource.
+    """
+    def has_object_permission(self, request, view, node):
+        
+        return node.scenario.game.author == request.user

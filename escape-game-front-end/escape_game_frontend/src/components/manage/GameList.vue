@@ -93,7 +93,6 @@ export default {
   },
 
   created() {
-    //fetch tasks on page load
     this.getData();
   },
 };
