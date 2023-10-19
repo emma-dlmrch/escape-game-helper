@@ -3,10 +3,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLiveLabel">Modifier un noeud</h5>
-                <button type="button" class="close-btn close" @click="goBack" aria-label="Close">
-                <span aria-hidden="true">×</span>
-                </button>
+                <h5 class="modal-title">Modifier un noeud</h5>
+                <button type="button" class="btn-close close-btn" aria-label="Close" @click="goBack"></button>
             </div>
             <form @submit.prevent="updateNode">
             <div class="modal-body">
@@ -22,16 +20,13 @@
                         <label>Noeud Parent</label>
                         <select v-model="node.parent_node" class="form-control form-control-sm" required>
                             <option disabled selected value> -- choisis un noeud parent -- </option>
-                            <!-- <option v-if="scenarioNodesFlat.length === 0" :value="-1">Première étape</option> -->
                             <option v-for="node in otherNodes" v-bind:key="node.id" :value="node.id">{{ node.label }}</option>
                         </select>
-                    </div>
-                    <!-- <button @click="goBack" class="btn btn-dark btn-sm">Retour</button> -->
-                    
+                    </div>                    
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Close</button>
-                    <button type="submit" class="btn btn-dark btn-sm">Save changes</button>
+                    <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Fermer</button>
+                    <button type="submit" class="btn btn-dark btn-sm">Valider</button>
                 </div>
             </form>
             </div>
@@ -45,17 +40,11 @@ export default {
     name: 'UpdateNode',
     props: ["nodeId", "gameId", "scenarioId"],
     emits: ['node-updated'],
-    // mounted(){
-    //     this.showModal()
-    // },
     components: {
 
     },
     data() {
         return {
-            // nodeId: this.$route.params.nodeId,
-            // scenarioId: this.$route.params.scenarioId,
-            // gameId: this.$route.params.gameId,
             stepList: [],
             allNodes: [],
             otherNodes: [],
@@ -101,14 +90,14 @@ export default {
             axios.put('scenario_node/' + this.nodeId + "/", this.node)
                 .then(response => {
                     console.log(response);
-                    // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
                     this.$emit('node-updated')
                 },
                     (error) => { console.log("Error", error) });
         },
 
         goBack(e){
-            // console.log(e)
+            console.log(e.target.className.includes("close-btn"))
+
             if(e.target.className.includes("background-modal")||e.target.className.includes("close-btn")){
                 this.$emit('node-updated');
             }
@@ -118,11 +107,6 @@ export default {
             this.getNodeData()
             this.getStepList()
         },
-        // showModal() {
-        //     this.$modal.show("modal")
-        //     // $('#modal').modal('show')
-        // }
-
     },
 
 

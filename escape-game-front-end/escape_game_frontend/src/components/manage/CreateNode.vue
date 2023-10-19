@@ -3,10 +3,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLiveLabel">Créer un noeud</h5>
-                    <button type="button" class="close-btn close" @click="goBack" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <h5 class="modal-title">Créer un noeud</h5>
+                    <button type="button" class="btn-close close-btn" aria-label="Close" @click="goBack"></button>
                 </div>
                 <form @submit.prevent="createNewNode">
                     <div class="modal-body">
@@ -23,8 +21,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Close</button>
-                        <button type="submit" class="btn btn-dark btn-sm">Save changes</button>
+                        <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Fermer</button>
+                        <button type="submit" class="btn btn-dark btn-sm">Valider</button>
                     </div>
                 </form>
             </div>
@@ -87,7 +85,6 @@ export default {
             }
         },
         goBack(e){
-            // this.$emit('node-created')
             if(e.target.className.includes("background-modal")||e.target.className.includes("close-btn")){
                 this.$emit('node-created');
             }

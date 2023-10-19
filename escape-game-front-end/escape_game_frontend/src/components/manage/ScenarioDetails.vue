@@ -26,10 +26,11 @@
 </div>
 
     <div class="tf-tree">
-        <tree-view :data="scenarioNodes" @create-node="receiveCreateNodeEvent" @update-node="receiveUpdateNodeEvent"></tree-view>
+        <tree-view :data="scenarioNodes" @create-node="receiveCreateNodeEvent" @update-node="receiveUpdateNodeEvent" @delete-node="receiveDeleteNodeEvent"></tree-view>
     </div>
     <create-node :parentNodeId="parentNodeId" :gameId="gameId" :scenarioId="scenarioId" v-if="isCreationFormEnabled" @node-created="disableCreationForm"></create-node>
     <update-node :nodeId="nodeToUpdate" :gameId="gameId" :scenarioId="scenarioId" v-if="isUpdateFormEnabled" @node-updated="disableUpdateForm"></update-node>
+    <delete-node :nodeId="nodeToDelete" v-if="isDeleteModalEnabled" @node-deleted="disableDeleteModal"></delete-node>
 
 </template>
 
@@ -38,13 +39,15 @@ import axios from 'axios'
 import TreeView from './TreeView.vue'
 import CreateNode from './CreateNode.vue'
 import UpdateNode from './UpdateNode.vue'
+import DeleteNode from './DeleteNode.vue'
 
 export default {
     name: 'ScenarioDetails',
     components: {
         TreeView,
         CreateNode,
-        UpdateNode
+        UpdateNode,
+        DeleteNode
     },
     data() {
         return {
@@ -64,8 +67,10 @@ export default {
             gameId: this.$route.params.gameId,
             parentNodeId:'',
             nodeToUpdate:'',
+            nodeToDelete:'',
             isCreationFormEnabled: false,
-            isUpdateFormEnabled: false
+            isUpdateFormEnabled: false,
+            isDeleteModalEnabled: false
         }
 
     },
@@ -95,23 +100,6 @@ export default {
                 )
         },
 
-        createNewNode() {
-            if (this.newNode.step && this.newNode.parent_node) {
-                if (this.newNode.parent_node === -1) {
-                    this.newNode.parent_node = ''
-                }
-                try {
-                    this.newNode.scenario = this.scenarioId
-                    axios.post('scenario_node/', this.newNode).then((response) => {
-                        console.log(response)
-                        this.getData()
-                    });
-                } catch (error) {
-                    console.error("Error during form submission:", error);
-                }
-            }
-
-        },
         createFirstNode() {
             if (this.newNode.step) {
                     this.newNode.parent_node = ''
@@ -126,15 +114,6 @@ export default {
                 }
             }
 
-        },
-
-        deleteNode(nodeId) {
-            axios.delete('scenario_node/' + nodeId + "/")
-                .then(response => {
-                    console.log(response);
-                    this.getData();
-                },
-                    (error) => { console.log("Error", error) });
         },
         renameScenario() {
             axios.put('scenario/' + this.scenarioId + "/", this.scenario)
@@ -152,16 +131,6 @@ export default {
             this.getScenarioData()
             this.getStepList()
         },
-        modifyNode(nodeId) {
-            this.$router.push({name: 'UpdateNode', params: {gameId: this.gameId, scenarioId: this.scenarioId, nodeId:nodeId}})
-            // let node = this.scenarioNodesFlat[nodeId]
-            // axios.put('scenario_node/' + nodeId + "/", node)
-            //     .then(response => {
-            //         console.log(response);
-            //         this.getData();
-            //     },
-            //         (error) => { console.log("Error", error) });
-        },
         receiveCreateNodeEvent(parentNodeId){
             this.parentNodeId = parentNodeId
             this.isCreationFormEnabled = true
@@ -172,6 +141,11 @@ export default {
             this.isUpdateFormEnabled = true
 
         },
+        receiveDeleteNodeEvent(nodeId){
+            this.nodeToDelete = nodeId
+            this.isDeleteModalEnabled = true
+
+        },
         disableCreationForm(){
             this.isCreationFormEnabled = false
             this.getData()
@@ -179,7 +153,11 @@ export default {
         disableUpdateForm(){
             this.isUpdateFormEnabled = false
             this.getData()
-        }
+        },
+        disableDeleteModal(){
+            this.isDeleteModalEnabled = false
+            this.getData()
+        },
 
     },
 
@@ -190,9 +168,3 @@ export default {
 
 
 </script>
-
-<!-- IMPLEMENT
-https://www.cssscript.com/semantic-hierarchy-tree-treeflex/
-or 
-https://www.cssscript.com/clean-tree-diagram/
- -->

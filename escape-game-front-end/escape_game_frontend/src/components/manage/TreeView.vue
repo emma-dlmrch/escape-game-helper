@@ -1,8 +1,7 @@
 <template>
     <div class="tree">
       <ul>
-          <!-- <tree-node :treeData="data" :gameId="gameId" :scenarioId="scenarioId" @create-new-node="transmitCreateNodeEvent"/> -->
-          <tree-node :treeData="data" @create-node="transmitCreateNodeEvent" @update-node="transmitUpdateNodeEvent"/>
+          <tree-node :treeData="data" @create-node="transmitCreateNodeEvent" @update-node="transmitUpdateNodeEvent" @delete-node="transmitDeleteNodeEvent"/>
 
       </ul>
     </div>
@@ -13,7 +12,7 @@
   
   export default {
     props: ["data"],
-    emits: ['create-node', 'update-node'],
+    emits: ['create-node', 'update-node', 'delete-node'],
     components: {
       TreeNode,
     },
@@ -23,6 +22,9 @@
       },
       transmitUpdateNodeEvent(nodeId){
         this.$emit('update-node', nodeId)
+      },
+      transmitDeleteNodeEvent(nodeId){
+        this.$emit('delete-node', nodeId)
       },
     }
   };
