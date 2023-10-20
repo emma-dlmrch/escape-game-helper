@@ -1,5 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from .serializers import (
@@ -107,6 +109,17 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
         queryset = ScenarioNode.objects.filter(scenario__game__author=self.request.user)
         # queryset = ScenarioNode.objects.all()
         return queryset
+
+    @action(detail=False, methods=['post'], url_path="answer/(?P<node_id>\d+)", url_name="answer")
+    def check_answer(self, request, node_id):
+        queryset = ScenarioNode.objects.filter(id=node_id).get()
+        answer = queryset.step.answer
+        proposition = request.data.get("answer")
+        if proposition == answer:
+            return Response(data={'message':True})
+        else:
+            return Response(data={'message':False})
+
     
 class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
 
@@ -120,4 +133,7 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         
         queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset
+    
+
+
     
