@@ -14,13 +14,18 @@
     <div v-for="clue in clues" v-bind:key="clue.id">
         <button class="btn btn-dark" @click="showClue(clue.id)">Indice caché</button>
     </div>
+    <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
 </template>
 
 <script>
 import axios from 'axios';
+import ClueModal from './ClueModal.vue';
 
 export default {
     name:'GameHomepage',
+    components: {
+        ClueModal
+    },
     data(){
         return {
             step: {
@@ -29,6 +34,9 @@ export default {
             },
             answer:'',
             clues: [],
+            isClueModalEnabled: false,
+            selectedClueId: ''
+
         }
     },
     methods: {
@@ -49,8 +57,13 @@ export default {
         },
 
         showClue(clueId){
-            console.log("Nous montrerons l'indice : " + clueId)
-        }
+            this.selectedClueId = clueId
+            this.isClueModalEnabled = true
+        },
+
+        disableClueModal(){
+            this.isClueModalEnabled = false
+        },
     },
     created(){
         this.getStepData()
