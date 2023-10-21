@@ -1,8 +1,9 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
 from authentication.models import User
 
 from .models import Scenario, Game, ScenarioNode, Clue, Step
+import logging
 
 #ToDO: Implement unit tests
 #Todo: remove scenarios, useless for game list
@@ -19,6 +20,12 @@ class GameListSerializer(ModelSerializer):
         queryset = instance.scenarios.all()
         serializer = ScenarioListSerializer(queryset, many=True)
         return serializer.data
+
+    def validate(self, data):
+        user = self.context['request'].user
+        if data['author'].id !=  user.id:
+            raise ValidationError('Creation not allowed: User Id not consistent with requester')
+        return data
 
 
 class GameDetailSerializer(ModelSerializer):
@@ -52,6 +59,12 @@ class StepListSerializer(ModelSerializer):
         model = Step
         fields = ['id', 'game', 'title']
 
+    def validate(self, data):
+        user = self.context['request'].user
+        if data['game'].author.id !=  user.id:
+            raise ValidationError('Creation not allowed: game not owned by requester')
+        return data
+
 class StepDetailSerializer(ModelSerializer):
     
     clues = serializers.SerializerMethodField()
@@ -71,6 +84,13 @@ class ScenarioListSerializer(ModelSerializer):
     class Meta:
         model = Scenario
         fields = ['id', 'name', 'game']
+    
+    def validate(self, data):
+
+        user = self.context['request'].user
+        if data['game'].author.id !=  user.id:
+            raise ValidationError('Creation not allowed: game not owned by requester')
+        return data
     
 
 
@@ -92,6 +112,7 @@ class ScenarioDetailSerializer(ModelSerializer):
         queryset = instance.scenario_nodes.all()
         serializer = ScenarioNodeListSerializer(queryset, many=True)
         return serializer.data
+    
 
 
 class ScenarioNodeListSerializer(ModelSerializer):
@@ -113,6 +134,17 @@ class ScenarioNodeListSerializer(ModelSerializer):
             parent_node = ScenarioNode.objects.get(id=instance.parent_node.id)
             return parent_node.step.title
         return 'root'
+    
+    def validate(self, data):
+
+        user = self.context['request'].user
+        if data['step'].game.author.id !=  user.id:
+            raise ValidationError('Creation not allowed: game not owned by requester')
+        # now check that there is no first node already
+        if data['parent_node'] == None:
+            if ScenarioNode.objects.filter(scenario = data['scenario']).filter(parent_node = None).count() > 0:
+                raise ValidationError('There is already a root node for this scenario')
+        return data
 
 #test a serializer that calls itself -> OK, now how to send this with first node ?    
 class ScenarioNodeTreeSerializer(ModelSerializer):
@@ -158,6 +190,13 @@ class ClueListSerializer(ModelSerializer):
     class Meta:
         model = Clue
         fields = ['id','step', 'title', 'text']
+
+    def validate(self, data):
+
+        user = self.context['request'].user
+        if data['step'].game.author.id !=  user.id:
+            raise ValidationError('Creation not allowed: game not owned by requester')
+        return data
 
 class ClueDetailSerializer(ModelSerializer):
 

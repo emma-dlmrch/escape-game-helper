@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+import logging
 
 class IsGameAuthor(BasePermission):
     """
@@ -6,15 +7,16 @@ class IsGameAuthor(BasePermission):
     """
     def has_object_permission(self, request, view, game):
         
-        return game.author == request.user
+        return game.author.id == request.user.id
     
 class IsScenarioAuthor(BasePermission):
     """
     Custom permission to only allow owners to edit resource.
     """
+
     def has_object_permission(self, request, view, scenario):
         
-        return scenario.game.author == request.user
+        return scenario.game.author.id == request.user.id
     
 class IsStepAuthor(BasePermission):
     """
@@ -22,7 +24,7 @@ class IsStepAuthor(BasePermission):
     """
     def has_object_permission(self, request, view, step):
         
-        return step.game.author == request.user
+        return step.game.author.id == request.user.id
     
 class IsClueAuthor(BasePermission):
     """
@@ -30,12 +32,12 @@ class IsClueAuthor(BasePermission):
     """
     def has_object_permission(self, request, view, clue):
         
-        return clue.step.game.author == request.user
+        return clue.step.game.author.id == request.user.id
     
 class IsScenarioNodeAuthor(BasePermission):
     """
     Custom permission to only allow owners to edit resource.
     """
     def has_object_permission(self, request, view, node):
-        
-        return node.scenario.game.author == request.user
+
+        return node.scenario.game.author.id == request.user.id
