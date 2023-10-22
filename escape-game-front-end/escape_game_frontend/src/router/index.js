@@ -74,9 +74,23 @@ const routes = [
         component: () => import('../components/play/PlayApp.vue'),
         children: [
             { 
-                path: ':gameId',
+                path: '/go',
                 name: 'GameHomepage',
                 component: () => import("../components/play/GameHomepage.vue"),
+            },
+            { 
+                path: '/scenario/:scenarioId',
+                name: 'ScenarioPage',
+                component: () => import("../components/play/ScenarioPage.vue"),
+                children: [
+
+                ]
+            },
+            { 
+                path: '/step/:scenarioNodeId',
+                name: 'StepPage',
+                props: true,
+                component: () => import("../components/play/StepPage.vue"),
             },
         ]
     }

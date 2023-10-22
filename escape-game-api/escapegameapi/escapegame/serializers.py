@@ -146,7 +146,7 @@ class ScenarioNodeListSerializer(ModelSerializer):
                 raise ValidationError('There is already a root node for this scenario')
         return data
 
-#test a serializer that calls itself -> OK, now how to send this with first node ?    
+#test a serializer that calls itself    
 class ScenarioNodeTreeSerializer(ModelSerializer):
     #step_title = serializers.SerializerMethodField()
     #child_nodes = serializers.SerializerMethodField()
@@ -203,3 +203,42 @@ class ClueDetailSerializer(ModelSerializer):
     class Meta:
         model = Clue
         fields = ['id','step', 'title', 'text']
+
+
+class ScenarioPlaySerializer(ModelSerializer):
+
+    first_node = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Scenario
+        fields = ['id', 'name', 'game','first_node']
+
+    def get_first_node(self, instance):
+        queryset = instance.scenario_nodes.filter(parent_node = None)
+        if len(queryset) == 0:
+            raise ValidationError('no first node was defined')
+        serializer = ScenarioNodeListSerializer(queryset[0], many=False)
+        return serializer.data
+    
+class StepPlaySerializer(ModelSerializer):
+    
+    class Meta:
+        model = Step
+        fields = ['id', 'game', 'title', 'text', 'clues']
+
+    def get_clues(self, instance):
+        queryset = instance.clues.all()
+        serializer = ClueListSerializer(queryset, many=True)
+        return serializer.data
+    
+class ScenarioNodePlaySerializer(ModelSerializer):
+
+    label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ScenarioNode
+        fields = ['id','scenario', 'step', 'label']
+
+    def get_label(self, instance):
+        return instance.step.title
+    

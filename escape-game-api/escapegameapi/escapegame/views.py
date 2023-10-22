@@ -9,7 +9,7 @@ from .serializers import (
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer, ScenarioNodeTreeSerializer
+    ClueListSerializer, ClueDetailSerializer, ScenarioNodeTreeSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
@@ -110,16 +110,6 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
         # queryset = ScenarioNode.objects.all()
         return queryset
 
-    @action(detail=False, methods=['post'], url_path="answer/(?P<node_id>\d+)", url_name="answer")
-    def check_answer(self, request, node_id):
-        queryset = ScenarioNode.objects.filter(id=node_id).get()
-        answer = queryset.step.answer
-        proposition = request.data.get("answer")
-        if proposition == answer:
-            return Response(data={'message':True})
-        else:
-            return Response(data={'message':False})
-
     
 class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
 
@@ -137,3 +127,60 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
 
 
     
+class GamePlayViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = GameListSerializer
+
+    def get_queryset(self):
+        
+        queryset = Game.objects.all()
+        return queryset
+    
+class ScenarioPlayViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = ScenarioPlaySerializer
+
+    def get_queryset(self):
+        
+        queryset = Scenario.objects.all()
+        return queryset
+    
+class StepPlayViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = StepPlaySerializer
+
+    def get_queryset(self):
+        
+        queryset = Step.objects.all()
+        return queryset
+
+class ScenarioNodePlayViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = ScenarioNodePlaySerializer
+
+    def get_queryset(self):
+        
+        queryset = ScenarioNode.objects.all()
+        return queryset
+    
+    @action(detail=False, methods=['post'], url_path="answer/(?P<node_id>\d+)", url_name="answer")
+    def check_answer(self, request, node_id):
+        queryset = ScenarioNode.objects.filter(id=node_id).get()
+        answer = queryset.step.answer
+        proposition = request.data.get("answer")
+        if proposition == answer:
+            # return Response(data={'message':True})
+            next_nodes_query = ScenarioNode.objects.filter(parent_node=node_id)
+            serializer = ScenarioNodePlaySerializer(next_nodes_query, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(data={'message':False})
+    
+class CluePlayViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = ClueDetailSerializer
+
+    def get_queryset(self):
+        
+        queryset = Clue.objects.all()
+        return queryset

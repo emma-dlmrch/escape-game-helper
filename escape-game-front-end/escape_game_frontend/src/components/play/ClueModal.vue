@@ -39,7 +39,7 @@ export default {
     },
     methods: {
         getClueData() {
-            axios.get("clue/" + this.clueId + "/")
+            axios.get("play/clue/" + this.clueId + "/")
                 .then(response => {
                     this.clue = response.data
                 }, (error) => {

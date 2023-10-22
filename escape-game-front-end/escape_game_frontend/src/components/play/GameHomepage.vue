@@ -1,72 +1,32 @@
 <template>
-    <h1>{{ step.title }}</h1>
-    <p>{{ step.text }}</p>
-    <form @submit="sendAnswer">
+    <p> entre l'id du scénario auquel tu as été invité à jouer (à terme, code)</p>
+    <form @submit.prevent="playGame">
         <div class="form-group">
-            <label for="answer">Je réponds : </label>
-            <input id="answer" type="text" class="form-control" v-model="answer">
-        </div>
-        <div>
-            <button type="submit" class="btn btn-dark">Je tente !</button>
-        </div>
+                <label for="inputScenarioId">Scenario ID</label>
+                <input type="text" v-model="scenarioId" class="form-control" id="inputScenarioId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Let's go</button>
     </form>
-
-    <div v-for="clue in clues" v-bind:key="clue.id">
-        <button class="btn btn-dark" @click="showClue(clue.id)">Indice caché</button>
-    </div>
-    <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
 </template>
 
 <script>
-import axios from 'axios';
-import ClueModal from './ClueModal.vue';
-
 export default {
-    name:'GameHomepage',
-    components: {
-        ClueModal
-    },
+    name: 'GameHomepge',
     data(){
         return {
-            step: {
-                title:'',
-                text:''
+            scenarioNode: {
+                id: '',
+                step: '',
+                scenario:''
             },
-            answer:'',
-            clues: [],
-            isClueModalEnabled: false,
-            selectedClueId: ''
-
+            scenarioId:''
         }
     },
     methods: {
-        getStepData() {
-            axios.get("step/1/")
-                .then(response => {
-                    this.step = response.data;
-                    this.clues = response.data.clues
-                    console.log(response)
-                }, (error) => {
-                    console.log(error)
-                }
-                )
-
-        },
-        sendAnswer(){
-            console.log("NOUS ENVERRONS CETTE REPONSE : " + this.answer)
-        },
-
-        showClue(clueId){
-            this.selectedClueId = clueId
-            this.isClueModalEnabled = true
-        },
-
-        disableClueModal(){
-            this.isClueModalEnabled = false
+        playGame(){
+            this.$router.push({ name: 'ScenarioPage', params: { scenarioId: this.scenarioId }} )
         },
     },
-    created(){
-        this.getStepData()
-    }
 }
+
 </script>

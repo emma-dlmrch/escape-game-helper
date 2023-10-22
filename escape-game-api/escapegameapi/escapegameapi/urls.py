@@ -19,7 +19,7 @@ from django.urls import path, include
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet
+from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet, GamePlayViewSet, ScenarioPlayViewSet, StepPlayViewSet, ScenarioNodePlayViewSet, CluePlayViewSet
 from authentication.views import SignUpView, GetUserView
 
 # URLs require slash
@@ -30,6 +30,12 @@ router.register('step', StepViewSet, basename = 'step')
 router.register('scenario', ScenarioViewSet, basename = 'scenario')
 router.register('scenario_node', ScenarioNodeViewSet, basename = 'scenario_node')
 router.register('clue', ClueViewSet, basename = 'clue')
+
+router.register('play/game', GamePlayViewSet, basename = 'game_play')
+router.register('play/scenario', ScenarioPlayViewSet, basename = 'scenario_play')
+router.register('play/step', StepPlayViewSet, basename = 'step_play')
+router.register('play/scenario_node', ScenarioNodePlayViewSet, basename = 'scenario_node_play')
+router.register('play/clue', CluePlayViewSet, basename = 'clue_play')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
