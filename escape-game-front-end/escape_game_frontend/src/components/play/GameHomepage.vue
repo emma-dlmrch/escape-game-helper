@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         playGame(){
+            this.$store.commit('emptyUnlockedNodes')
             this.$router.push({ name: 'ScenarioPage', params: { scenarioId: this.scenarioId }} )
         },
     },

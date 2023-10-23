@@ -2,7 +2,7 @@
 <h1>{{ game.name }}</h1>
 <p>{{ game.description }}</p>
 <p>Scénario : {{ scenario.name }}- id {{ scenario.id }}</p>
-<button @click="startGame">C'est parti !</button>
+<button class="btn btn-primary" @click="startGame">C'est parti !</button>
 <!-- <router-view/> -->
 
 </template>
@@ -22,6 +22,7 @@ export default {
                 first_node: {
                     id:'',
                     label:'',
+                    new: '',
                 }
             },
             game:{
@@ -35,12 +36,13 @@ export default {
             this.$router.push({ name: 'ScenarioPage', params: { scenarioId: this.scenarioId }} )
         },
         getData(){
-            axios.get("play/scenario/"+ this.scenarioId + "/") //dans le back faire une version de ce get qui renvoie pas toutes les infos ?
+            axios.get("play/scenario/"+ this.scenarioId + "/")
                 .then(response => {
                     this.scenario = response.data;
                     console.log(response)
                     this.getGameData();
-                    // this.$store.commit('unlockNode', this.scenario.firstNode) // marche pas ici... il faudrait le faire qu'une fois au démarrage...
+                    this.scenario.first_node.new = false
+                    this.$store.commit('unlockNode', this.scenario.first_node)
 
                 }, (error) => {
                     console.log(error)

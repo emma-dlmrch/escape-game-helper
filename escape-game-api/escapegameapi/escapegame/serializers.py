@@ -217,19 +217,26 @@ class ScenarioPlaySerializer(ModelSerializer):
         queryset = instance.scenario_nodes.filter(parent_node = None)
         if len(queryset) == 0:
             raise ValidationError('no first node was defined')
-        serializer = ScenarioNodeListSerializer(queryset[0], many=False)
+        serializer = ScenarioNodePlaySerializer(queryset[0], many=False)
         return serializer.data
     
 class StepPlaySerializer(ModelSerializer):
+
+    has_answer = serializers.SerializerMethodField()
     
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'clues']
+        fields = ['id', 'game', 'title', 'text', 'clues','has_answer']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
         serializer = ClueListSerializer(queryset, many=True)
         return serializer.data
+    
+    def get_has_answer(self, instance):
+        if instance.answer:
+            return True
+        return False
     
 class ScenarioNodePlaySerializer(ModelSerializer):
 

@@ -2,16 +2,17 @@
     <h1>{{ step.title }}</h1>
     <form>
         <div class="form-group">
-            <label>Nom de l'étape</label>
-            <input type="text" class="form-control" v-model.lazy="step.title">
+            <label for="step-name">Nom de l'étape</label>
+            <input id="step-name" type="text" class="form-control" v-model.lazy="step.title">
         </div>
         <div class="form-group">
-            <label>Texte</label>
-            <textarea class="form-control" v-model="step.text" rows="5"></textarea>
+            <label for="step-text">Texte</label>
+            <textarea id="step-text" class="form-control" v-model="step.text" rows="5"></textarea>
         </div>
         <div class="form-group">
-            <label>Réponse attendue</label>
-            <input type="text" class="form-control" v-model="step.answer">
+            <label for="step-answer">Réponse attendue</label>
+            <input id="step-answer" type="text" class="form-control" v-model="step.answer">
+            <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de réponse</small>
         </div>
         <div>
             <button @click="modifyStep" type="submit" class="btn btn-dark">Mettre à jour l'étape</button>

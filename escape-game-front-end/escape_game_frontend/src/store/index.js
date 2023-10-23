@@ -22,6 +22,7 @@ export default createStore({
                 state.isAuthenticated = false
             }
             // state.unlockedNodes:
+            state.unlockedNodes = JSON.parse(localStorage.getItem('unlockedNodes') ?? "{}")
         },
         setToken(state, token) {
             state.token = token
@@ -52,7 +53,19 @@ export default createStore({
             }
             if (nodeExist == false) {
                 state.unlockedNodes.push(node)
+                localStorage.setItem('unlockedNodes', JSON.stringify(state.unlockedNodes))
             }
+        },
+        setNodeRead(state,node) {
+            const nodeIndex = state.unlockedNodes.findIndex( n => n.id === node.id)
+            node.new = false
+            state.unlockedNodes[nodeIndex] = node
+
+        },
+
+        emptyUnlockedNodes(state){
+            state.unlockedNodes = []
+            localStorage.removeItem('unlockedNodes')
         },
 
     },
