@@ -23,6 +23,8 @@ export default {
                     id:'',
                     label:'',
                     new: '',
+                    resolved:'',
+                    info:'' 
                 }
             },
             game:{
@@ -41,8 +43,6 @@ export default {
                     this.scenario = response.data;
                     console.log(response)
                     this.getGameData();
-                    this.scenario.first_node.new = false
-                    this.$store.commit('unlockNode', this.scenario.first_node)
 
                 }, (error) => {
                     console.log(error)
@@ -61,11 +61,16 @@ export default {
                 )
         },
         startGame(){
+            this.scenario.first_node.new = false
+            this.scenario.first_node.resolved = false
+            this.scenario.first_node.info = false
+            this.$store.commit('unlockNode', this.scenario.first_node)
             this.$router.push({ name: 'StepPage', params: { scenarioNodeId: this.scenario.first_node.id }})
         }
     },
-    created(){
+    created(){   
         this.getData()
+        this.$store.commit('setCurrentPlayedScenarioId', this.scenarioId)
     }
 
 }

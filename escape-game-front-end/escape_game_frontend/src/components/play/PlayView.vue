@@ -1,18 +1,18 @@
 <template>
-    <!-- <PlayNav />
+    <PlayNav />
 
-  <section class="home-section"> -->
+  <section class="home-section">
     <router-view />
-    <!-- </section> -->
+    </section>
 </template>
 
 <script>
-// import PlayNav from './PlayNav.vue';
+import PlayNav from './PlayNav.vue';
 
 export default {
-  name: 'PlayApp',
+  name: 'PlayView',
   components: {
-    // PlayNav
+    PlayNav
   },
   beforeCreate(){
     

@@ -3,7 +3,8 @@
     <h1>{{ step.title }}</h1>
     <p>{{ step.text }}</p>
 
-    <div v-if="step.has_answer">
+    <div v-if="step.has_answer ">
+        <div v-if="!scenarioNode.resolved">
 
         <form @submit="submitAnswer">
             <div class="form-group">
@@ -21,6 +22,10 @@
         </div>
         <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
         <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer" @message-read="disableSuccessModal"></success-modal>
+    </div>
+    <div v-else>
+        <p>Enigme terminée <i class="bi bi-check-lg"></i> </p>
+    </div>
     </div>
 </div>
 <div v-else>Petit.e polisson ! Tu n'as pas débloqué cette étape !</div>
@@ -71,6 +76,9 @@ export default {
                 .then(response => {
                     this.step = response.data;
                     console.log(response)
+                    if (this.step.has_answer === false){
+                        this.$store.commit('setNodeInfo', this.scenarioNode)
+                    }
                 }, (error) => {
                     console.log(error)
                 }
@@ -84,8 +92,9 @@ export default {
                     console.log(response)
                     this.getStepData()
                     this.isUnlocked(this.scenarioNodeId)
+                    this.scenarioNode.resolved = this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0].resolved
                     this.$store.commit('setNodeRead', this.scenarioNode)
-                    // this.$store.commit('unlockNode', this.scenarioNode) //il faudrait le faire qu'une fois au démarrage...
+                    this.$store.commit('setCurrentPlayedScenarioId', this.scenarioNode.scenario)
                 }, (error) => {
                     console.log(error)
                 }
@@ -103,6 +112,8 @@ export default {
                         this.nextNodes = response.data
                         this.nextNodes.forEach((node) => {
                             node.new = true
+                            node.info = false,
+                            node.resolved = false,
                             this.$store.commit('unlockNode', node)
                         });
                         this.isRightAnswer = true;
@@ -123,11 +134,11 @@ export default {
         },
         disableSuccessModal() {
             this.isRightAnswer = false
+            this.$store.commit('setNodeResolved', this.scenarioNode)
         },
         isUnlocked(nodeId){
             this.$store.state.unlockedNodes.forEach( node => {
-                if ( node.id == nodeId){
-                   
+                if ( node.id == nodeId){ 
                     this.isNodeUnlocked = true
                     return true
                 }
@@ -137,7 +148,6 @@ export default {
     },
     created() {
         this.getNodeData()
-
     },
     updated() {
         if (this.scenarioNodeId !== this.$route.params.scenarioNodeId) {

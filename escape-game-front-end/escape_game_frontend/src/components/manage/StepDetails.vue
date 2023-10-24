@@ -1,13 +1,13 @@
 <template>
     <h1>{{ step.title }}</h1>
-    <form>
+    <form  @submit.prevent="modifyStep">
         <div class="form-group">
             <label for="step-name">Nom de l'étape</label>
-            <input id="step-name" type="text" class="form-control" v-model.lazy="step.title">
+            <input id="step-name" type="text" class="form-control" v-model.lazy="step.title" required>
         </div>
         <div class="form-group">
             <label for="step-text">Texte</label>
-            <textarea id="step-text" class="form-control" v-model="step.text" rows="5"></textarea>
+            <textarea id="step-text" class="form-control" v-model="step.text" rows="5" required></textarea>
         </div>
         <div class="form-group">
             <label for="step-answer">Réponse attendue</label>
@@ -15,8 +15,8 @@
             <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de réponse</small>
         </div>
         <div>
-            <button @click="modifyStep" type="submit" class="btn btn-dark">Mettre à jour l'étape</button>
-            <button @click="cancel" type="submit" class="btn btn-light">Retour</button>
+            <button type="submit" class="btn btn-dark">Mettre à jour l'étape</button>
+            <button @click="cancel" type="button" class="btn btn-light">Retour</button>
         </div>
     </form>
 
@@ -72,7 +72,6 @@ export default {
         getStepData() {
             axios.get("step/" + this.stepId + "/")
                 .then(response => {
-                    console.log(this.step.text)
                     this.step = response.data;
                     this.clues = response.data.clues
                     console.log(response)

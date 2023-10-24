@@ -6,7 +6,8 @@ export default createStore({
         isAuthenticated: false,
         userId: '',
         gameId: '',
-        unlockedNodes: []
+        unlockedNodes: [],
+        currentPlayedScenarioId: ''
     },
 
     mutations: {
@@ -15,14 +16,18 @@ export default createStore({
                 state.token = localStorage.getItem('token')
                 state.isAuthenticated = true
                 state.userId = localStorage.getItem('userId')
-                // state.gameId = localStorage.getItem('gameId')
 
             } else {
                 state.token = ''
                 state.isAuthenticated = false
             }
-            // state.unlockedNodes:
-            state.unlockedNodes = JSON.parse(localStorage.getItem('unlockedNodes') ?? "{}")
+            
+            try {
+                state.unlockedNodes = JSON.parse(localStorage.getItem('unlockedNodes') ?? "[]")
+            } catch (e) {
+                state.unlockedNodes = "[]"
+            }
+            state.currentPlayedScenarioId = localStorage.getItem('currentPlayedScenarioId') ?? ''
         },
         setToken(state, token) {
             state.token = token
@@ -60,12 +65,31 @@ export default createStore({
             const nodeIndex = state.unlockedNodes.findIndex( n => n.id === node.id)
             node.new = false
             state.unlockedNodes[nodeIndex] = node
+            localStorage.setItem('unlockedNodes', JSON.stringify(state.unlockedNodes));
+        },
 
+        setNodeResolved(state,node) {
+            const nodeIndex = state.unlockedNodes.findIndex( n => n.id === node.id)
+            node.resolved = true
+            state.unlockedNodes[nodeIndex] = node
+            localStorage.setItem('unlockedNodes', JSON.stringify(state.unlockedNodes));
+        },
+
+        setNodeInfo(state,node) {
+            const nodeIndex = state.unlockedNodes.findIndex( n => n.id === node.id)
+            node.info = true
+            state.unlockedNodes[nodeIndex] = node
+            localStorage.setItem('unlockedNodes', JSON.stringify(state.unlockedNodes));
         },
 
         emptyUnlockedNodes(state){
             state.unlockedNodes = []
             localStorage.removeItem('unlockedNodes')
+        },
+
+        setCurrentPlayedScenarioId(state, scenarioId) {
+            state.currentPlayedScenarioId = scenarioId
+            localStorage.setItem('currentPlayedScenarioId', scenarioId)
         },
 
     },
