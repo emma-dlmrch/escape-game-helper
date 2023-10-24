@@ -166,10 +166,9 @@ class ScenarioNodePlayViewSet(ReadOnlyModelViewSet):
     @action(detail=False, methods=['post'], url_path="answer/(?P<node_id>\d+)", url_name="answer")
     def check_answer(self, request, node_id):
         queryset = ScenarioNode.objects.filter(id=node_id).get()
-        answer = queryset.step.answer
-        proposition = request.data.get("answer")
+        answer = queryset.step.answer.strip().lower()
+        proposition = request.data.get("answer").strip().lower()
         if proposition == answer:
-            # return Response(data={'message':True})
             next_nodes_query = ScenarioNode.objects.filter(parent_node=node_id)
             serializer = ScenarioNodePlaySerializer(next_nodes_query, many=True)
             return Response(serializer.data)

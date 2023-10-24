@@ -1,34 +1,37 @@
 <template>
     <div v-if="isNodeUnlocked">
-    <h1>{{ step.title }}</h1>
-    <p>{{ step.text }}</p>
+        <h1>{{ step.title }}</h1>
+        <p>{{ step.text }}</p>
 
-    <div v-if="step.has_answer ">
-        <div v-if="!scenarioNode.resolved">
+        <div v-if="step.has_answer">
+            <div v-if="!scenarioNode.resolved">
 
-        <form @submit="submitAnswer">
-            <div class="form-group">
-                <label for="answer">Je réponds : </label>
-                <input id="answer" type="text" class="form-control" v-model="submittedAnswer.answer" required>
+                <form @submit="submitAnswer">
+                    <div class="form-group">
+                        <label for="answer">Je réponds : </label>
+                        <input @click="disableWrongAnswerText" id="answer" type="text" class="form-control small-input"
+                            v-model="submittedAnswer.answer" required>
+                    </div>
+                    <div class="button-general-div">
+                        <button type="submit" class="btn btn-dark">Je tente !</button>
+                    </div>
+                </form>
+                <p v-if="isWrongAnswer">Ce n'est pas la bonne réponse</p>
+
+                <div v-for="clue in step.clues" v-bind:key="clue.id">
+                    <div class="button-general-div"><button class="btn btn-secondary btn-sm"
+                            @click="showClue(clue)">Indice</button></div>
+                </div>
+                <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
+                <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
+                    @message-read="disableSuccessModal"></success-modal>
             </div>
-            <div>
-                <button type="submit" class="btn btn-dark">Je tente !</button>
+            <div v-else>
+                <p>Enigme terminée <i class="bi bi-check-lg"></i> </p>
             </div>
-        </form>
-        <p v-if="isWrongAnswer">Ce n'est pas la bonne réponse</p>
-
-        <div v-for="clue in step.clues" v-bind:key="clue.id">
-            <button class="btn btn-dark" @click="showClue(clue)">Indice caché</button>
         </div>
-        <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
-        <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer" @message-read="disableSuccessModal"></success-modal>
     </div>
-    <div v-else>
-        <p>Enigme terminée <i class="bi bi-check-lg"></i> </p>
-    </div>
-    </div>
-</div>
-<div v-else>Petit.e polisson ! Tu n'as pas débloqué cette étape !</div>
+    <div v-else>Petit.e polisson ! Tu n'as pas débloqué cette étape !</div>
 </template>
 
 <script>
@@ -76,7 +79,7 @@ export default {
                 .then(response => {
                     this.step = response.data;
                     console.log(response)
-                    if (this.step.has_answer === false){
+                    if (this.step.has_answer === false) {
                         this.$store.commit('setNodeInfo', this.scenarioNode)
                     }
                 }, (error) => {
@@ -92,7 +95,9 @@ export default {
                     console.log(response)
                     this.getStepData()
                     this.isUnlocked(this.scenarioNodeId)
-                    this.scenarioNode.resolved = this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0].resolved
+                    if (this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0]) {
+                        this.scenarioNode.resolved = this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0].resolved
+                    }
                     this.$store.commit('setNodeRead', this.scenarioNode)
                     this.$store.commit('setCurrentPlayedScenarioId', this.scenarioNode.scenario)
                 }, (error) => {
@@ -113,8 +118,8 @@ export default {
                         this.nextNodes.forEach((node) => {
                             node.new = true
                             node.info = false,
-                            node.resolved = false,
-                            this.$store.commit('unlockNode', node)
+                                node.resolved = false,
+                                this.$store.commit('unlockNode', node)
                         });
                         this.isRightAnswer = true;
                     }
@@ -122,6 +127,9 @@ export default {
             } catch (error) {
                 console.error("Error during form submission:", error);
             }
+        },
+        disableWrongAnswerText() {
+            this.isWrongAnswer = false
         },
 
         showClue(clueId) {
@@ -136,13 +144,13 @@ export default {
             this.isRightAnswer = false
             this.$store.commit('setNodeResolved', this.scenarioNode)
         },
-        isUnlocked(nodeId){
-            this.$store.state.unlockedNodes.forEach( node => {
-                if ( node.id == nodeId){ 
+        isUnlocked(nodeId) {
+            this.$store.state.unlockedNodes.forEach(node => {
+                if (node.id == nodeId) {
                     this.isNodeUnlocked = true
                     return true
                 }
-            } )
+            })
             return false
         }
     },

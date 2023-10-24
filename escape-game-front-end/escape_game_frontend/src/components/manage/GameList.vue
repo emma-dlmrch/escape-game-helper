@@ -1,7 +1,7 @@
 <template>
   <h1>Tableau de bord</h1>
-  <div>
-    <table class="table">
+  <div class="table-responsive">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">Mes jeux</th>
@@ -17,8 +17,8 @@
               @click="deleteGame(game.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button></td>
         </tr>
         <tr>
-          <th><input type ="text" v-model="newGame.name" placeholder="Nouveau jeu" maxlength="50"></th>
-          <td><input type ="text" v-model="newGame.description" placeholder="Entre une description" maxlength="50"/></td>
+          <th><input class="form-control small-input" type ="text" v-model="newGame.name" placeholder="Nouveau jeu" maxlength="50"></th>
+          <td><input class="form-control small-input" type ="text" v-model="newGame.description" placeholder="Entre une description" maxlength="50"/></td>
           <td><button @click="createNewGame" type="button" class="btn btn-dark btn-sm">Créer</button></td>
         </tr>
       </tbody>

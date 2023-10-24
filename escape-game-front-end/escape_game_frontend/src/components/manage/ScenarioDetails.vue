@@ -1,13 +1,16 @@
 <template>
     <h1>{{ scenario.name }}</h1>
-    <div><button @click="cancel" class="btn btn-dark btn-sm">Retour</button></div>
     <h2>Renommer le scénario</h2>
     <form @submit.prevent="renameScenario">
         <div class="form-group">
             <label for="name">Nom du scénario</label>
-            <input type="text" id="name" class="form-control" v-model.lazy="scenario.name" required>
+            <input type="text" id="name" class="form-control small-input" v-model.lazy="scenario.name" required>
         </div>
+        <div class="button-general-div">
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
+        <button @click="cancel" class="btn btn-outline-dark btn-sm">Retour</button>
+    </div>
+
     </form>
     <h2>Gérer mes noeuds de scénario</h2>
 
@@ -21,7 +24,9 @@
                 <option v-for="step in stepList" v-bind:key="step.id" :value="step.id">{{ step.title }}</option>
             </select>
         </div>
+        <div class="button-general-div">
         <button type="submit" class="btn btn-dark btn-sm">OK</button>
+    </div>
     </form>
 </div>
 

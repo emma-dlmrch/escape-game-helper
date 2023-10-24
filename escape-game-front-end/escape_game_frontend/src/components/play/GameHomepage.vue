@@ -1,4 +1,5 @@
 <template>
+    <div class = "welcome-page">
     <h1>Jouons !</h1>
     <p>Tu as été invité.e à jouer à un jeu !</p>
     <p>Entre le code du scénario auquel tu as été invité.e à jouer (pour l'instant il s'agit de son ID)</p>
@@ -12,9 +13,11 @@
                     (irréversible) !</label>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Let's go !</button>
+        <div class ="centered-button"><button type="submit" class="btn btn-secondary btn-lg">Let's go !</button></div>
+        
     </form>
     <p v-if="wrongScenarioCode">Ce code scénario n'est pas bon !</p>
+</div>
 </template>
 
 <script>
