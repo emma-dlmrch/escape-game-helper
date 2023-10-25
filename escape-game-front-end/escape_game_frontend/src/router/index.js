@@ -70,7 +70,7 @@ const routes = [
         ]
     },
     {
-        path: '/playapp',
+        path: '/play',
         component: () => import('../components/play/PlayApp.vue'),
         children: [
             { 
@@ -82,7 +82,7 @@ const routes = [
                 ]
             },
             { 
-                path: 'play',
+                path: '',
                 name: 'PlayView',
                 component: () => import("../components/play/PlayView.vue"),
                 children: [

@@ -26,8 +26,13 @@ body{
 }
 
 .modal {
+    z-index: 99;
     display: block;
     background-color: rgba(0.5, 0.5, 0.5, 0.4);
+}
+
+.home-section .modal-dialog {
+    max-width: 500px;
 }
 
 .welcome-page {
@@ -82,7 +87,7 @@ body{
   width: 78px;
   background: #11101D;
   padding: 6px 14px;
-  z-index: 99;
+  z-index: 1;
   transition: all 0.5s ease;
 }
 .sidebar.open{
