@@ -5,6 +5,7 @@ import store from '../store/index.js'
 const routes = [
     {
         path: '/manage',
+        name : 'ManageGames',
         component: () => import('../components/manage/ManageApp.vue'),
         children: [
             {
@@ -15,7 +16,6 @@ const routes = [
             {
                 path: 'login',
                 name: 'LogIn',
-                // alias: ['/games', '/'],
                 component: () => import("../components/manage/LogIn.vue")
             },
             { 
@@ -27,7 +27,7 @@ const routes = [
             {
                 path: 'games',
                 name: 'GameList',
-                alias: ['/games', '/',''], //pour l'instant pas de page d'accueil
+                alias: [''],
                 component: () => import("../components/manage/GameList.vue"),
                 meta: { requiresLogin: true }
             },
@@ -75,6 +75,7 @@ const routes = [
         children: [
             { 
                 path: 'go',
+                alias: [''],
                 name: 'GameHomepage',
                 component: () => import("../components/play/GameHomepage.vue"),
                 children: [
@@ -104,7 +105,19 @@ const routes = [
             },
 
         ]
+    },
+
+    {
+        path: "/:pathMatch(.*)*",
+        name: 'ErrorView',
+        component: () => import('../components/common/Error.vue'),
+      },
+    {
+        path: '/',
+        name: 'WelcomePage',
+        component: () => import('../components/common/WelcomePage.vue'),
     }
+
 ]
 
 const router = createRouter({
@@ -117,8 +130,7 @@ export default router
 router.beforeEach((to, from, next) => {
     // ecrire une methode qui checke la validité du token à terme
     if (to.matched.some(record => record.meta.requiresLogin) && store.state.isAuthenticated === false) {
-        store.commit("setGlobalError", "You need to log in before you can perform this action.")
-        next("/login")
+        next({name :'LogIn'})
     } else {
         next()
     }

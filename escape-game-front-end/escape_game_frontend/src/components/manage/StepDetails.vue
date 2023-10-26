@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ step.title }}</h1>
+    <h1>Etape : {{ step.title }}</h1>
     <form  @submit.prevent="modifyStep">
         <div class="form-group">
             <label for="step-name">Nom de l'étape</label>
@@ -15,8 +15,7 @@
             <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de réponse</small>
         </div>
         <div>
-            <button type="submit" class="btn btn-dark">Mettre à jour l'étape</button>
-            <button @click="cancel" type="button" class="btn btn-light">Retour</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
         </div>
     </form>
 
@@ -33,17 +32,22 @@
             <tr v-for="clue in clues" v-bind:key="clue.id">
                 <th scope="row">{{ clue.title }}</th>
                 <td>{{ clue.text.substring(0, 20) }} ...</td>
-                <td><button @click="modifyClue(clue.id)" type="button" class="btn btn-dark btn-sm">Modifier</button> <button
-                        @click="deleteClue(clue.id)" type="button" class="btn btn-outline-dark btn-sm">Supprimer</button>
+                <td><button @click="modifyClue(clue.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Modifier</button>&nbsp;
+                    <button
+                        @click="deleteClue(clue.id)" type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
                 </td>
             </tr>
             <tr>
-                <th><input type="text" v-model="newClue.title" placeholder="Nouvel indice" maxlength="50"></th>
-                <td><input type="text" v-model="newClue.text" placeholder="Entre un texte" maxlength="50" /></td>
-                <td><button @click="createNewClue" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+                <th><input type="text" v-model="newClue.title" placeholder="Nouvel indice" maxlength="50" class="form-control small-input"/></th>
+                <td><input type="text" v-model="newClue.text" placeholder="Entre un texte" maxlength="50" class="form-control small-input"/></td>
+                <td><button @click="createNewClue" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i>  Créer</button></td>
             </tr>
         </tbody>
     </table>
+
+    <div>
+        <button @click="cancel" type="button" class="btn btn-dark btn-sm"><i class="bi bi-arrow-left"></i> Retour</button>      
+    </div>
 </template>
 
 <script>

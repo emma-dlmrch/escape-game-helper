@@ -47,7 +47,7 @@ export default {
             axios
                 .post('signup/', formData)
                 .then(response => {
-                    this.$router.push('/login')
+                    this.$router.push({name :'LogIn'})
                     console.log(response)
                 })
                 .catch(error => {

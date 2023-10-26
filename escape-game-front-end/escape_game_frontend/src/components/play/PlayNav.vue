@@ -38,10 +38,12 @@ export default {
   },
   mounted() {
     let sidebar = document.querySelector(".sidebar");
+    let mainSection = document.querySelector(".home-section");
     let closeBtn = document.querySelector("#btn");
 
     closeBtn.addEventListener("click", () => {
       sidebar.classList.toggle("open");
+      mainSection.classList.toggle("navbar-open");
       menuBtnChange();
     });
 

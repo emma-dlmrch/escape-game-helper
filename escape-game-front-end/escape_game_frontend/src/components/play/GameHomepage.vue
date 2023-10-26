@@ -1,12 +1,13 @@
 <template>
+    <NavBar />
     <div class = "welcome-page">
     <h1>Jouons !</h1>
     <p>Tu as été invité.e à jouer à un jeu !</p>
-    <p>Entre le code du scénario auquel tu as été invité.e à jouer (pour l'instant il s'agit de son ID)</p>
+    <p>Entre le code du scénario auquel tu as été invité.e à jouer</p>
     <form @submit.prevent="playGame">
         <div class="form-group">
-            <label for="inputScenarioId">Scenario ID</label>
-            <input type="text" v-model="scenarioId" class="form-control" id="inputScenarioId" required>
+            <label for="inputScenarioId">Code</label>
+            <input type="text" v-model="scenarioId" class="form-control" id="inputScenarioId" @click="removeErrorMessage" required>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="deleteCheckbox" v-model="deleteScenarioHistory">
                 <label class="form-check-label" for="deleteCheckbox">Je veux recommencer et supprimer ma progression
@@ -21,9 +22,11 @@
 </template>
 
 <script>
+import NavBar from '../manage/NavBar.vue'
 import axios from 'axios';
 export default {
     name: 'GameHomepage',
+    components: {NavBar},
     data() {
         return {
             scenarioNode: {
@@ -44,7 +47,6 @@ export default {
         playGame() {
             axios.get("play/scenario/" + this.scenarioId + "/")
                 .then(response => {
-                    console.log(response)
                     if (response.data.id) {
                         if (this.deleteScenarioHistory) {
                             this.$store.commit('emptyUnlockedNodes')
@@ -57,13 +59,19 @@ export default {
 
 
                 }, (error) => {
-                    console.log(error)
-                    this.wrongScenarioCode = true
+                    if (error.response.status=="404") { //what is better?
+                        this.wrongScenarioCode = true
+                        this.scenarioId=''
+                    }
                 }
                 )
 
 
         },
+
+        removeErrorMessage(){
+            this.wrongScenarioCode = false
+        }
     },
 }
 

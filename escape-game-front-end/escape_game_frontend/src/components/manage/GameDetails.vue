@@ -1,17 +1,17 @@
 <template>
-    <h1>{{ game.name }}</h1>
+    <h1>Jeu : {{ game.name }}</h1>
     <form @submit="modifyGame">
         <div class="form-group">
             <label for="name">Nom</label>
-            <input type="text" id="name" class="form-control medium-input" v-model.lazy="game.name" required>
+            <input type="text" id="name" class="form-control" v-model.lazy="game.name" required>
         </div>
         <div class="form-group">
             <label for="description">Text descriptif</label>
-            <textarea class="form-control medium-input" v-model="game.description" id="description" rows="3"
+            <textarea class="form-control" v-model="game.description" id="description" rows="3"
                 required></textarea>
         </div>
         <div class="button-general-div">
-            <button type="submit" class="btn btn-light btn-sm">Modifier</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
         </div>
     </form>
 
@@ -27,15 +27,15 @@
             <tbody>
                 <tr v-for="step in this.steps" v-bind:key="step.id">
                     <th scope="row">{{ step.title }}</th>
-                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm">Gérer</button>
+                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;
                         <button @click="deleteStep(step.id)" type="button"
-                            class="btn btn-outline-dark btn-sm">Supprimer</button>
+                            class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
                     </td>
                 </tr>
                 <tr>
                     <th><input class="form-control small-input" type="text" v-model="newStep.title"
                             placeholder="Nouvelle étape" maxlength="50"></th>
-                    <td><button @click="createNewStep" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+                    <td><button @click="createNewStep" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i> Créer</button></td>
                 </tr>
             </tbody>
         </table>
@@ -53,13 +53,13 @@
                 <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
                     <th scope="row">{{ scenario.name }}</th>
                     <td><button @click="modifyScenario(scenario.id)" type="button"
-                            class="btn btn-dark btn-sm">Gérer</button> <button @click="deleteScenario(scenario.id)"
-                            type="button" class="btn btn-outline-dark btn-sm">Supprimer</button></td>
+                            class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;<button @click="deleteScenario(scenario.id)"
+                            type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i>  Supprimer</button></td>
                 </tr>
                 <tr>
                     <th><input class="form-control small-input" type="text" v-model="newScenario.name"
                             placeholder="Nouveau scénario" maxlength="50"></th>
-                    <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm">Créer</button></td>
+                    <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i> Créer</button></td>
                 </tr>
             </tbody>
         </table>

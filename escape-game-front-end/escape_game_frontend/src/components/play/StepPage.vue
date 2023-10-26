@@ -1,5 +1,4 @@
 <template>
-    <div v-if="isNodeUnlocked">
         <h1>{{ step.title }}</h1>
         <p>{{ step.text }}</p>
 
@@ -30,8 +29,6 @@
                 <p>Enigme terminée <i class="bi bi-check-lg"></i> </p>
             </div>
         </div>
-    </div>
-    <div v-else>Petit.e polisson ! Tu n'as pas débloqué cette étape !</div>
 </template>
 
 <script>
@@ -59,7 +56,6 @@ export default {
             },
             isClueModalEnabled: false,
             selectedClueId: '',
-            // scenarioNodeId: 88,
             isWrongAnswer: false,
             isRightAnswer: false,
             nextNodes: [],
@@ -69,7 +65,6 @@ export default {
                 scenario: '',
             },
             scenarioNodeId: this.$route.params.scenarioNodeId,
-            isNodeUnlocked: false
 
         }
     },
@@ -78,7 +73,6 @@ export default {
             axios.get("play/step/" + this.scenarioNode.step + "/")
                 .then(response => {
                     this.step = response.data;
-                    console.log(response)
                     if (this.step.has_answer === false) {
                         this.$store.commit('setNodeInfo', this.scenarioNode)
                     }
@@ -92,9 +86,8 @@ export default {
             axios.get("play/scenario_node/" + this.scenarioNodeId + "/")
                 .then(response => {
                     this.scenarioNode = response.data;
-                    console.log(response)
                     this.getStepData()
-                    this.isUnlocked(this.scenarioNodeId)
+                    //retreive node status
                     if (this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0]) {
                         this.scenarioNode.resolved = this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0].resolved
                     }
@@ -111,8 +104,9 @@ export default {
                 axios.post('play/scenario_node/answer/' + this.scenarioNodeId + "/", this.submittedAnswer).then((response) => {
                     if (response.data.message == false) {
                         this.isWrongAnswer = true
+                        this.submittedAnswer.answer='';
                     } else {
-                        this.submittedAnswer.answer = "";
+                        this.submittedAnswer.answer = '';
                         this.isWrongAnswer = false
                         this.nextNodes = response.data
                         this.nextNodes.forEach((node) => {
@@ -145,21 +139,25 @@ export default {
             this.$store.commit('setNodeResolved', this.scenarioNode)
         },
         isUnlocked(nodeId) {
-            this.$store.state.unlockedNodes.forEach(node => {
-                if (node.id == nodeId) {
-                    this.isNodeUnlocked = true
+            for (var i = 0; i<this.$store.state.unlockedNodes.length ; i++) {
+                if (this.$store.state.unlockedNodes[i].id == nodeId){
                     return true
                 }
-            })
+            }
+            this.$router.push({name : 'ErrorView'})
             return false
         }
     },
     created() {
-        this.getNodeData()
+        if (this.isUnlocked(this.scenarioNodeId)) {
+            this.getNodeData()
+        }
+        
     },
     updated() {
         if (this.scenarioNodeId !== this.$route.params.scenarioNodeId) {
             this.scenarioNodeId = this.$route.params.scenarioNodeId;
+            // this.isUnlocked(this.scenarioNodeId)
             this.getNodeData()
         }
     }

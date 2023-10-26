@@ -40,7 +40,6 @@ export default {
         getUserData() {
             axios.get("user/" + this.userId + "/")
                 .then(response => {
-                    console.log(response.data)
                     this.user = response.data
                 }, (error) => { console.log(error) }
                 )

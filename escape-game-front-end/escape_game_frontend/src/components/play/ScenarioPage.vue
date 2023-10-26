@@ -1,9 +1,7 @@
 <template>
 <h1>{{ game.name }}</h1>
 <p>{{ game.description }}</p>
-<p>Scénario : {{ scenario.name }}- id {{ scenario.id }}</p>
 <button class="btn btn-dark" @click="startGame">C'est parti !</button>
-<!-- <router-view/> -->
 
 </template>
 <script>

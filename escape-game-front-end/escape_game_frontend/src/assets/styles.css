@@ -10,9 +10,22 @@ body{
   --bs-table-bg: var(--main-bg-color);
 }
 
-.manage-div{
-  padding:5px;
+td {
+  vertical-align: middle;
 }
+
+.manage-div{
+  padding:10px;
+  /* text-align: center; */
+  /* justify-content: center; */
+  /* align-items: center;
+  display:flex;
+  flex-direction: column; */
+}
+/* 
+.manage-div > * {
+  min-width: 800px;
+} */
 
 .tree-buttons {
     display: flex;
@@ -43,7 +56,14 @@ body{
   align-items: center;
   display:flex;
   flex-direction: column;
+  
 }
+
+.welcome-page > * {
+  max-width:900px;
+}
+
+
 .welcome-page  > form{
   text-align:left;
   justify-content:center;
@@ -55,6 +75,11 @@ body{
   justify-content: center;
   align-items: center;
 
+}
+
+.navbar {
+  padding-left:15px;
+  padding-right:15px;
 }
 
 .small-input{

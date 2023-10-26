@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ scenario.name }}</h1>
+    <h1>Scénario : {{ scenario.name }}</h1>
     <h2>Renommer le scénario</h2>
     <form @submit.prevent="renameScenario">
         <div class="form-group">
@@ -110,8 +110,7 @@ export default {
                     this.newNode.parent_node = ''
                 try {
                     this.newNode.scenario = this.scenarioId
-                    axios.post('scenario_node/', this.newNode).then((response) => {
-                        console.log(response)
+                    axios.post('scenario_node/', this.newNode).then(() => {
                         this.getData()
                     });
                 } catch (error) {
@@ -122,8 +121,7 @@ export default {
         },
         renameScenario() {
             axios.put('scenario/' + this.scenarioId + "/", this.scenario)
-                .then(response => {
-                    console.log(response);
+                .then(() => {
                     this.getData();
                 },
                     (error) => { console.log("Error", error) });
