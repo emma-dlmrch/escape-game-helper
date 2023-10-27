@@ -14,7 +14,6 @@ from .serializers import (
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
 import logging
-# Create your views here.
 
 class MultipleSerializerMixin:
     # Un mixin est une classe qui ne fonctionne pas de façon autonome

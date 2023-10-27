@@ -1,20 +1,20 @@
 <template>
-<h1>{{ clue.title }}</h1>
+<h1>Indice : {{ clue.title }}</h1>
     <form @submit.prevent="updateClue">
         <div class="form-group">
-            <label for="title">Titre</label>
+            <label for="title">Titre :</label>
             <input id="title" type="text" class="form-control" v-model.lazy="clue.title">
         </div>
         <div class="form-group">
-            <label for="text">Texte</label>
+            <label for="text">Texte :</label>
             <textarea  id="text" class="form-control" v-model="clue.text" rows="5"></textarea>
         </div>
         <div>
-            <button type="submit" class="btn btn-dark">Mettre à jour l'indice</button>
-            <button type="button" class="btn btn-light" @click="cancel">Annuler</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Mettre à jour</button>
         </div>
     </form>
-
+    <p></p>
+    <button type="button" class="btn btn-dark btn-sm" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
 </template>
 
 <script>

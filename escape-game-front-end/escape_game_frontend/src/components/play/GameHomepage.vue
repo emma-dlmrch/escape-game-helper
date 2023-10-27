@@ -14,7 +14,7 @@
                     (irréversible) !</label>
             </div>
         </div>
-        <div class ="centered-button"><button type="submit" class="btn btn-secondary btn-lg">Let's go !</button></div>
+        <div class ="centered-button"><button type="submit" class="btn btn-secondary btn-lg"><i class="bi bi-controller"></i> Let's go !</button></div>
         
     </form>
     <p v-if="wrongScenarioCode">Ce code scénario n'est pas bon !</p>

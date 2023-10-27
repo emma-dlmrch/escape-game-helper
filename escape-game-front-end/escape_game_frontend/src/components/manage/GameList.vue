@@ -4,15 +4,15 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Mes jeux</th>
+          <th scope="col">Jeux</th>
           <th scope="col">Description</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="game in games" v-bind:key="game.id">
-          <th scope="row">{{ game.name }}</th>
-          <td>{{ game.description.substring(0, 20) }} ...</td>
+          <th scope="row"><i class="bi bi-puzzle"></i> {{ game.name }}</th>
+          <td><i class="bi bi-book"></i> {{ game.description.substring(0, 20) }} ...</td>
           <td><button @click="modifyGame(game.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;
             <button
               @click="deleteGame(game.id)" type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button></td>
@@ -62,12 +62,15 @@ export default {
     },
 
     deleteGame(gameId) {
-      axios.delete('game/' + gameId + "/")
+      if(confirm("Etes-vous sur.e de supprimer ce jeu ? Cela supprimera toutes les étapes et scénarios associés")){
+        axios.delete('game/' + gameId + "/")
         .then(response => {
           console.log(response);
           this.getData();
         },
           (error) => { console.log("Error", error) });
+      }
+      
 
     },
 

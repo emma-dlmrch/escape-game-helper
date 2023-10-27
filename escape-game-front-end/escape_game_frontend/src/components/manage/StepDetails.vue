@@ -2,15 +2,15 @@
     <h1>Etape : {{ step.title }}</h1>
     <form  @submit.prevent="modifyStep">
         <div class="form-group">
-            <label for="step-name">Nom de l'étape</label>
+            <label for="step-name">Nom de l'étape :</label>
             <input id="step-name" type="text" class="form-control" v-model.lazy="step.title" required>
         </div>
         <div class="form-group">
-            <label for="step-text">Texte</label>
+            <label for="step-text">Texte :</label>
             <textarea id="step-text" class="form-control" v-model="step.text" rows="5" required></textarea>
         </div>
         <div class="form-group">
-            <label for="step-answer">Réponse attendue</label>
+            <label for="step-answer">Réponse attendue :</label>
             <input id="step-answer" type="text" class="form-control" v-model="step.answer">
             <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de réponse</small>
         </div>
@@ -20,7 +20,8 @@
     </form>
 
     <h2>Les indices</h2>
-    <table class="table">
+    <div class = "table-responsive">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Titre</th>
@@ -30,8 +31,8 @@
         </thead>
         <tbody>
             <tr v-for="clue in clues" v-bind:key="clue.id">
-                <th scope="row">{{ clue.title }}</th>
-                <td>{{ clue.text.substring(0, 20) }} ...</td>
+                <th scope="row"><i class="bi bi-search"></i> {{ clue.title }}</th>
+                <td><i class="bi bi-journal-text"></i>  {{ clue.text.substring(0, 20) }} ...</td>
                 <td><button @click="modifyClue(clue.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Modifier</button>&nbsp;
                     <button
                         @click="deleteClue(clue.id)" type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
@@ -44,7 +45,7 @@
             </tr>
         </tbody>
     </table>
-
+</div>
     <div>
         <button @click="cancel" type="button" class="btn btn-dark btn-sm"><i class="bi bi-arrow-left"></i> Retour</button>      
     </div>
@@ -118,12 +119,14 @@ export default {
         },
 
         deleteClue(clueId){
-            axios.delete('clue/' + clueId + "/")
+            if (confirm("Etes vous sûr.e de vouloir supprimer cet indice ?")){
+                axios.delete('clue/' + clueId + "/")
                 .then(response => {
                     console.log(response);
                     this.getStepData();
                 },
                     (error) => { console.log("Error", error) });
+            }
         },
         modifyClue(clueId){
             console.log(clueId)

@@ -6,14 +6,74 @@ body{
   background: var(--main-bg-color);
 }
 
+/* TABLES */
+
 .table  {
   --bs-table-bg: var(--main-bg-color);
 }
 
-td {
+td, th {
   vertical-align: middle;
 }
 
+.table-responsive > .table {
+  min-width: 400px;
+}
+
+
+/* TREESECTION */
+
+.tree-buttons {
+    display: flex;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.tree-buttons > div {
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+
+.tf-custom .tf-nc {
+  /* height: 1em; width: 1em;
+  background-color: dodgerblue;
+  border-color: dodgerblue;
+  padding: 0; */
+  border-radius: 10px;
+  border-width: 1px;
+  text-align: center;
+  /* background-color: 	rgb(32,32,32); */
+  /* color: white; */
+}
+
+/* make the horizontal and vertical connectors thick and change their color */
+
+.tf-custom .tf-nc:before,
+.tf-custom .tf-nc:after {
+  /* border-left-color: grey; */
+  border-left-width: 2px;
+}
+
+.tf-custom li li:before {
+  /* border-top-color: grey; */
+  border-top-width: 2px;
+}
+
+/* MODAL SECTION */
+.modal {
+    z-index: 99;
+    display: block;
+    background-color: rgba(0.5, 0.5, 0.5, 0.4);
+}
+
+.home-section .modal-dialog {
+    max-width: 500px;
+}
+
+
+/* GENERAL */
 .manage-div{
   padding:10px;
   /* text-align: center; */
@@ -26,27 +86,6 @@ td {
 .manage-div > * {
   min-width: 800px;
 } */
-
-.tree-buttons {
-    display: flex;
-    /* flex-direction: row; */
-    /* align-items: center; */
-    justify-content: center;
-}
-
-.tree-buttons > div {
-    margin-left: 2px
-}
-
-.modal {
-    z-index: 99;
-    display: block;
-    background-color: rgba(0.5, 0.5, 0.5, 0.4);
-}
-
-.home-section .modal-dialog {
-    max-width: 500px;
-}
 
 .welcome-page {
   
@@ -94,6 +133,16 @@ td {
   padding-top:5px;
   padding-bottom:5px;
 }
+
+h1 {
+  padding-bottom: 10px;
+}
+h2 {
+  padding-top:30px;
+  padding-bottom:10px;
+}
+
+/* PLAY SIDEBAR SECTION */
 
 
 /* Google Font Link */
@@ -297,6 +346,7 @@ td {
   z-index: 2;
   padding-left:20px;
   padding-top:20px;
+  min-width: 200px;
 }
 .sidebar.open ~ .home-section{
   left: 250px;

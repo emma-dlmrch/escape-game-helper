@@ -1,7 +1,7 @@
 <template>
 <h1>{{ game.name }}</h1>
 <p>{{ game.description }}</p>
-<button class="btn btn-dark" @click="startGame">C'est parti !</button>
+<button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 
 </template>
 <script>

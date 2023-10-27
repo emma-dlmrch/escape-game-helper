@@ -20,13 +20,13 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Etape</th>
+                    <th scope="col">Etapes</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="step in this.steps" v-bind:key="step.id">
-                    <th scope="row">{{ step.title }}</th>
+                    <th scope="row"><i class="bi bi-journal-text"></i> {{ step.title }}</th>
                     <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;
                         <button @click="deleteStep(step.id)" type="button"
                             class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
@@ -45,13 +45,13 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Scénario</th>
+                    <th scope="col">Scénarios</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
-                    <th scope="row">{{ scenario.name }}</th>
+                    <th scope="row"><i class="bi bi-share"></i> {{ scenario.name }}</th>
                     <td><button @click="modifyScenario(scenario.id)" type="button"
                             class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;<button @click="deleteScenario(scenario.id)"
                             type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i>  Supprimer</button></td>
@@ -137,21 +137,26 @@ export default {
         },
 
         deleteScenario(scenarioId) {
-            axios.delete('scenario/' + scenarioId + "/")
+            if (confirm("Etes-vous sûr.e de vouloir supprimer ce scénario ?")){
+                axios.delete('scenario/' + scenarioId + "/")
                 .then(response => {
                     console.log(response);
                     this.getGameData();
                 },
                     (error) => { console.log("Error", error) });
+            }
+            
         },
 
         deleteStep(stepId) {
-            axios.delete('step/' + stepId + "/")
+            if (confirm("Etes-vous sûr.e de vouloir supprimer cette étape de jeu ?")){
+                axios.delete('step/' + stepId + "/")
                 .then(response => {
                     console.log(response);
                     this.getGameData();
                 },
                     (error) => { console.log("Error", error) });
+            }
         },
 
         modifyStep(stepId) {

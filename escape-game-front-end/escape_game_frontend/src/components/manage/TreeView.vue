@@ -1,5 +1,5 @@
 <template>
-    <div class="tree">
+    <div class="tree tf-tree tf-custom">
       <ul>
           <tree-node :treeData="data" @create-node="transmitCreateNodeEvent" @update-node="transmitUpdateNodeEvent" @delete-node="transmitDeleteNodeEvent"/>
 

@@ -12,21 +12,21 @@
                             v-model="submittedAnswer.answer" required>
                     </div>
                     <div class="button-general-div">
-                        <button type="submit" class="btn btn-dark">Je tente !</button>
+                        <button type="submit" class="btn btn-dark"><i class="bi bi-send"></i> Je tente !</button>
                     </div>
                 </form>
-                <p v-if="isWrongAnswer">Ce n'est pas la bonne réponse</p>
+                <p v-if="isWrongAnswer"><i class="bi bi-x-lg"></i> Ce n'est pas la bonne réponse</p>
 
                 <div v-for="clue in step.clues" v-bind:key="clue.id">
                     <div class="button-general-div"><button class="btn btn-secondary btn-sm"
-                            @click="showClue(clue)">Indice</button></div>
+                            @click="showClue(clue)"><i class="bi bi-search"></i> Indice</button></div>
                 </div>
                 <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
                 <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
                     @message-read="disableSuccessModal"></success-modal>
             </div>
             <div v-else>
-                <p>Enigme terminée <i class="bi bi-check-lg"></i> </p>
+                <p> <i class="bi bi-check-lg"></i> Enigme résolue</p>
             </div>
         </div>
 </template>
