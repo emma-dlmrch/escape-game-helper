@@ -34,6 +34,9 @@ export default {
     }
     
   },
+  updated(){
+    this.$store.dispatch('checkTokenValidity') //temporary place
+  },
 
   methods:{
       logout(){

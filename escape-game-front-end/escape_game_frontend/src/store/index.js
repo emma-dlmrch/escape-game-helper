@@ -1,5 +1,6 @@
 import { createStore } from "vuex"
 import axios from "axios";
+import router from "@/router";
 
 
 function parseJwt(token) {
@@ -112,7 +113,9 @@ export default createStore({
 
                 //if token is expired logout
                 if (currentDate > expirationDate) {
+                    alert("Vous avez été déconnecté.e")
                     context.dispatch('logout')
+                    router.push({name : 'WelcomePage'})
                 // if token is expiring in less than 5 minutes, ask for a refresh 
                 } else if (currentDate < expirationDate && expirationDate - currentDate < 300) {
                     axios.post('token/refresh/',{
