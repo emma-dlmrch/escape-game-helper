@@ -25,13 +25,14 @@ export default {
 
   beforeCreate(){
     this.$store.commit('initializeStore')
+    this.$store.dispatch('checkTokenValidity') //temporary place
     const token = this.$store.state.token
-
     if (token ) {
-      axios.defaults.headers.common['Authorization'] = "Bearer " + token
+      axios.defaults.headers.common['Authorization'] = "Bearer " + token.access
     } else {
       delete axios.defaults.headers.common["Authorization"]
     }
+    
   },
 
   methods:{

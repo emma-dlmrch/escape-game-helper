@@ -129,7 +129,6 @@ export default {
             }
         },
         modifyClue(clueId){
-            console.log(clueId)
             this.$router.push({ name: 'UpdateClue', params: { gameId: this.gameId, stepId: this.stepId, clueId:clueId } })
         }
 

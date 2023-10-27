@@ -1,4 +1,12 @@
 import { createStore } from "vuex"
+import axios from "axios";
+
+
+function parseJwt(token) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+}
 
 export default createStore({
     state: {
@@ -13,7 +21,7 @@ export default createStore({
     mutations: {
         initializeStore(state) {
             if (localStorage.getItem('token')) {
-                state.token = localStorage.getItem('token')
+                state.token = JSON.parse(localStorage.getItem('token'))
                 state.isAuthenticated = true
                 state.userId = localStorage.getItem('userId')
 
@@ -32,7 +40,7 @@ export default createStore({
         setToken(state, token) {
             state.token = token
             state.isAuthenticated = true
-            localStorage.setItem("token", token)
+            localStorage.setItem("token", JSON.stringify(token))
         },
         removeToken(state) {
             state.token = ''
@@ -95,6 +103,39 @@ export default createStore({
     },
 
     actions: {
+        checkTokenValidity(context){
+            console.log("Validity of token is checked")
+            if (this.state.token) {
+                let token = JSON.parse(localStorage.getItem('token'))
+                let expirationDate = parseJwt(this.state.token.access).exp
+                let currentDate = Math.floor(Date.now() / 1000)
+
+                //if token is expired logout
+                if (currentDate > expirationDate) {
+                    context.dispatch('logout')
+                // if token is expiring in less than 5 minutes, ask for a refresh 
+                } else if (currentDate < expirationDate && expirationDate - currentDate < 300) {
+                    axios.post('token/refresh/',{
+                        refresh: token.refresh
+                    })
+                    .then(response => {
+                        token.access = response.data.access
+                        context.commit('setToken', token)
+                        axios.defaults.headers.common['Authorization'] = "Bearer " + token.access
+                    }, (error) => {
+                        console.log(error)
+                    })
+                }
+
+            }
+
+        },
+
+        logout(context){
+            context.commit('removeToken')
+            context.commit('removeUserId')
+            //+redirect to main page
+        }
 },
     modules: {
 
