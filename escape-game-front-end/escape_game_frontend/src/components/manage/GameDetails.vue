@@ -7,8 +7,7 @@
         </div>
         <div class="form-group">
             <label for="description">Text descriptif</label>
-            <textarea class="form-control" v-model="game.description" id="description" rows="3"
-                required></textarea>
+            <textarea class="form-control" v-model="game.description" id="description" rows="3" required></textarea>
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
@@ -27,15 +26,17 @@
             <tbody>
                 <tr v-for="step in this.steps" v-bind:key="step.id">
                     <th scope="row"><i class="bi bi-journal-text"></i> {{ step.title }}</th>
-                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;
-                        <button @click="deleteStep(step.id)" type="button"
-                            class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
+                    <td><button @click="modifyStep(step.id)" type="button" class="btn btn-dark btn-sm"><i
+                                class="bi bi-pencil"></i> Gérer</button>&nbsp;
+                        <button @click="deleteStep(step.id)" type="button" class="btn btn-outline-dark btn-sm"><i
+                                class="bi bi-trash"></i> Supprimer</button>
                     </td>
                 </tr>
                 <tr>
                     <th><input class="form-control small-input" type="text" v-model="newStep.title"
                             placeholder="Nouvelle étape" maxlength="50"></th>
-                    <td><button @click="createNewStep" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i> Créer</button></td>
+                    <td><button @click="createNewStep" type="button" class="btn btn-dark btn-sm"><i
+                                class="bi bi-plus-lg"></i> Créer</button></td>
                 </tr>
             </tbody>
         </table>
@@ -52,14 +53,16 @@
             <tbody>
                 <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
                     <th scope="row"><i class="bi bi-share"></i> {{ scenario.name }}</th>
-                    <td><button @click="modifyScenario(scenario.id)" type="button"
-                            class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Gérer</button>&nbsp;<button @click="deleteScenario(scenario.id)"
-                            type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i>  Supprimer</button></td>
+                    <td><button @click="modifyScenario(scenario.id)" type="button" class="btn btn-dark btn-sm"><i
+                                class="bi bi-pencil"></i> Gérer</button>&nbsp;<button @click="deleteScenario(scenario.id)"
+                            type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
+                    </td>
                 </tr>
                 <tr>
                     <th><input class="form-control small-input" type="text" v-model="newScenario.name"
                             placeholder="Nouveau scénario" maxlength="50"></th>
-                    <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i> Créer</button></td>
+                    <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i
+                                class="bi bi-plus-lg"></i> Créer</button></td>
                 </tr>
             </tbody>
         </table>
@@ -109,53 +112,50 @@ export default {
         },
 
         createNewStep() {
-            try {
-                if (this.newStep.title.length < 1) { this.newStep.title = 'Etape sans nom' }
-                this.newStep.game = this.gameId
-                axios.post('step/', this.newStep).then((response) => {
-                    console.log(response)
-                    this.newStep.title = "";
-                    this.getGameData()
-                });
-            } catch (error) {
+            if (this.newStep.title.length < 1) { this.newStep.title = 'Etape sans nom' }
+            this.newStep.game = this.gameId
+            axios.post('step/', this.newStep).then((response) => {
+                console.log(response)
+
+                this.newStep.title = "";
+                this.getGameData()
+            }).catch((error) => {
                 console.error("Error during form submission:", error);
-            }
+            });
         },
 
         createNewScenario() {
-            try {
-                if (this.newScenario.name.length < 1) { this.newScenario.name = 'Scenario sans nom' }
-                this.newScenario.game = this.gameId
-                axios.post('scenario/', this.newScenario).then((response) => {
-                    console.log(response)
-                    this.newScenario.title = "";
-                    this.getGameData()
-                });
-            } catch (error) {
+            if (this.newScenario.name.length < 1) { this.newScenario.name = 'Scenario sans nom' }
+            this.newScenario.game = this.gameId
+            axios.post('scenario/', this.newScenario).then((response) => {
+                console.log(response)
+                this.newScenario.title = "";
+                this.getGameData()
+            }).catch((error) => {
                 console.error("Error during form submission:", error);
-            }
+            });
         },
 
         deleteScenario(scenarioId) {
-            if (confirm("Etes-vous sûr.e de vouloir supprimer ce scénario ?")){
+            if (confirm("Etes-vous sûr.e de vouloir supprimer ce scénario ?")) {
                 axios.delete('scenario/' + scenarioId + "/")
-                .then(response => {
-                    console.log(response);
-                    this.getGameData();
-                },
-                    (error) => { console.log("Error", error) });
+                    .then(response => {
+                        console.log(response);
+                        this.getGameData();
+                    },
+                        (error) => { console.log("Error", error) });
             }
-            
+
         },
 
         deleteStep(stepId) {
-            if (confirm("Etes-vous sûr.e de vouloir supprimer cette étape de jeu ?")){
+            if (confirm("Etes-vous sûr.e de vouloir supprimer cette étape de jeu ?")) {
                 axios.delete('step/' + stepId + "/")
-                .then(response => {
-                    console.log(response);
-                    this.getGameData();
-                },
-                    (error) => { console.log("Error", error) });
+                    .then(response => {
+                        console.log(response);
+                        this.getGameData();
+                    },
+                        (error) => { console.log("Error", error) });
             }
         },
 
@@ -166,16 +166,15 @@ export default {
         modifyScenario(scenarioId) {
             this.$router.push({ name: 'ScenarioDetails', params: { gameId: this.gameId, scenarioId: scenarioId } })
         },
-        modifyGame() {
-            try {
+        modifyGame(e) {
+            e.preventDefault();
                 axios.put('game/' + this.gameId + "/", this.game).then((response) => {
                     console.log(response)
+                    this.getGameData(); //pourquoi il est pas dans le then lui ?
+                }, (error) => {
+                    console.log(error)
                 }
                 );
-                this.getGameData();
-            } catch (error) {
-                console.error("Error during form submission:", error);
-            }
         },
     },
 

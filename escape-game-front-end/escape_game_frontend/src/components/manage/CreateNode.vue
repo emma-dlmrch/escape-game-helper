@@ -72,20 +72,18 @@ export default {
         },
 
         createNewNode() {
-            try {
-                this.newNode.scenario = this.scenarioId
-                this.newNode.parent_node = this.parentNodeId
-                axios.post('scenario_node/', this.newNode).then((response) => {
-                    console.log(response)
-                    // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
-                    this.$emit('node-created')
-                });
-            } catch (error) {
+            this.newNode.scenario = this.scenarioId
+            this.newNode.parent_node = this.parentNodeId
+            axios.post('scenario_node/', this.newNode).then((response) => {
+                console.log(response)
+                // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
+                this.$emit('node-created')
+            }).catch((error) => {
                 console.error("Error during form submission:", error);
-            }
+            });
         },
-        goBack(e){
-            if(e.target.className.includes("background-modal")||e.target.className.includes("close-btn")){
+        goBack(e) {
+            if (e.target.className.includes("background-modal") || e.target.className.includes("close-btn")) {
                 this.$emit('node-created');
             }
         },

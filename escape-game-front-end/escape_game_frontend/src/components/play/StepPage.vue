@@ -1,34 +1,34 @@
 <template>
-        <h1>{{ step.title }}</h1>
-        <p>{{ step.text }}</p>
+    <h1>{{ step.title }}</h1>
+    <p>{{ step.text }}</p>
 
-        <div v-if="step.has_answer">
-            <div v-if="!scenarioNode.resolved">
+    <div v-if="step.has_answer">
+        <div v-if="!scenarioNode.resolved">
 
-                <form @submit="submitAnswer">
-                    <div class="form-group">
-                        <label for="answer">Je réponds : </label>
-                        <input @click="disableWrongAnswerText" id="answer" type="text" class="form-control small-input"
-                            v-model="submittedAnswer.answer" required>
-                    </div>
-                    <div class="button-general-div">
-                        <button type="submit" class="btn btn-dark"><i class="bi bi-send"></i> Je tente !</button>
-                    </div>
-                </form>
-                <p v-if="isWrongAnswer"><i class="bi bi-x-lg"></i> Ce n'est pas la bonne réponse</p>
-
-                <div v-for="clue in step.clues" v-bind:key="clue.id">
-                    <div class="button-general-div"><button class="btn btn-secondary btn-sm"
-                            @click="showClue(clue)"><i class="bi bi-search"></i> Indice</button></div>
+            <form @submit="submitAnswer">
+                <div class="form-group">
+                    <label for="answer">Je réponds : </label>
+                    <input @click="disableWrongAnswerText" id="answer" type="text" class="form-control small-input"
+                        v-model="submittedAnswer.answer" required>
                 </div>
-                <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
-                <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
-                    @message-read="disableSuccessModal"></success-modal>
+                <div class="button-general-div">
+                    <button type="submit" class="btn btn-dark"><i class="bi bi-send"></i> Je tente !</button>
+                </div>
+            </form>
+            <p v-if="isWrongAnswer"><i class="bi bi-x-lg"></i> Ce n'est pas la bonne réponse</p>
+
+            <div v-for="clue in step.clues" v-bind:key="clue.id">
+                <div class="button-general-div"><button class="btn btn-secondary btn-sm" @click="showClue(clue)"><i
+                            class="bi bi-search"></i> Indice</button></div>
             </div>
-            <div v-else>
-                <p> <i class="bi bi-check-lg"></i> Enigme résolue</p>
-            </div>
+            <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
+            <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
+                @message-read="disableSuccessModal"></success-modal>
         </div>
+        <div v-else>
+            <p> <i class="bi bi-check-lg"></i> Enigme résolue</p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -100,27 +100,25 @@ export default {
         },
         submitAnswer(e) {
             e.preventDefault()
-            try {
-                axios.post('play/scenario_node/answer/' + this.scenarioNodeId + "/", this.submittedAnswer).then((response) => {
-                    if (response.data.message == false) {
-                        this.isWrongAnswer = true
-                        this.submittedAnswer.answer='';
-                    } else {
-                        this.submittedAnswer.answer = '';
-                        this.isWrongAnswer = false
-                        this.nextNodes = response.data
-                        this.nextNodes.forEach((node) => {
-                            node.new = true
-                            node.info = false,
-                                node.resolved = false,
-                                this.$store.commit('unlockNode', node)
-                        });
-                        this.isRightAnswer = true;
-                    }
-                });
-            } catch (error) {
+            axios.post('play/scenario_node/answer/' + this.scenarioNodeId + "/", this.submittedAnswer).then((response) => {
+                if (response.data.message == false) {
+                    this.isWrongAnswer = true
+                    this.submittedAnswer.answer = '';
+                } else {
+                    this.submittedAnswer.answer = '';
+                    this.isWrongAnswer = false
+                    this.nextNodes = response.data
+                    this.nextNodes.forEach((node) => {
+                        node.new = true
+                        node.info = false,
+                            node.resolved = false,
+                            this.$store.commit('unlockNode', node)
+                    });
+                    this.isRightAnswer = true;
+                }
+            }).catch((error) => {
                 console.error("Error during form submission:", error);
-            }
+            });
         },
         disableWrongAnswerText() {
             this.isWrongAnswer = false
@@ -139,12 +137,12 @@ export default {
             this.$store.commit('setNodeResolved', this.scenarioNode)
         },
         isUnlocked(nodeId) {
-            for (var i = 0; i<this.$store.state.unlockedNodes.length ; i++) {
-                if (this.$store.state.unlockedNodes[i].id == nodeId){
+            for (var i = 0; i < this.$store.state.unlockedNodes.length; i++) {
+                if (this.$store.state.unlockedNodes[i].id == nodeId) {
                     return true
                 }
             }
-            this.$router.push({name : 'ErrorView'})
+            this.$router.push({ name: 'ErrorView' })
             return false
         }
     },
@@ -152,7 +150,7 @@ export default {
         if (this.isUnlocked(this.scenarioNodeId)) {
             this.getNodeData()
         }
-        
+
     },
     updated() {
         if (this.scenarioNodeId !== this.$route.params.scenarioNodeId) {

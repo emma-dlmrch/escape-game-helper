@@ -93,24 +93,10 @@ export default {
         },
 
         modifyStep() {
-            try {
-                axios.put('step/' + this.stepId + "/", this.step).then((response) => {
-                    console.log(response)
-                    
-                    // if (response.status === 401) {
-                    // console.log("ERREUR 401")
-                    // this.$router.push({ name: 'LogIn' }) // does not work
-                    // }
-
-                }
-                );
+            axios.put('step/' + this.stepId + "/", this.step).then(() => {
                 this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
-            } catch (error) {
-                // if (error.response.status === 401) {
-                //     console.log("ERREUR 401")
-                //     this.$router.push({ name: 'LogIn' }) // does not work
-                // }
             }
+            );
         },
 
         cancel() {
@@ -118,17 +104,15 @@ export default {
         },
         createNewClue() {
 
-            try {
-                if (this.newClue.title.length < 1) { this.newClue.title = 'Indice sans nom' }
-                if (this.newClue.text.length < 1) { this.newClue.text = 'Pas de description' }
-                this.newClue.step = this.stepId
-                axios.post('clue/', this.newClue).then((response) => {
-                    console.log(response)
-                    this.getStepData()
-                });
-            } catch (error) {
+            if (this.newClue.title.length < 1) { this.newClue.title = 'Indice sans nom' }
+            if (this.newClue.text.length < 1) { this.newClue.text = 'Pas de description' }
+            this.newClue.step = this.stepId
+            axios.post('clue/', this.newClue).then((response) => {
+                console.log(response)
+                this.getStepData()
+            }).catch((error) => {
                 console.error("Error during form submission:", error);
-            }
+            });
 
         },
 
