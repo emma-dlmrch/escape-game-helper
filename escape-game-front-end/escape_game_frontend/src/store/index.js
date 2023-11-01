@@ -102,7 +102,7 @@ export default createStore({
         logout(context) {
             context.commit('removeToken')
             context.commit('removeUserId')
-            alert("Vous avez été deconnecté.e")
+            // alert("Vous avez été deconnecté.e")
             router.push({ name: 'WelcomePage' })
         },
     },
