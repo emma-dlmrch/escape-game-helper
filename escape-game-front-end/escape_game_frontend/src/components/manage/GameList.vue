@@ -75,7 +75,7 @@ export default {
             this.getData();
           },
             (error) => {
-              console.log(error)
+              console.error(error)
             });
       }
 
