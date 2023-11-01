@@ -10,14 +10,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.js"
 import "./assets/styles.css";
 
+import config from './settings.js';
+
+
 // import VueBlocksTree from 'vue3-blocks-tree';
 // import 'vue3-blocks-tree/dist/vue3-blocks-tree.css';
 
 //axios.defaults.withCredentials = true
 // axios.defaults.headers.common['Accept'] = "application/json"
 // axios.defaults.headers.common['Content-Type'] = "application/json"
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
-// let defaultoptions = {treeName:'blocks-tree'}
+axios.defaults.baseURL = config.API_URL;
 
 
 const app = createApp(App);
