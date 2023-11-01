@@ -14,21 +14,14 @@ from datetime import timedelta
 import logging
 from pathlib import Path
 
+from .local_settings import *
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q5u#4mz2pp!9fb1bw!f2$ntu#w$g)n@+++qiz5lot+1$^7g-9@'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -151,8 +144,8 @@ logging.basicConfig(
 )
 
 SIMPLE_JWT = {
-'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
-'REFRESH_TOKEN_LIFETIME': timedelta(days=20),
+'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
+'REFRESH_TOKEN_LIFETIME': timedelta(seconds=20),
 # 'ROTATE_REFRESH_TOKENS': False,
 # 'BLACKLIST_AFTER_ROTATION': True,
 

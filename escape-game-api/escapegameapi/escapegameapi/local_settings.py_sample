@@ -1,0 +1,8 @@
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-q5u#4mz2pp!9fb1bw!f2$ntu#w$g)n@+++qiz5lot+1$^7g-9@'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
