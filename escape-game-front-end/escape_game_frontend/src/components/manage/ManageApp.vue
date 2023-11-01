@@ -10,14 +10,14 @@ import store from '../../store/index';
 
 const createAxiosResponseInterceptor = () => {
   // inspired from https://stackoverflow.com/questions/51646853/automating-access-token-refreshing-via-interceptors-in-axios
-  const interceptor = axios.interceptors.response.use(
+  axios.interceptors.response.use(
     (response) => response,
     (error) => {
       // Reject promise if usual error
       if (error.response.status !== 401) {
         return Promise.reject(error);
       }
-      axios.interceptors.response.eject(interceptor);
+      axios.interceptors.response.clear();
       let token = JSON.parse(localStorage.getItem('token'))
 
       return axios

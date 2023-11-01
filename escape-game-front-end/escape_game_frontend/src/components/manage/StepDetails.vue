@@ -95,8 +95,9 @@ export default {
         modifyStep() {
             axios.put('step/' + this.stepId + "/", this.step).then(() => {
                 this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
-            }
-            );
+            }).catch((e) => {
+                console.log("Couldn't edit step", e);
+            });
         },
 
         cancel() {
