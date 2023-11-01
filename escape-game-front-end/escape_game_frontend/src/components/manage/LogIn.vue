@@ -43,10 +43,10 @@ export default {
             axios
                 .post('token/', formData)
                 .then(response => {
-                    const token = response.data.access
+                    const token = response.data
                     this.$store.commit('setToken', token)
-                    axios.defaults.headers.common['Authorization'] = "Bearer " + token
-                    const userId = jwt_decode(token).user_id
+                    axios.defaults.headers.common['Authorization'] = "Bearer " + token.access
+                    const userId = jwt_decode(token.access).user_id
                     this.$store.commit('setUserId', userId)
                     this.$router.push({ name: 'GameList' })
                     

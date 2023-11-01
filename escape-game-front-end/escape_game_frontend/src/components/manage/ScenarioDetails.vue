@@ -13,7 +13,8 @@
     </form>
     <div>
         <p>Pour jouer à ce scénario, dis à tes joueurs et joueuses de
-            se rendre <router-link :to="{name : 'GameHomepage'}">ici</router-link> et d'entrer le code suivant : <b>{{ scenarioId }}</b> !</p>
+            se rendre <router-link :to="{ name: 'GameHomepage' }">ici</router-link> et d'entrer le code suivant : <b>{{
+                scenarioId }}</b> !</p>
         <p></p>
     </div>
     <h2>Organiser les étapes</h2>
@@ -115,14 +116,12 @@ export default {
         createFirstNode() {
             if (this.newNode.step) {
                 this.newNode.parent_node = ''
-                try {
-                    this.newNode.scenario = this.scenarioId
-                    axios.post('scenario_node/', this.newNode).then(() => {
-                        this.getData()
-                    });
-                } catch (error) {
+                this.newNode.scenario = this.scenarioId
+                axios.post('scenario_node/', this.newNode).then(() => {
+                    this.getData()
+                }).catch((error) => {
                     console.error("Error during form submission:", error);
-                }
+                });
             }
 
         },

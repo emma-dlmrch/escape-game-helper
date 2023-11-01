@@ -43,8 +43,9 @@ export default {
 
   methods:{
     logout(){
-        this.$store.commit('removeToken')
-        this.$store.commit('removeUserId')
+        // this.$store.commit('removeToken')
+        // this.$store.commit('removeUserId')
+        this.$store.dispatch('logout')
         this.$router.push({name :'LogIn'})
     }
 }
