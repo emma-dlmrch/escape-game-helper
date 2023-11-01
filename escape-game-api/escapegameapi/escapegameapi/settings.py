@@ -130,12 +130,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#for local testing
-CORS_ALLOWED_ORIGINS = [
-   'http://localhost:8080',
-   'http://127.0.0.1:8000'
-]
-
 AUTH_USER_MODEL = 'authentication.User'
 
 logging.basicConfig(
