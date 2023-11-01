@@ -15,7 +15,7 @@
                 <small id="emailHelp" v-if="error.code === 'ERR_NETWORK'" class="form-text text-muted">Oops, le web service
                     n'est pas accessible</small>
             </div>
-            <button type="submit" class="btn btn-primary">Se connecter</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-lock"></i> Se connecter</button>
         </form>
     </div>
 </template>
@@ -49,7 +49,7 @@ export default {
                     const userId = jwt_decode(token.access).user_id
                     this.$store.commit('setUserId', userId)
                     this.$router.push({ name: 'GameList' })
-                    
+
                 })
                 .catch(error => {
                     console.log(error)
