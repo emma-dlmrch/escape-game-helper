@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import PlayApp from './PlayApp.vue'
 import store from './store'
 import axios from 'axios'
 import router from './router'
@@ -9,24 +8,14 @@ import 'treeflex/dist/css/treeflex.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.js"
 import "./assets/styles.css";
-
 import config from './settings.js';
 
 
-// import VueBlocksTree from 'vue3-blocks-tree';
-// import 'vue3-blocks-tree/dist/vue3-blocks-tree.css';
-
-//axios.defaults.withCredentials = true
-// axios.defaults.headers.common['Accept'] = "application/json"
-// axios.defaults.headers.common['Content-Type'] = "application/json"
 axios.defaults.baseURL = config.API_URL;
 
 
 const app = createApp(App);
 
-// app.use(store).use(router).use(VueBlocksTree,defaultoptions).mount('#app')
 app.use(store).use(router).mount('#app')
 
-// const playApp = createApp(PlayApp);
-// playApp.use(store).use(router).mount('#playApp')
 

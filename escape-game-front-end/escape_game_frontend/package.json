@@ -16,6 +16,7 @@
     "jwt-decode": "^3.1.2",
     "treeflex": "^2.0.1",
     "vue": "^3.2.13",
+    "vue-client-recaptcha": "^1.1.4",
     "vue-router": "^4.2.5",
     "vuedraggable": "^2.24.3",
     "vuex-persistedstate": "^4.1.0"
