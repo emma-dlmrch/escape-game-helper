@@ -9,7 +9,8 @@ export default createStore({
         userId: '',
         gameId: '',
         unlockedNodes: [],
-        currentPlayedScenarioId: ''
+        currentPlayedScenarioId: '',
+        currentPlayedGameName:''
     },
 
     mutations: {
@@ -31,6 +32,7 @@ export default createStore({
                 state.unlockedNodes = "[]"
             }
             state.currentPlayedScenarioId = localStorage.getItem('currentPlayedScenarioId') ?? ''
+            state.currentPlayedGameName = localStorage.getItem('currentPlayedGameName') ?? ''
         },
         setToken(state, token) {
             state.token = token
@@ -95,6 +97,11 @@ export default createStore({
         setCurrentPlayedScenarioId(state, scenarioId) {
             state.currentPlayedScenarioId = scenarioId
             localStorage.setItem('currentPlayedScenarioId', scenarioId)
+        },
+
+        setCurrentPlayedGameName(state, gameName) {
+            state.currentPlayedGameName = gameName
+            localStorage.setItem('currentPlayedGameName', gameName)
         },
     },
 

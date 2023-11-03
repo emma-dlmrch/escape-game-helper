@@ -59,7 +59,7 @@ export default {
 
 
                 }, (error) => {
-                    if (error.response.status=="404") { //what is better?
+                    if (error.response.status=="404") {
                         this.wrongScenarioCode = true
                         this.scenarioId=''
                     }

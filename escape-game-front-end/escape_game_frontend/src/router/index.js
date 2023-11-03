@@ -11,43 +11,45 @@ const routes = [
             {
                 path: 'signup',
                 name: 'SignUp',
-                component: () => import("../components/manage/SignUp.vue")
+                component: () => import("../components/manage/SignUp.vue"),
+                meta: { title: 'Inscription - Escape Game Helper' }
             },
             {
                 path: 'login',
                 name: 'LogIn',
-                component: () => import("../components/manage/LogIn.vue")
+                component: () => import("../components/manage/LogIn.vue"),
+                meta: { title: 'Login - Escape Game Helper' }
             },
             { 
                 path: 'update-account',
                 name: 'UpdateAccount',
                 component: () => import("../components/manage/UpdateAccount.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true, title: 'Mon compte - Escape Game Helper'  }
             },
             {
                 path: 'games',
                 name: 'GameList',
                 alias: [''],
                 component: () => import("../components/manage/GameList.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true, title: 'Mes jeux' }
             },
             { 
                 path: 'games/:id',
                 name: 'GameDetails',
                 component: () => import("../components/manage/GameDetails.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true, title: 'Gérer un jeu'  }
             },
             { 
                 path: 'games/:gameId/step/:stepId',
                 name: 'StepDetails',
                 component: () => import("../components/manage/StepDetails.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true, title: 'Etape'  }
             },
             { 
                 path: 'games/:gameId/step/:stepId/clue/:clueId',
                 name: 'UpdateClue',
                 component: () => import("../components/manage/UpdateClue.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true, title: 'Indice'  }
             },
             { 
                 path: 'games/:gameId/scenario/:scenarioId',
@@ -128,7 +130,8 @@ const router = createRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
-    // ecrire une methode qui checke la validité du token à terme
+    document.title = to.meta?.title ?? 'Escape Game Helper'
+
     if (to.matched.some(record => record.meta.requiresLogin) && store.state.isAuthenticated === false) {
         next({name :'LogIn'})
     } else {

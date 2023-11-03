@@ -2,16 +2,17 @@
     <h1>Jeu : {{ game.name }}</h1>
     <form @submit="modifyGame">
         <div class="form-group">
-            <label for="name">Nom</label>
-            <input type="text" id="name" class="form-control" v-model.lazy="game.name" required>
+            <label for="name">Nom :</label>
+            <input type="text" id="name" class="form-control" v-model.lazy="game.name" @click="disableWasUpdatedMessage" required>
         </div>
         <div class="form-group">
-            <label for="description">Text descriptif</label>
-            <textarea class="form-control" v-model="game.description" id="description" rows="3" required></textarea>
+            <label for="description">Text descriptif :</label>
+            <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea>
         </div>
         <div class="button-general-div">
-            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
         </div>
+        <small v-if ="wasUpdated" class="form-text text-muted"><i class="bi bi-check"></i> Modifications enregistrées !</small>
     </form>
 
     <h2>Liste d'étapes</h2>
@@ -67,6 +68,8 @@
             </tbody>
         </table>
     </div>
+
+    <button @click="cancel" class="btn btn-dark btn-sm"><i class="bi bi-arrow-left"></i> Retour</button>
 </template>
 
 <script>
@@ -91,11 +94,10 @@ export default {
             newScenario: {
                 name: '',
                 game: ''
-            }
+            },
+            wasUpdated: false
         }
 
-    },
-    computed: {
     },
 
     methods: {
@@ -105,6 +107,8 @@ export default {
                     this.game = response.data
                     this.steps = response.data.steps
                     this.scenarios = response.data.scenarios
+                    document.title = "Gérer le jeu : " + this.game.name;
+
                 }, (error) => {
                     console.log(error)
                 }
@@ -129,7 +133,7 @@ export default {
             this.newScenario.game = this.gameId
             axios.post('scenario/', this.newScenario).then((response) => {
                 console.log(response)
-                this.newScenario.title = "";
+                this.newScenario.name = "";
                 this.getGameData()
             }).catch((error) => {
                 console.error("Error during form submission:", error);
@@ -169,12 +173,22 @@ export default {
         modifyGame(e) {
             e.preventDefault();
                 axios.put('game/' + this.gameId + "/", this.game).then((response) => {
-                    console.log(response)
-                    this.getGameData(); //pourquoi il est pas dans le then lui ?
+                    if (response.status == 200) {
+                        this.wasUpdated = true
+                    }
+                    this.getGameData();
                 }, (error) => {
                     console.log(error)
                 }
                 );
+        },
+
+        disableWasUpdatedMessage(){
+            this.wasUpdated = false
+        },
+
+        cancel() {
+            this.$router.push({ name: 'GameList'})
         },
     },
 

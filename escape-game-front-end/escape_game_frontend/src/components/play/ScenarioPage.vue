@@ -1,8 +1,12 @@
 <template>
 <h1>{{ game.name }}</h1>
 <p>{{ game.description }}</p>
-<button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
-
+<div class="button-general-div">
+    <button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
+</div>
+<div class="button-general-div">
+<button class="btn btn-dark" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
+</div>
 </template>
 <script>
 
@@ -52,6 +56,8 @@ export default {
                 .then(response => {
                     this.game = response.data;
                     console.log(response)
+                    this.$store.commit('setCurrentPlayedGameName', this.game.name)
+                    document.title = `${this.game.name}`
 
                 }, (error) => {
                     console.log(error)
@@ -64,6 +70,10 @@ export default {
             this.scenario.first_node.info = false
             this.$store.commit('unlockNode', this.scenario.first_node)
             this.$router.push({ name: 'StepPage', params: { scenarioNodeId: this.scenario.first_node.id }})
+        },
+
+        cancel(){
+            this.$router.push({ name: 'GameHomepage'})
         }
     },
     created(){   

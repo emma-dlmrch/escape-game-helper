@@ -50,6 +50,7 @@ export default {
                 text: '',
                 clues: [],
                 has_answer: '',
+                game_name:''
             },
             submittedAnswer: {
                 answer: ''
@@ -76,6 +77,8 @@ export default {
                     if (this.step.has_answer === false) {
                         this.$store.commit('setNodeInfo', this.scenarioNode)
                     }
+                    this.$store.commit('setCurrentPlayedGameName', this.step.game_name)
+                    document.title = `${this.step.title} - ${this.step.game_name}`
                 }, (error) => {
                     console.log(error)
                 }
@@ -155,7 +158,6 @@ export default {
     updated() {
         if (this.scenarioNodeId !== this.$route.params.scenarioNodeId) {
             this.scenarioNodeId = this.$route.params.scenarioNodeId;
-            // this.isUnlocked(this.scenarioNodeId)
             this.getNodeData()
         }
     }

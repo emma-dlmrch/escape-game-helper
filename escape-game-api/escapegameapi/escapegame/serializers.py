@@ -222,11 +222,13 @@ class ScenarioPlaySerializer(ModelSerializer):
     
 class StepPlaySerializer(ModelSerializer):
 
+    game_name = serializers.SerializerMethodField()
+
     has_answer = serializers.SerializerMethodField()
     
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'clues','has_answer']
+        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
@@ -237,6 +239,9 @@ class StepPlaySerializer(ModelSerializer):
         if instance.answer:
             return True
         return False
+    
+    def get_game_name(self, instance):
+        return instance.game.name
     
 class ScenarioNodePlaySerializer(ModelSerializer):
 

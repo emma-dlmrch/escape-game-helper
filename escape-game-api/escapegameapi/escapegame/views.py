@@ -32,7 +32,6 @@ class MultipleSerializerMixin:
 
 class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     """Return games created by request user"""
-    #Works only with detailed view, test what happens for modif and deletion
     permission_classes = [IsGameAuthor]
 
     pagination_class = None #added 
@@ -43,30 +42,8 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
 
     def get_queryset(self):
         
-        queryset = Game.objects.filter(author=self.request.user) #commented for testing purposes
-        # queryset = Game.objects.all()
+        queryset = Game.objects.filter(author=self.request.user)
         return queryset
-    
-# Issue with detailed view, try to refactor, does not solve the issue
-# class GameListAPIView(APIView):
- 
-#     def get(self, *args, **kwargs):
-#         games = Game.objects.filter(author=self.request.user)
-#         serializer = GameListSerializer(games, many=True)
-#         return Response(serializer.data)
-
-# class GameDetailsAPIView(APIView):
-
-#     def get_object(self, game_id):
-#         try:
-#             return Game.objects.get(id = game_id)
-#         except Game.DoesNotExist:
-#             raise Http404
-
-#     def get(self, request, game_id, format=None):
-#         game = self.get_object(game_id)
-#         serializer = GameDetailSerializer(game)
-#         return Response(serializer.data)
     
 class StepViewSet(MultipleSerializerMixin,ModelViewSet):
 
@@ -77,7 +54,6 @@ class StepViewSet(MultipleSerializerMixin,ModelViewSet):
     detail_serializer_class = StepDetailSerializer
 
     def get_queryset(self):
-        #queryset = Step.objects.all()
         queryset = Step.objects.filter(game__author=self.request.user)
         return queryset
     
@@ -90,7 +66,6 @@ class ScenarioViewSet(MultipleSerializerMixin,ModelViewSet):
     detail_serializer_class = ScenarioDetailSerializer
 
     def get_queryset(self):
-        #queryset = Scenario.objects.all()
         queryset = Scenario.objects.filter(game__author=self.request.user)
         return queryset
     
@@ -100,13 +75,11 @@ class ScenarioNodeViewSet(MultipleSerializerMixin,ModelViewSet):
 
     serializer_class = ScenarioNodeListSerializer
 
-    detail_serializer_class = ScenarioNodeDetailSerializer #We can come back to the details serializer now that treeSerializer is called at Scenario level
-    #detail_serializer_class = ScenarioNodeTreeSerializer
+    detail_serializer_class = ScenarioNodeDetailSerializer
 
     def get_queryset(self):
         
         queryset = ScenarioNode.objects.filter(scenario__game__author=self.request.user)
-        # queryset = ScenarioNode.objects.all()
         return queryset
 
     

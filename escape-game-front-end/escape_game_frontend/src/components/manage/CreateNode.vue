@@ -76,7 +76,6 @@ export default {
             this.newNode.parent_node = this.parentNodeId
             axios.post('scenario_node/', this.newNode).then((response) => {
                 console.log(response)
-                // this.$router.push({ name: 'ScenarioDetails', params: { gameid: this.gameId, scenarioId: this.scenarioId } })
                 this.$emit('node-created')
             }).catch((error) => {
                 console.error("Error during form submission:", error);

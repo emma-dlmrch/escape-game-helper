@@ -3,21 +3,23 @@
     <form @submit.prevent="modifyStep">
         <div class="form-group">
             <label for="step-name">Nom de l'étape :</label>
-            <input id="step-name" type="text" class="form-control" v-model.lazy="step.title" required>
+            <input id="step-name" type="text" class="form-control" v-model.lazy="step.title" @click="disableWasUpdatedMessage" required>
         </div>
         <div class="form-group">
             <label for="step-text">Texte :</label>
-            <textarea id="step-text" class="form-control" v-model="step.text" rows="5" required></textarea>
+            <textarea id="step-text" class="form-control" v-model="step.text" rows="5" @click="disableWasUpdatedMessage" required></textarea>
         </div>
         <div class="form-group">
             <label for="step-answer">Réponse attendue :</label>
-            <input id="step-answer" type="text" class="form-control" v-model="step.answer">
+            <input id="step-answer" type="text" class="form-control" v-model="step.answer" @click="disableWasUpdatedMessage">
             <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de
                 réponse</small>
         </div>
         <div>
-            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
+            
         </div>
+        <small v-if ="wasUpdated" class="form-text text-muted"><i class="bi bi-check"></i> Modifications enregistrées !</small>
     </form>
 
     <h2>Les indices</h2>
@@ -74,7 +76,8 @@ export default {
                 title: '',
                 text: '',
                 step: ''
-            }
+            },
+            wasUpdated: false
         }
     },
 
@@ -93,8 +96,10 @@ export default {
         },
 
         modifyStep() {
-            axios.put('step/' + this.stepId + "/", this.step).then(() => {
-                this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
+            axios.put('step/' + this.stepId + "/", this.step).then((response) => {
+                if (response.status == 200) {
+                    this.wasUpdated = true
+                }
             }).catch((e) => {
                 console.log("Couldn't edit step", e);
             });
@@ -110,6 +115,8 @@ export default {
             this.newClue.step = this.stepId
             axios.post('clue/', this.newClue).then((response) => {
                 console.log(response)
+                this.newClue.title = ''
+                this.newClue.text = ''
                 this.getStepData()
             }).catch((error) => {
                 console.error("Error during form submission:", error);
@@ -129,6 +136,10 @@ export default {
         },
         modifyClue(clueId) {
             this.$router.push({ name: 'UpdateClue', params: { gameId: this.gameId, stepId: this.stepId, clueId: clueId } })
+        },
+
+        disableWasUpdatedMessage(){
+            this.wasUpdated = false
         }
 
 

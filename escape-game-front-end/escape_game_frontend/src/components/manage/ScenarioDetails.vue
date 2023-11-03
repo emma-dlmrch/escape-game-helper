@@ -5,11 +5,12 @@
     <form @submit.prevent="renameScenario">
         <div class="form-group">
             <label for="name">Nom :</label>
-            <input type="text" id="name" class="form-control small-input" v-model.lazy="scenario.name" required>
+            <input type="text" id="name" class="form-control small-input" v-model.lazy="scenario.name" @click="disableWasUpdatedMessage" required>
         </div>
         <div class="button-general-div">
-            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-check-lg"></i> Mettre à jour</button>
+            <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
         </div>
+        <small v-if ="wasUpdated" class="form-text text-muted"><i class="bi bi-check"></i> Modifications enregistrées !</small>
     </form>
     <div>
         <p>Pour jouer à ce scénario, dis à tes joueurs et joueuses de
@@ -83,7 +84,8 @@ export default {
             nodeToDelete: '',
             isCreationFormEnabled: false,
             isUpdateFormEnabled: false,
-            isDeleteModalEnabled: false
+            isDeleteModalEnabled: false,
+            wasUpdated: false
         }
 
     },
@@ -127,7 +129,10 @@ export default {
         },
         renameScenario() {
             axios.put('scenario/' + this.scenarioId + "/", this.scenario)
-                .then(() => {
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.wasUpdated = true
+                    }
                     this.getData();
                 },
                     (error) => { console.log("Error", error) });
@@ -167,6 +172,9 @@ export default {
             this.isDeleteModalEnabled = false
             this.getData()
         },
+        disableWasUpdatedMessage(){
+            this.wasUpdated = false
+        }
 
     },
 
