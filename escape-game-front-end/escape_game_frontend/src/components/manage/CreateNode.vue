@@ -74,8 +74,7 @@ export default {
         createNewNode() {
             this.newNode.scenario = this.scenarioId
             this.newNode.parent_node = this.parentNodeId
-            axios.post('scenario_node/', this.newNode).then((response) => {
-                console.log(response)
+            axios.post('scenario_node/', this.newNode).then(() => {
                 this.$emit('node-created')
             }).catch((error) => {
                 console.error("Error during form submission:", error);

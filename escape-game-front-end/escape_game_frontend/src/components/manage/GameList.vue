@@ -70,8 +70,7 @@ export default {
 
       if (confirm("Etes-vous sur.e de supprimer ce jeu ? Cela supprimera toutes les étapes et scénarios associés")) {
         axios.delete('game/' + gameId + "/")
-          .then(response => {
-            console.log(response);
+          .then(() => {
             this.getData();
           },
             (error) => {
@@ -89,8 +88,7 @@ export default {
     createNewGame() {
       if (this.newGame.name.length < 1) { this.newGame.name = 'Jeu sans nom' }
       this.newGame.author = this.$store.state.userId
-      axios.post('game/', this.newGame).then((response) => {
-        console.log(response)
+      axios.post('game/', this.newGame).then(() => {
         this.newGame.name = "";
         this.newGame.description = "";
         this.getData()

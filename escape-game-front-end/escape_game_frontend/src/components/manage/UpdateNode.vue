@@ -88,8 +88,7 @@ export default {
         },
         updateNode(){
             axios.put('scenario_node/' + this.nodeId + "/", this.node)
-                .then(response => {
-                    console.log(response);
+                .then(() => {
                     this.$emit('node-updated')
                 },
                     (error) => { console.log("Error", error) });

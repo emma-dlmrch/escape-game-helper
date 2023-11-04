@@ -43,7 +43,6 @@ export default {
             axios.get("play/scenario/"+ this.scenarioId + "/")
                 .then(response => {
                     this.scenario = response.data;
-                    console.log(response)
                     this.getGameData();
 
                 }, (error) => {
@@ -55,7 +54,6 @@ export default {
             axios.get("play/game/"+ this.scenario.game + "/")
                 .then(response => {
                     this.game = response.data;
-                    console.log(response)
                     this.$store.commit('setCurrentPlayedGameName', this.game.name)
                     document.title = `${this.game.name}`
 

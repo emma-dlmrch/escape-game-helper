@@ -87,7 +87,6 @@ export default {
                 .then(response => {
                     this.step = response.data;
                     this.clues = response.data.clues
-                    console.log(response)
                 }, (error) => {
                     console.log(error)
                 }
@@ -113,8 +112,7 @@ export default {
             if (this.newClue.title.length < 1) { this.newClue.title = 'Indice sans nom' }
             if (this.newClue.text.length < 1) { this.newClue.text = 'Pas de description' }
             this.newClue.step = this.stepId
-            axios.post('clue/', this.newClue).then((response) => {
-                console.log(response)
+            axios.post('clue/', this.newClue).then(() => {
                 this.newClue.title = ''
                 this.newClue.text = ''
                 this.getStepData()
@@ -127,8 +125,7 @@ export default {
         deleteClue(clueId) {
             if (confirm("Etes vous sûr.e de vouloir supprimer cet indice ?")) {
                 axios.delete('clue/' + clueId + "/")
-                    .then(response => {
-                        console.log(response);
+                    .then(() => {
                         this.getStepData();
                     },
                         (error) => { console.log("Error", error) });

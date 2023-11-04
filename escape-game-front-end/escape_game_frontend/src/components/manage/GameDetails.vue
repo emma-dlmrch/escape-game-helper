@@ -118,9 +118,7 @@ export default {
         createNewStep() {
             if (this.newStep.title.length < 1) { this.newStep.title = 'Etape sans nom' }
             this.newStep.game = this.gameId
-            axios.post('step/', this.newStep).then((response) => {
-                console.log(response)
-
+            axios.post('step/', this.newStep).then(() => {
                 this.newStep.title = "";
                 this.getGameData()
             }).catch((error) => {
@@ -131,8 +129,7 @@ export default {
         createNewScenario() {
             if (this.newScenario.name.length < 1) { this.newScenario.name = 'Scenario sans nom' }
             this.newScenario.game = this.gameId
-            axios.post('scenario/', this.newScenario).then((response) => {
-                console.log(response)
+            axios.post('scenario/', this.newScenario).then(() => {
                 this.newScenario.name = "";
                 this.getGameData()
             }).catch((error) => {
@@ -143,8 +140,7 @@ export default {
         deleteScenario(scenarioId) {
             if (confirm("Etes-vous sûr.e de vouloir supprimer ce scénario ?")) {
                 axios.delete('scenario/' + scenarioId + "/")
-                    .then(response => {
-                        console.log(response);
+                    .then(() => {
                         this.getGameData();
                     },
                         (error) => { console.log("Error", error) });
@@ -155,8 +151,7 @@ export default {
         deleteStep(stepId) {
             if (confirm("Etes-vous sûr.e de vouloir supprimer cette étape de jeu ?")) {
                 axios.delete('step/' + stepId + "/")
-                    .then(response => {
-                        console.log(response);
+                    .then( () => {
                         this.getGameData();
                     },
                         (error) => { console.log("Error", error) });

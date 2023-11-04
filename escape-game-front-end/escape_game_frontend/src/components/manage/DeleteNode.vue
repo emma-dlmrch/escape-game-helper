@@ -36,8 +36,7 @@ export default {
 
         deleteNode() {
             axios.delete('scenario_node/' + this.nodeId + "/")
-                .then(response => {
-                    console.log(response);
+                .then(() => {
                     this.$emit('node-deleted');
                 },
                     (error) => { console.log("Error", error) });

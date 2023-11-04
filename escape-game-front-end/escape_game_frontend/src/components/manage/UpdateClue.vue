@@ -40,7 +40,6 @@ export default {
             axios.get("clue/" + this.clueId + "/")
                 .then(response => {
                     this.clue = response.data;
-                    console.log(response)
                 }, (error) => {
                     console.log(error)
                 }
@@ -54,8 +53,6 @@ export default {
                     if (response.status == 200) {
                         this.wasUpdated = true
                     }
-                    // console.log(response);
-                    // this.$router.push({ name: 'StepDetails', params: { gameId: this.gameId, stepId: this.stepId } })
                 },
                     (error) => { console.log("Error", error) });
 
