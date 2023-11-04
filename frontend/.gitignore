@@ -3,6 +3,7 @@ node_modules
 /dist
 
 src/settings.js
+src/settings.js_prod
 
 # local env files
 .env.local
