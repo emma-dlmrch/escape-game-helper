@@ -17,9 +17,9 @@
             </form>
             <p v-if="isWrongAnswer"><i class="bi bi-x-lg"></i> Ce n'est pas la bonne réponse</p>
 
-            <div v-for="clue in step.clues" v-bind:key="clue.id">
+            <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
                 <div class="button-general-div"><button class="btn btn-secondary btn-sm" @click="showClue(clue)"><i
-                            class="bi bi-search"></i> Indice</button></div>
+                            class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
             </div>
             <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
             <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"

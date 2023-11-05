@@ -14,8 +14,7 @@
     </form>
     <div>
         <p>Pour jouer à ce scénario, dis à tes joueurs et joueuses de
-            se rendre <router-link :to="{ name: 'GameHomepage' }">ici</router-link> et d'entrer le code suivant : <b>{{
-                scenarioId }}</b> !</p>
+            se rendre à l'adresse suivante : <router-link :to="{ name: 'ScenarioPage', params :{scenarioId : this.scenarioId} }"> {{ playUrl }}</router-link> !</p>
         <p></p>
     </div>
     <h2>Organiser les étapes</h2>
@@ -85,7 +84,8 @@ export default {
             isCreationFormEnabled: false,
             isUpdateFormEnabled: false,
             isDeleteModalEnabled: false,
-            wasUpdated: false
+            wasUpdated: false,
+            playUrl: ''
         }
 
     },
@@ -98,7 +98,6 @@ export default {
                     this.scenario = response.data
                     this.scenarioNodes = response.data.scenario_nodes
                     this.scenarioNodesFlat = response.data.scenario_nodes_flat
-                    console.log(this.scenarioNodes)
                 }, (error) => {
                     console.log(error)
                 }
@@ -180,6 +179,7 @@ export default {
 
     created() {
         this.getData()
+        this.playUrl = `${window.location.origin}/play/scenario/${this.scenarioId}`
     },
 }
 

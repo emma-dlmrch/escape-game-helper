@@ -304,6 +304,8 @@ h2 {
 .sidebar.open li a .links_name {
   opacity: 1;
   pointer-events: auto;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar li a:hover .links_name,
@@ -390,6 +392,7 @@ h2 {
   z-index: 2;
   padding-left: 20px;
   padding-top: 20px;
+  padding-right: 20px;
   min-width: 200px;
 }
 

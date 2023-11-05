@@ -15,7 +15,9 @@
                 <small id="emailHelp" v-if="error.code === 'ERR_NETWORK'" class="form-text text-muted">Oops, le web service
                     n'est pas accessible</small>
             </div>
+            <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-lock"></i> Se connecter</button>
+            </div>
         </form>
     </div>
 </template>
