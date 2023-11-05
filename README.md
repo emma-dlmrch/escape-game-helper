@@ -8,18 +8,20 @@ a play section where players can follow a game scenario and submit their answers
 An instance is deployed and accessible here:
 https://escapegamehelper.ovh 
 
+You can play a demo game here: https://escapegamehelper.ovh/play/scenario/1
+
 ## Built with
 * Django REST Framework
 * Vue.JS 3
 
 ## Contributing
 
-Anyone willing to improve this project is welcome to fork the repo and create a pull request !
+Anyone willing to improve this project is welcome to fork the repo and create a pull request!
 
 1. Fork the project
-2. Create a feature branch (git checkout -b feature/YourFeature)
-3. Commit your changes (git commit -m 'Add some feature')
-4. Push to the Branch (git push origin feature/YourFeature)
+2. Create a feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
 
 You are also welcome to open issues on the project to suggest improvements or report bugs.
@@ -40,7 +42,7 @@ Prerequisites:
     py -m venv env
     source env/Scripts/activate
     ```
-
+    - Create /escapegameapi/local_settings.py according to /escapegameapi/local_settings.py_sample
     - Install the requirements
     ```
     pip install django
@@ -51,19 +53,18 @@ Prerequisites:
     cd backend/
     py manage.py migrate
     ```
-    - Create /escapegameapi/local_settings.py according to /escapegameapi/local_settings.py_sample
     - Run the backend
     ```
     py manage.py runserver
     ```
 
 3. Frontend
+    - Create /src/settings.js according to /src/settings.js_sample
     - Install packages
     ```
     cd frontend/
     npm install
     ```
-    - Create /src/settings.js according to /src/settings.js_sample
     - Run the frontend
     ```
     npm run serve
