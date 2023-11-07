@@ -6,7 +6,6 @@ from .models import Scenario, Game, ScenarioNode, Clue, Step
 import logging
 
 #ToDO: Implement unit tests
-#Todo: remove scenarios, useless for game list
 class GameListSerializer(ModelSerializer):
 
     scenarios = serializers.SerializerMethodField()
@@ -118,7 +117,6 @@ class ScenarioDetailSerializer(ModelSerializer):
 class ScenarioNodeListSerializer(ModelSerializer):
 
     label = serializers.SerializerMethodField()
-    # label = serializers.CharField()
     parent_node_title = serializers.SerializerMethodField()
     
     class Meta:
@@ -140,22 +138,21 @@ class ScenarioNodeListSerializer(ModelSerializer):
         user = self.context['request'].user
         if data['step'].game.author.id !=  user.id:
             raise ValidationError('Creation not allowed: game not owned by requester')
-        # now check that there is no first node already
+        
+        # check that there is no first node already
         if data['parent_node'] == None:
             if ScenarioNode.objects.filter(scenario = data['scenario']).filter(parent_node = None).count() > 0:
                 raise ValidationError('There is already a root node for this scenario')
         return data
-
-#test a serializer that calls itself    
+  
 class ScenarioNodeTreeSerializer(ModelSerializer):
-    #step_title = serializers.SerializerMethodField()
-    #child_nodes = serializers.SerializerMethodField()
+
     children = serializers.SerializerMethodField()
     label = serializers.SerializerMethodField()
     
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'label', 'parent_node', 'children',] #ajout label pour voir au lieu de step_title
+        fields = ['id','scenario', 'step', 'label', 'parent_node', 'children',]
     
     def get_label(self, instance):
 

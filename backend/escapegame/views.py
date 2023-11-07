@@ -1,31 +1,23 @@
-from django.http import Http404
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.views import APIView
 from .serializers import (
     GameDetailSerializer, GameListSerializer,
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer, ScenarioNodeTreeSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer
+    ClueListSerializer, ClueDetailSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
-import logging
 
 class MultipleSerializerMixin:
-    # Un mixin est une classe qui ne fonctionne pas de façon autonome
-    # Elle permet d'ajouter des fonctionnalités aux classes qui les étendent
 
     detail_serializer_class = None
 
     def get_serializer_class(self):
-        # Notre mixin détermine quel serializer à utiliser
-        # même si elle ne sait pas ce que c'est ni comment l'utiliser
+
         if (self.action == 'retrieve' or self.action == 'update' ) and self.detail_serializer_class is not None:
-            # Si l'action demandée est le détail alors nous retournons le serializer de détail
             return self.detail_serializer_class
         return super().get_serializer_class()
     
@@ -34,7 +26,7 @@ class GameViewSet(MultipleSerializerMixin,ModelViewSet):
     """Return games created by request user"""
     permission_classes = [IsGameAuthor]
 
-    pagination_class = None #added 
+    pagination_class = None 
 
     serializer_class = GameListSerializer
 
@@ -96,8 +88,6 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset
     
-
-
     
 class GamePlayViewSet(ReadOnlyModelViewSet):
 
