@@ -9,13 +9,21 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.js"
 import "./assets/styles.css";
 import config from './settings.js';
-
+import Vue3Sanitize from "vue-3-sanitize";
 
 axios.defaults.baseURL = config.API_URL;
 
+const defaultOptions = {
+    allowedTags: ['a', 'b', 'img', 'i'],
+    allowedAttributes: {
+      'a': [ 'href' ]
+    }
+};
 
 const app = createApp(App);
 
-app.use(store).use(router).mount('#app')
+app.use(store).use(router)
+.use(Vue3Sanitize, defaultOptions)
+.mount('#app')
 
 
