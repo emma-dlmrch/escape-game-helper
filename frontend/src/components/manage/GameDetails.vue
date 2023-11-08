@@ -7,7 +7,8 @@
         </div>
         <div class="form-group">
             <label for="description">Text descriptif :</label>
-            <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea>
+            <!-- <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea> -->
+            <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :toolbar="['link','bold', 'italic', 'underline','image']" @click="disableWasUpdatedMessage" />
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
@@ -78,8 +79,9 @@
 </template>
 
 <script>
-
-import axios from 'axios';
+import axios from 'axios'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export const slugify = text =>
   text
@@ -95,6 +97,9 @@ export const slugify = text =>
 
 export default {
     name: 'GameDetails',
+    components: {
+        QuillEditor
+    },
     data() {
         return {
             game: {
