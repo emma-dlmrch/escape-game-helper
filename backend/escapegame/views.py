@@ -111,6 +111,7 @@ class GamePlayViewSet(ReadOnlyModelViewSet):
 class ScenarioPlayViewSet(ReadOnlyModelViewSet):
 
     serializer_class = ScenarioPlaySerializer
+    lookup_field = 'slug'
 
     def get_queryset(self):
         

@@ -47,13 +47,14 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Scénarios</th>
+                    <th scope="col" colspan="2">Scénarios</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="scenario in this.scenarios" v-bind:key="scenario.id">
                     <th scope="row"><i class="bi bi-share"></i> {{ scenario.name }}</th>
+                    <th scope="row"><i class="bi bi-link-45deg"></i> {{ scenario.slug }}</th>
                     <td><button @click="modifyScenario(scenario.id)" type="button" class="btn btn-dark btn-sm"><i
                                 class="bi bi-pencil"></i> Gérer</button>&nbsp;<button @click="deleteScenario(scenario.id)"
                             type="button" class="btn btn-outline-dark btn-sm"><i class="bi bi-trash"></i> Supprimer</button>
@@ -62,6 +63,10 @@
                 <tr>
                     <th><input class="form-control small-input" type="text" v-model="newScenario.name"
                             placeholder="Nouveau scénario" maxlength="50"></th>
+                    <th>
+                        <input class="form-control small-input" type="text" @change="updateSlug" :value="newScenario.slug"
+                            placeholder="la-cle-unique-du-scenario" maxlength="50" title="Ne peut contenir que les caractères suivants : a-z, 0-9 et -.">
+                    </th>
                     <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i
                                 class="bi bi-plus-lg"></i> Créer</button></td>
                 </tr>
@@ -75,6 +80,18 @@
 <script>
 
 import axios from 'axios';
+
+export const slugify = text =>
+  text
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+|-+$/g, '')
 
 export default {
     name: 'GameDetails',
@@ -93,6 +110,7 @@ export default {
             scenarios: [],
             newScenario: {
                 name: '',
+                slug: '',
                 game: ''
             },
             wasUpdated: false
@@ -128,13 +146,21 @@ export default {
 
         createNewScenario() {
             if (this.newScenario.name.length < 1) { this.newScenario.name = 'Scenario sans nom' }
+            if (this.newScenario.slug.length < 1) { this.newScenario.slug = slugify(this.newScenario.name) }
             this.newScenario.game = this.gameId
+            // just to make sure we have a real slug
+            this.newScenario.slug = slugify(this.newScenario.slug)
             axios.post('scenario/', this.newScenario).then(() => {
                 this.newScenario.name = "";
+                this.newScenario.slug = "";
                 this.getGameData()
             }).catch((error) => {
                 console.error("Error during form submission:", error);
             });
+        },
+
+        updateSlug(e) {
+            this.newScenario.slug = slugify(e.target.value)
         },
 
         deleteScenario(scenarioId) {
