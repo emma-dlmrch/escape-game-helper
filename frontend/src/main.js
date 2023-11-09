@@ -14,10 +14,11 @@ import Vue3Sanitize from "vue-3-sanitize";
 axios.defaults.baseURL = config.API_URL;
 
 const defaultOptions = {
-    allowedTags: ['a', 'strong', 'img', 'em','h1', 'h2','h3','li','ol','ul','p','br','u'],
+    allowedTags: ['a', 'img', 'strong', 'em','h1', 'h2','h3','li','ol','ul','p','br','u', 'src', 'iframe'],
     allowedAttributes: {
-      'a': [ 'href' ],
-      img: [ 'src']
+      a: [ 'href' ],
+      img: [ 'src' ],
+      iframe: [ 'src']
     }
 };
 

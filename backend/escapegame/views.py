@@ -1,8 +1,10 @@
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.views import APIView
 from .serializers import (
-    GameDetailSerializer, GameListSerializer,
+    GameDetailSerializer, GameListSerializer, ImageSerializer,
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
@@ -10,6 +12,8 @@ from .serializers import (
     )
 from .models import Game, ScenarioNode, Step, Scenario, Clue
 from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
+
+import logging
 
 class MultipleSerializerMixin:
 
@@ -146,3 +150,17 @@ class CluePlayViewSet(ReadOnlyModelViewSet):
         
         queryset = Clue.objects.all()
         return queryset
+
+
+class ImageView(APIView):
+    
+    def post(self, request, format=None):
+
+        context = {'request': request}
+
+        serializer = ImageSerializer(data=request.data, context=context)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

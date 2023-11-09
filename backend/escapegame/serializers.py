@@ -4,7 +4,9 @@ import logging
 from slugify import slugify
 
 from authentication.models import User
-from .models import Scenario, Game, ScenarioNode, Clue, Step
+
+from .models import Scenario, Game, ScenarioNode, Clue, Step, Image
+import logging
 
 #ToDO: Implement unit tests
 class GameListSerializer(ModelSerializer):
@@ -257,3 +259,16 @@ class ScenarioNodePlaySerializer(ModelSerializer):
     def get_label(self, instance):
         return instance.step.title
     
+
+class ImageSerializer(ModelSerializer):
+
+    class Meta:
+        model = Image
+        fields = ['id','author','image']
+
+    def validate(self, data):
+
+        user = self.context['request'].user
+        if data['author'].id !=  user.id:
+            raise ValidationError('Creation not allowed: image will not be owned by requester')
+        return data

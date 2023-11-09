@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from authentication.models import User
+from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
 
@@ -20,7 +21,6 @@ class Step(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=5000)
-    #image = models.ImageField(verbose_name='Game step picture')
     answer = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
@@ -57,3 +57,12 @@ class ScenarioNode(models.Model):
         return self.scenario.name + ", start : "  + self.step.title
         
 
+class Image(models.Model):
+    
+    upload_storage = FileSystemStorage(location=settings.STORAGE_DIR, base_url='/uploads')
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+    # image = models.ImageField(upload_to=settings.STORAGE_DIR, null=True, max_length=255)
+    image = models.ImageField(upload_to='images', storage=upload_storage) 
+    # add image unique name
+    # maybe from https://stackoverflow.com/a/20060712?
