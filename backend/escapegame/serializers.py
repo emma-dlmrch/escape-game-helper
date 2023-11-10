@@ -1,9 +1,10 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
-from authentication.models import User
-
-from .models import Scenario, Game, ScenarioNode, Clue, Step
 import logging
+from slugify import slugify
+
+from authentication.models import User
+from .models import Scenario, Game, ScenarioNode, Clue, Step
 
 #ToDO: Implement unit tests
 class GameListSerializer(ModelSerializer):
@@ -82,7 +83,7 @@ class ScenarioListSerializer(ModelSerializer):
     
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'game']
+        fields = ['id', 'name', 'slug', 'game']
     
     def validate(self, data):
 
@@ -100,12 +101,17 @@ class ScenarioDetailSerializer(ModelSerializer):
     
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'game', 'scenario_nodes', 'scenario_nodes_flat'] #I gave up trying to flatten the data at frond end level
+        fields = ['id', 'name', 'slug', 'game', 'scenario_nodes', 'scenario_nodes_flat'] #I gave up trying to flatten the data at frond end level
     
     def get_scenario_nodes(self, instance):
         queryset = instance.scenario_nodes.exclude(parent_node__isnull=False)
         serializer = ScenarioNodeTreeSerializer(queryset, many=True)
         return serializer.data
+    
+    def validate(self, data):
+        # we make sure the slug is a real slug
+        data["slug"] = slugify(data["slug"])
+        return data
 
     def get_scenario_nodes_flat(self, instance):
         queryset = instance.scenario_nodes.all()

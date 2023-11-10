@@ -7,6 +7,10 @@
             <label for="name">Nom :</label>
             <input type="text" id="name" class="form-control small-input" v-model.lazy="scenario.name" @click="disableWasUpdatedMessage" required>
         </div>
+        <div class="form-group">
+            <label for="slug">Clé à fournir aux participants et participantes :</label>
+            <input type="text" id="slug" class="form-control small-input" :value="scenario.slug" @change="updateSlug" @click="disableWasUpdatedMessage" required>
+        </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
         </div>
@@ -14,7 +18,7 @@
     </form>
     <div>
         <p>Pour jouer à ce scénario, dis à tes joueurs et joueuses de
-            se rendre à l'adresse suivante : <router-link :to="{ name: 'ScenarioPage', params :{scenarioId : this.scenarioId} }"> {{ playUrl }}</router-link> !</p>
+            se rendre à l'adresse suivante : <router-link :to="{ name: 'ScenarioPage', params :{scenarioId : this.scenario.slug} }"> {{ playUrl }}</router-link> !</p>
         <p></p>
     </div>
     <h2>Organiser les étapes</h2>
@@ -53,6 +57,7 @@ import TreeView from './TreeView.vue'
 import CreateNode from './CreateNode.vue'
 import UpdateNode from './UpdateNode.vue'
 import DeleteNode from './DeleteNode.vue'
+import {slugify} from './GameDetails.vue'
 
 export default {
     name: 'ScenarioDetails',
@@ -67,7 +72,8 @@ export default {
             items: '',
             scenarioId: this.$route.params.scenarioId,
             scenario: {
-                name: ''
+                name: '',
+                slug: 'empty-slug'
             },
             scenarioNodes: [],
             scenarioNodesFlat: [],
@@ -85,9 +91,14 @@ export default {
             isUpdateFormEnabled: false,
             isDeleteModalEnabled: false,
             wasUpdated: false,
-            playUrl: ''
         }
 
+    },
+
+    computed: {
+        playUrl() {
+            return `${window.location.origin}/play/scenario/${this.scenario.slug}`
+        }
     },
 
     methods: {
@@ -102,6 +113,10 @@ export default {
                     console.log(error)
                 }
                 )
+        },
+
+        updateSlug(e) {
+            this.scenario.slug = slugify(e.target.value)
         },
 
         getStepList() {
@@ -127,6 +142,7 @@ export default {
 
         },
         renameScenario() {
+            this.scenario.slug = slugify(this.scenario.slug)
             axios.put('scenario/' + this.scenarioId + "/", this.scenario)
                 .then((response) => {
                     if (response.status == 200) {
@@ -179,7 +195,6 @@ export default {
 
     created() {
         this.getData()
-        this.playUrl = `${window.location.origin}/play/scenario/${this.scenarioId}`
     },
 }
 

@@ -40,6 +40,7 @@ class Scenario(models.Model):
     """A scenario is the order of steps/riddles. Scenario can be ramificated"""
 
     name = models.CharField(max_length=255)
+    slug = models.CharField(max_length=128)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='scenarios')
        
     def __str__(self):
