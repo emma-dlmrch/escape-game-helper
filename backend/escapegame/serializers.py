@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
 import logging
@@ -261,14 +262,21 @@ class ScenarioNodePlaySerializer(ModelSerializer):
     
 
 class ImageSerializer(ModelSerializer):
+    image_relative_path = serializers.SerializerMethodField('get_image_relative_path')
 
     class Meta:
         model = Image
-        fields = ['id','author','image']
+        fields = ['id','author','image', 'image_relative_path', 'game']
 
     def validate(self, data):
-
         user = self.context['request'].user
         if data['author'].id !=  user.id:
             raise ValidationError('Creation not allowed: image will not be owned by requester')
+            
+        ext = data["image"].name.split('.')[-1].lower()
+        if ext not in settings.ALLOWED_PICTURES_EXT:
+            raise ValidationError("Extension is not allowed for picture. Must be one of following: " + ", ".join(settings.ALLOWED_PICTURES_EXT))
         return data
+
+    def get_image_relative_path(self, obj):
+        return obj.image.name

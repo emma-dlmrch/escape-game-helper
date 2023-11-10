@@ -164,3 +164,6 @@ SIMPLE_JWT = {
 # 'SLIDING_TOKEN_LIFETIME': timedelta(days=10),
 # 'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=20),
 }
+
+
+ALLOWED_PICTURES_EXT = ["jpg", "jpeg", "png", "jfif", "gif"]

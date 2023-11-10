@@ -10,6 +10,7 @@ import "bootstrap/dist/js/bootstrap.js"
 import "./assets/styles.css";
 import config from './settings.js';
 import Vue3Sanitize from "vue-3-sanitize";
+import { inlineHTML } from './services/utils'
 
 axios.defaults.baseURL = config.API_URL;
 
@@ -19,10 +20,14 @@ const defaultOptions = {
       a: [ 'href' ],
       img: [ 'src' ],
       iframe: [ 'src']
-    }
+    },
+    allowedIframeHostnames: ['www.youtube.com','www.dailymotion.com']
 };
 
 const app = createApp(App);
+
+// app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$inlineHTML = inlineHTML;
 
 app.use(store).use(router)
 .use(Vue3Sanitize, defaultOptions)

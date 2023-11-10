@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="game in games" v-bind:key="game.id">
           <th scope="row"><i class="bi bi-puzzle"></i> {{ game.name }}</th>
-          <td><i class="bi bi-book"></i> {{ game.description.substring(0, 20) }} ...</td>
+          <td><i class="bi bi-book"></i> {{ $inlineHTML(game.description).substring(0, 20) }} ...</td>
           <td><button @click="modifyGame(game.id)" type="button" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i>
               Gérer</button>&nbsp;
             <button @click="deleteGame(game.id)" type="button" class="btn btn-outline-dark btn-sm"><i

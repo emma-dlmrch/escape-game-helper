@@ -91,22 +91,23 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
 import store from '@/store';
 
-export function imageHandler (file) {
+export function imageHandler (file, gameId) {
     return new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append("image", file);
-                formData.append("author", store.state.userId)
-                
-                axios.post('/upload-image/', formData)
-                    .then(res => {
-                        console.log(res)
-                        resolve(res.data.image);
-                    })
-                    .catch(err => {
-                        reject("Upload failed");
-                        console.error("Error:", err)
-                    })
+        const formData = new FormData();
+        formData.append("game", gameId);
+        formData.append("image", file);
+        formData.append("author", store.state.userId)
+            
+        axios.post('/upload-image/', formData)
+            .then(res => {
+                console.log(res)
+                resolve("/"+res.data.image_relative_path);
             })
+            .catch(err => {
+                reject("Upload failed");
+                console.error("Error:", err)
+            })
+    })
 }
 
 export const slugify = text =>
@@ -149,7 +150,7 @@ export default {
                 name: 'imageUploader',
                 module: ImageUploader,
                 options: {
-                    upload: imageHandler
+                    upload: (f) => imageHandler(f, this.gameId)
                 }
             }
         }
