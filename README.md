@@ -8,7 +8,7 @@ a play section where players can follow a game scenario and submit their answers
 An instance is deployed and accessible here:
 https://escapegamehelper.ovh 
 
-You can play a demo game here: https://escapegamehelper.ovh/play/scenario/1
+You can play a demo game here: https://escapegamehelper.ovh/play/scenario/scenario-par-defaut
 
 ## Built with
 * Django REST Framework
@@ -45,7 +45,6 @@ Prerequisites:
     - Create /escapegameapi/local_settings.py according to /escapegameapi/local_settings.py_sample
     - Install the requirements
     ```
-    pip install django
     pip install -r requirements.txt
     ```
     - Apply the migrations
