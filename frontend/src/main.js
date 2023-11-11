@@ -15,10 +15,10 @@ import { inlineHTML } from './services/utils'
 axios.defaults.baseURL = config.API_URL;
 
 const defaultOptions = {
-    allowedTags: ['a', 'img', 'strong', 'em','h1', 'h2','h3','li','ol','ul','p','br','u', 'src', 'iframe'],
+    allowedTags: ['a', 'img', 'strong', 'em', 'h1', 'h2','h3','li','ol','ul','p','br','u', 'src', 'iframe'],
     allowedAttributes: {
       a: [ 'href' ],
-      img: [ 'src' ],
+      img: [ 'src',  'width', 'height' ],
       iframe: [ 'src']
     },
     allowedIframeHostnames: ['www.youtube.com','www.dailymotion.com']

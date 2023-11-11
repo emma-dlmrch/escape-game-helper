@@ -10,7 +10,7 @@
             <label for="description">Text descriptif :</label>
             <!-- <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea> -->
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
-                :toolbar="['bold', 'italic', 'underline', { 'list': 'ordered' }, { 'list': 'bullet' }, 'link', 'image', 'video']"
+                :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
             <!-- <QuillEditor v-model:content="game.description" contentType="html" theme="snow" toolbar="full" @click="disableWasUpdatedMessage" /> -->
 
@@ -89,15 +89,20 @@ import axios from 'axios'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
+import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
 
 export function imageHandler (file, gameId) {
+    // if (file.size > 100000) {
+    //         // alert("volume de l'image trop important, veuillez la réduire")
+    //         // return 
+    // } else {
     return new Promise((resolve, reject) => {
         const formData = new FormData();
         formData.append("game", gameId);
         formData.append("image", file);
         formData.append("author", store.state.userId)
-            
+
         axios.post('/upload-image/', formData)
             .then(res => {
                 console.log(res)
@@ -107,7 +112,10 @@ export function imageHandler (file, gameId) {
                 reject("Upload failed");
                 console.error("Error:", err)
             })
-    })
+
+        }
+    )
+    // }
 }
 
 export const slugify = text =>
@@ -146,13 +154,30 @@ export default {
                 game: ''
             },
             wasUpdated: false,
-            modules: {
+            modules: [{
                 name: 'imageUploader',
                 module: ImageUploader,
                 options: {
                     upload: (f) => imageHandler(f, this.gameId)
                 }
-            }
+            },
+            {
+                name: 'blotFormatter',  
+                module: BlotFormatter, 
+                // options: {/* options */}
+            },
+            ],
+            toolbarOptions: [
+                {'header': [1, 2, 3] }, 
+                'bold', 
+                'italic', 
+                'underline', 
+                { 'list': 'ordered' }, 
+                { 'list': 'bullet' }, 
+                'link', 
+                'image', 
+                'video'
+            ]
         }
 
     },

@@ -167,3 +167,5 @@ SIMPLE_JWT = {
 
 
 ALLOWED_PICTURES_EXT = ["jpg", "jpeg", "png", "jfif", "gif"]
+
+MAX_ALLOWED_IMAGE_SIZE = 100000

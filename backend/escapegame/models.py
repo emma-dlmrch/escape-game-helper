@@ -68,7 +68,7 @@ def path_and_rename(instance, filename):
 
 class Image(models.Model):    
     upload_storage = FileSystemStorage(location=settings.STORAGE_DIR, base_url='/uploads')
-
+    # author is redundant now that game is an attribute
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=path_and_rename, storage=upload_storage) 
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='pictures')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='images')
