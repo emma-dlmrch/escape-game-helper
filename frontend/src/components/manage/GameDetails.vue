@@ -12,6 +12,10 @@
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
+
+            <p>OTHER TEST</p>
+            <!-- <TextEditor v-model="game.description" :gameId="gameId"/> -->
+            <text-editor v-model="game.description" :gameId="gameId" @click="disableWasUpdatedMessage"></text-editor>
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
@@ -89,6 +93,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
 import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
+import TextEditor from './TextEditor.vue';
 
 export function imageHandler (file, gameId) {
     // if (file.size > 100000) {
@@ -103,7 +108,8 @@ export function imageHandler (file, gameId) {
 
         axios.post('/upload-image/', formData)
             .then(res => {
-                console.log(res)
+                console.log("PARENT")
+                console.log("/" + res.data.image_relative_path)
                 resolve("/"+res.data.image_relative_path);
             })
             .catch(err => {
@@ -131,7 +137,8 @@ export const slugify = text =>
 export default {
     name: 'GameDetails',
     components: {
-        QuillEditor
+        QuillEditor,
+        TextEditor
     },
     data() {
         return {
