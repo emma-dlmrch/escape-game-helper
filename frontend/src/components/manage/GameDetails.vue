@@ -12,8 +12,6 @@
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
-            <!-- <QuillEditor v-model:content="game.description" contentType="html" theme="snow" toolbar="full" @click="disableWasUpdatedMessage" /> -->
-
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
