@@ -7,8 +7,7 @@
                 required>
         </div>
         <div class="form-group">
-            <label for="description">Text descriptif :</label>
-            <!-- <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea> -->
+            <label >Text descriptif :</label>
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
@@ -103,7 +102,6 @@ export function imageHandler (file, gameId) {
 
         axios.post('/upload-image/', formData)
             .then(res => {
-                console.log(res)
                 resolve("/"+res.data.image_relative_path);
             })
             .catch(err => {
@@ -166,7 +164,7 @@ export default {
             },
             ],
             toolbarOptions: [
-                {'header': [1, 2, 3] }, 
+                {'header': [1, 2, 3, false] }, 
                 'bold', 
                 'italic', 
                 'underline', 

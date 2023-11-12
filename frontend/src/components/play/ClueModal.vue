@@ -7,7 +7,7 @@
                     <button type="button" class="btn-close close-btn" aria-label="Close" @click="goBack"></button>
                 </div>
                 <div class="modal-body">
-                    <p>{{ clue.text }}</p>
+                    <p v-html="$sanitize(clue.text)"></p>
 
                 <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Fermer</button>

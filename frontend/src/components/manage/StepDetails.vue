@@ -38,7 +38,7 @@
             <tbody>
                 <tr v-for="clue in clues" v-bind:key="clue.id">
                     <th scope="row"><i class="bi bi-search"></i> {{ clue.title }}</th>
-                    <td><i class="bi bi-journal-text"></i> {{ clue.text.substring(0, 20) }} ...</td>
+                    <td><i class="bi bi-journal-text"></i> {{ $inlineHTML(clue.text.substring(0, 20)) }} ...</td>
                     <td><button @click="modifyClue(clue.id)" type="button" class="btn btn-dark btn-sm"><i
                                 class="bi bi-pencil"></i> Modifier</button>&nbsp;
                         <button @click="deleteClue(clue.id)" type="button" class="btn btn-outline-dark btn-sm"><i
@@ -70,26 +70,21 @@ import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
 
 export function imageHandler (file, gameId) {
-
     return new Promise((resolve, reject) => {
         const formData = new FormData();
         formData.append("game", gameId);
         formData.append("image", file);
         formData.append("author", store.state.userId)
-
         axios.post('/upload-image/', formData)
             .then(res => {
-                console.log(res)
                 resolve("/"+res.data.image_relative_path);
             })
             .catch(err => {
                 reject("Upload failed");
                 console.error("Error:", err)
             })
-
         }
     )
-
 }
 
 
@@ -128,7 +123,7 @@ export default {
             },
             ],
             toolbarOptions: [
-                {'header': [1, 2, 3] }, 
+                {'header': [1, 2, 3, false] }, 
                 'bold', 
                 'italic', 
                 'underline', 
