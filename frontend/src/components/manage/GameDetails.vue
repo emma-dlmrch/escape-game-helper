@@ -7,10 +7,9 @@
                 required>
         </div>
         <div class="form-group">
-            <label >Text descriptif :</label>
+            <label>Text descriptif :</label>
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
-                :toolbar="toolbarOptions"
-                @click="disableWasUpdatedMessage" />
+                :toolbar="toolbarOptions" @click="disableWasUpdatedMessage" />
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
@@ -69,7 +68,8 @@
                             placeholder="Nouveau scénario" maxlength="50"></th>
                     <th>
                         <input class="form-control small-input" type="text" @change="updateSlug" :value="newScenario.slug"
-                            placeholder="la-cle-unique-du-scenario" maxlength="50" title="Ne peut contenir que les caractères suivants : a-z, 0-9 et -.">
+                            placeholder="la-cle-unique-du-scenario" maxlength="50"
+                            title="Ne peut contenir que les caractères suivants : a-z, 0-9 et -.">
                     </th>
                     <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i
                                 class="bi bi-plus-lg"></i> Créer</button></td>
@@ -89,7 +89,7 @@ import ImageUploader from 'quill-image-uploader';
 import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
 
-export function imageHandler (file, gameId) {
+export function imageHandler(file, gameId) {
     // if (file.size > 100000) {
     //         // alert("volume de l'image trop important, veuillez la réduire")
     //         // return 
@@ -102,7 +102,7 @@ export function imageHandler (file, gameId) {
 
         axios.post('/upload-image/', formData)
             .then(res => {
-                resolve("/"+res.data.image_relative_path);
+                resolve("/" + res.data.image_relative_path);
             })
             .catch(err => {
                 if (err.response.data.non_field_errors) {
@@ -114,33 +114,38 @@ export function imageHandler (file, gameId) {
                 console.error("Error:", err)
             })
 
-        }
+    }
     )
     // }
 }
 
 export const slugify = text =>
-  text
-    .toString()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+|-+$/g, '')
+    text
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '')
+        .replace(/--+/g, '-')
+        .replace(/^-+|-+$/g, '')
 
 export default {
     name: 'GameDetails',
     components: {
         QuillEditor
     },
+    computed: {
+        // textContent () {
+        //     return this.$refs.textContent
+        // }
+    },
     data() {
         return {
             game: {
                 name: '',
-                description: '',
+                description: undefined,
             },
             gameId: this.$route.params.id,
             steps: [],
@@ -155,6 +160,7 @@ export default {
                 game: ''
             },
             wasUpdated: false,
+            unsavedContent: false,
             modules: [{
                 name: 'imageUploader',
                 module: ImageUploader,
@@ -163,20 +169,20 @@ export default {
                 }
             },
             {
-                name: 'blotFormatter',  
-                module: BlotFormatter, 
+                name: 'blotFormatter',
+                module: BlotFormatter,
                 // options: {/* options */}
             },
             ],
             toolbarOptions: [
-                {'header': [1, 2, 3, false] }, 
-                'bold', 
-                'italic', 
-                'underline', 
-                { 'list': 'ordered' }, 
-                { 'list': 'bullet' }, 
-                'link', 
-                'image', 
+                { 'header': [1, 2, 3, false] },
+                'bold',
+                'italic',
+                'underline',
+                { 'list': 'ordered' },
+                { 'list': 'bullet' },
+                'link',
+                'image',
                 'video'
             ]
         }
@@ -191,7 +197,6 @@ export default {
                     this.steps = response.data.steps
                     this.scenarios = response.data.scenarios
                     document.title = "Gérer le jeu : " + this.game.name;
-
                 }, (error) => {
                     console.log(error)
                 }
@@ -261,6 +266,7 @@ export default {
             axios.put('game/' + this.gameId + "/", this.game).then((response) => {
                 if (response.status == 200) {
                     this.wasUpdated = true
+                    this.unsavedContent = false;
                 }
                 this.getGameData();
             }, (error) => {
@@ -276,10 +282,52 @@ export default {
         cancel() {
             this.$router.push({ name: 'GameList' })
         },
+
+        checkUnsavedContent() {
+            if (!this.unsavedContent) {
+                return true;
+            }
+            // else, we have some unsaved changes that need to be saved
+            const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
+            if (answer) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        beforeRefreshingHandler(e) {
+            const res = this.checkUnsavedContent()
+            if(!res) {
+                e.preventDefault();
+                e.returnValue = "Are you sure you want to leave?";
+            }
+        }
     },
 
     created() {
         this.getGameData();
+        // we add the event listener to prevent reloading with unsaved content
+        window.addEventListener('beforeunload', this.beforeRefreshingHandler)
     },
+
+    watch: {
+        'game.description': function (newVal, oldVal) {
+            // if we are not at first game data reload
+            if (oldVal) {
+                this.unsavedContent = true;
+            }
+        }
+    },
+
+    beforeUnmount() {
+        window.removeEventListener('beforeunload', this.beforeRefreshingHandler)
+    },
+    
+    beforeRouteLeave() {
+        const shouldLeave = this.checkUnsavedContent()
+        return shouldLeave
+    }
+
 }
 </script>
