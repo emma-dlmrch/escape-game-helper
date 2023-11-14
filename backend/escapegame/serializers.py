@@ -272,7 +272,7 @@ class ImageSerializer(ModelSerializer):
         user = self.context['request'].user
 
         if data["image"].size > settings.MAX_ALLOWED_IMAGE_SIZE:
-            raise ValidationError('Image size is > ' + str(settings.MAX_ALLOWED_IMAGE_SIZE) + " bytes" )
+            raise ValidationError('Image size must be lower than ' + str(round(settings.MAX_ALLOWED_IMAGE_SIZE/1000)) + " KB" )
 
         if data['author'].id !=  user.id:
             raise ValidationError('Creation not allowed: image will not be owned by requester')

@@ -105,6 +105,11 @@ export function imageHandler (file, gameId) {
                 resolve("/"+res.data.image_relative_path);
             })
             .catch(err => {
+                if (err.response.data.non_field_errors) {
+                    alert(err.response.data.non_field_errors)
+                } else if (err.response.data.image) {
+                    alert(err.response.data.image)
+                }
                 reject("Upload failed");
                 console.error("Error:", err)
             })
