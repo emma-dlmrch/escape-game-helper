@@ -11,6 +11,7 @@
             <label for="slug">Clé à fournir aux participants et participantes :</label>
             <input type="text" id="slug" class="form-control small-input" :value="scenario.slug" @change="updateSlug" @click="disableWasUpdatedMessage" required>
         </div>
+        <small v-if ="slugTaken" class="form-text text-muted"><i class="bi bi-x"></i> Slug déjà pris, choisis-en un autre</small>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
         </div>
@@ -91,6 +92,7 @@ export default {
             isUpdateFormEnabled: false,
             isDeleteModalEnabled: false,
             wasUpdated: false,
+            slugTaken: false,
         }
 
     },
@@ -150,7 +152,13 @@ export default {
                     }
                     this.getData();
                 },
-                    (error) => { console.log("Error", error) });
+                    (error) => { 
+                        if (error.response.data.slug) {
+                            this.slugTaken = true
+                            // alert(error.response.data.slug)
+                        }
+                        console.log("Error", error) 
+                    });
         },
         cancel() {
             this.$router.push({ name: 'GameDetails', params: { id: this.gameId } })
@@ -189,6 +197,7 @@ export default {
         },
         disableWasUpdatedMessage(){
             this.wasUpdated = false
+            this.slugTaken = false
         }
 
     },

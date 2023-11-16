@@ -68,8 +68,9 @@
                     <th><input class="form-control small-input" type="text" v-model="newScenario.name"
                             placeholder="Nouveau scénario" maxlength="50"></th>
                     <th>
-                        <input class="form-control small-input" type="text" @change="updateSlug" :value="newScenario.slug"
+                        <input class="form-control small-input" type="text" @change="updateSlug" :value="newScenario.slug" @click="disableSlugTakenMessage"
                             placeholder="la-cle-unique-du-scenario" maxlength="50" title="Ne peut contenir que les caractères suivants : a-z, 0-9 et -.">
+                            <small v-if ="slugTaken" class="form-text text-muted"><i class="bi bi-x"></i> Slug déjà pris, choisis-en un autre</small>
                     </th>
                     <td><button @click="createNewScenario" type="button" class="btn btn-dark btn-sm"><i
                                 class="bi bi-plus-lg"></i> Créer</button></td>
@@ -155,6 +156,7 @@ export default {
                 game: ''
             },
             wasUpdated: false,
+            slugTaken: false,
             modules: [{
                 name: 'imageUploader',
                 module: ImageUploader,
@@ -220,6 +222,9 @@ export default {
                 this.newScenario.slug = "";
                 this.getGameData()
             }).catch((error) => {
+                if (error.response.data.slug) {
+                    this.slugTaken = true
+                }
                 console.error("Error during form submission:", error);
             });
         },
@@ -271,6 +276,10 @@ export default {
 
         disableWasUpdatedMessage() {
             this.wasUpdated = false
+        },
+
+        disableSlugTakenMessage(){
+            this.slugTaken = false
         },
 
         cancel() {
