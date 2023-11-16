@@ -64,6 +64,7 @@ export default {
                 id: '',
                 step: '',
                 scenario: '',
+                scenario_slug: '',
             },
             scenarioNodeId: this.$route.params.scenarioNodeId,
 
@@ -95,7 +96,7 @@ export default {
                         this.scenarioNode.resolved = this.$store.state.unlockedNodes.filter(x => x.id === this.scenarioNode.id)[0].resolved
                     }
                     this.$store.commit('setNodeRead', this.scenarioNode)
-                    this.$store.commit('setCurrentPlayedScenarioId', this.scenarioNode.scenario)
+                    this.$store.commit('setCurrentPlayedScenarioId', this.scenarioNode.scenario_slug)
                 }, (error) => {
                     console.log(error)
                 }

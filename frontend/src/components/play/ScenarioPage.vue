@@ -1,7 +1,6 @@
 <template>
 <h1>{{ game.name }}</h1>
 <div v-html="$sanitize(game.description)"> </div>
-<!-- <div v-html="game.description"> </div> -->
 <div class="button-general-div">
     <button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
@@ -36,9 +35,6 @@ export default {
         }
     },
     methods: {
-        playGame(){
-            this.$router.push({ name: 'ScenarioPage', params: { scenarioId: this.scenarioId }} )
-        },
         getData(){
             axios.get("play/scenario/"+ this.scenarioId + "/")
                 .then(response => {

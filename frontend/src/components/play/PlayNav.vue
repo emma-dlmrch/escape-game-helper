@@ -13,7 +13,7 @@
     <ul class="nav-list">
 
       <li v-for="node in nodes" v-bind:key="node.id">
-        <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario == currentScenario">
+        <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario_slug == currentScenario">
 
           <i v-if="node.new" class="bx bi bi-exclamation-square-fill"></i>
           <i v-else-if="node.info" class="bx bi bi-info-square"></i>

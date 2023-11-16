@@ -252,13 +252,16 @@ class StepPlaySerializer(ModelSerializer):
 class ScenarioNodePlaySerializer(ModelSerializer):
 
     label = serializers.SerializerMethodField()
+    scenario_slug = serializers.SerializerMethodField()
 
     class Meta:
         model = ScenarioNode
-        fields = ['id','scenario', 'step', 'label']
+        fields = ['id','scenario', 'step', 'label', 'scenario_slug']
 
     def get_label(self, instance):
         return instance.step.title
+    def get_scenario_slug(self, instance):
+        return instance.scenario.slug
     
 
 class ImageSerializer(ModelSerializer):
