@@ -1,4 +1,7 @@
 
+from pathlib import Path
+import os
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-q5u#4mz2pp!9fb1bw!f2$ntu#w$g)n@+++qiz5lot+1$^7g-9@'
 
@@ -12,5 +15,8 @@ CORS_ALLOWED_ORIGINS = [
    'http://localhost:8080',
    'http://127.0.0.1:8000'
 ]
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_ROOT = "/var/www/html/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STORAGE_DIR = BASE_DIR / '../frontend/public/'

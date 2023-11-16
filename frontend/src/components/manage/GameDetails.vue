@@ -3,16 +3,20 @@
     <form @submit="modifyGame">
         <div class="form-group">
             <label for="name">Nom :</label>
-            <input type="text" id="name" class="form-control" v-model.lazy="game.name" @click="disableWasUpdatedMessage" required>
+            <input type="text" id="name" class="form-control" v-model.lazy="game.name" @click="disableWasUpdatedMessage"
+                required>
         </div>
         <div class="form-group">
-            <label for="description">Text descriptif :</label>
-            <textarea class="form-control" v-model="game.description" id="description" rows="3" @click="disableWasUpdatedMessage" required></textarea>
+            <label >Text descriptif :</label>
+            <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
+                :toolbar="toolbarOptions"
+                @click="disableWasUpdatedMessage" />
         </div>
         <div class="button-general-div">
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
         </div>
-        <small v-if ="wasUpdated" class="form-text text-muted"><i class="bi bi-check"></i> Modifications enregistrées !</small>
+        <small v-if="wasUpdated" class="form-text text-muted"><i class="bi bi-check"></i> Modifications enregistrées
+            !</small>
     </form>
 
     <h2>Liste d'étapes</h2>
@@ -78,8 +82,42 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import ImageUploader from 'quill-image-uploader';
+import BlotFormatter from 'quill-blot-formatter'
+import store from '@/store';
 
-import axios from 'axios';
+export function imageHandler (file, gameId) {
+    // if (file.size > 100000) {
+    //         // alert("volume de l'image trop important, veuillez la réduire")
+    //         // return 
+    // } else {
+    return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("game", gameId);
+        formData.append("image", file);
+        formData.append("author", store.state.userId)
+
+        axios.post('/upload-image/', formData)
+            .then(res => {
+                resolve("/"+res.data.image_relative_path);
+            })
+            .catch(err => {
+                if (err.response.data.non_field_errors) {
+                    alert(err.response.data.non_field_errors)
+                } else if (err.response.data.image) {
+                    alert(err.response.data.image)
+                }
+                reject("Upload failed");
+                console.error("Error:", err)
+            })
+
+        }
+    )
+    // }
+}
 
 export const slugify = text =>
   text
@@ -95,6 +133,9 @@ export const slugify = text =>
 
 export default {
     name: 'GameDetails',
+    components: {
+        QuillEditor
+    },
     data() {
         return {
             game: {
@@ -113,7 +154,31 @@ export default {
                 slug: '',
                 game: ''
             },
-            wasUpdated: false
+            wasUpdated: false,
+            modules: [{
+                name: 'imageUploader',
+                module: ImageUploader,
+                options: {
+                    upload: (f) => imageHandler(f, this.gameId)
+                }
+            },
+            {
+                name: 'blotFormatter',  
+                module: BlotFormatter, 
+                // options: {/* options */}
+            },
+            ],
+            toolbarOptions: [
+                {'header': [1, 2, 3, false] }, 
+                'bold', 
+                'italic', 
+                'underline', 
+                { 'list': 'ordered' }, 
+                { 'list': 'bullet' }, 
+                'link', 
+                'image', 
+                'video'
+            ]
         }
 
     },
@@ -177,7 +242,7 @@ export default {
         deleteStep(stepId) {
             if (confirm("Etes-vous sûr.e de vouloir supprimer cette étape de jeu ?")) {
                 axios.delete('step/' + stepId + "/")
-                    .then( () => {
+                    .then(() => {
                         this.getGameData();
                     },
                         (error) => { console.log("Error", error) });
@@ -193,23 +258,23 @@ export default {
         },
         modifyGame(e) {
             e.preventDefault();
-                axios.put('game/' + this.gameId + "/", this.game).then((response) => {
-                    if (response.status == 200) {
-                        this.wasUpdated = true
-                    }
-                    this.getGameData();
-                }, (error) => {
-                    console.log(error)
+            axios.put('game/' + this.gameId + "/", this.game).then((response) => {
+                if (response.status == 200) {
+                    this.wasUpdated = true
                 }
-                );
+                this.getGameData();
+            }, (error) => {
+                console.log(error)
+            }
+            );
         },
 
-        disableWasUpdatedMessage(){
+        disableWasUpdatedMessage() {
             this.wasUpdated = false
         },
 
         cancel() {
-            this.$router.push({ name: 'GameList'})
+            this.$router.push({ name: 'GameList' })
         },
     },
 

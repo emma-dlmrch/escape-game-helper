@@ -1,6 +1,6 @@
 <template>
     <h1>{{ step.title }}</h1>
-    <p>{{ step.text }}</p>
+    <p v-html="$sanitize(step.text)"></p>
 
     <div v-if="step.has_answer">
         <div v-if="!scenarioNode.resolved">

@@ -1,6 +1,10 @@
+import os
+from uuid import uuid4
 from django.db import models
 from django.conf import settings
 from authentication.models import User
+from django.core.files.storage import FileSystemStorage
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 # Create your models here.
 
@@ -20,7 +24,6 @@ class Step(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=5000)
-    #image = models.ImageField(verbose_name='Game step picture')
     answer = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
@@ -57,3 +60,15 @@ class ScenarioNode(models.Model):
         return self.scenario.name + ", start : "  + self.step.title
         
 
+def path_and_rename(instance, filename):
+    upload_to = 'images'
+    ext = filename.split('.')[-1].lower()
+    filename = '{}-{}.{}'.format(instance.game.id, uuid4().hex[0:10], ext)
+    return os.path.join(upload_to, filename)
+
+class Image(models.Model):    
+    upload_storage = FileSystemStorage(location=settings.STORAGE_DIR, base_url='/uploads')
+    # author is redundant now that game is an attribute
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to=path_and_rename, storage=upload_storage) 
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='images')

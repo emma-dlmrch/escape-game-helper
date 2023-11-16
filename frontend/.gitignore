@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/public/images/
 
 src/settings.js
 src/settings.js_prod

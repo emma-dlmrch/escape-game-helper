@@ -1,6 +1,7 @@
 <template>
 <h1>{{ game.name }}</h1>
-<p>{{ game.description }}</p>
+<div v-html="$sanitize(game.description)"> </div>
+<!-- <div v-html="game.description"> </div> -->
 <div class="button-general-div">
     <button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
@@ -9,7 +10,6 @@
 </div>
 </template>
 <script>
-
 import axios from 'axios'
 export default {
     name:'ScenarioPage',
