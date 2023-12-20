@@ -166,6 +166,7 @@ th {
 }
 
 .sidebar {
+  overflow: auto;
   position: fixed;
   left: 0;
   top: 0;
@@ -244,7 +245,6 @@ th {
 
 .sidebar .nav-list {
   margin-top: 20px;
-  height: 100%;
 }
 
 .sidebar li {
