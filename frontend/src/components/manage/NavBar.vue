@@ -8,6 +8,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item" v-if="!authenticated">
+        <router-link :to="{ name: 'AboutView'}" class="nav-link"><i class="bi bi-bookmark-fill"></i> À propos</router-link>
+      </li>
+      <li class="nav-item" v-if="!authenticated">
         <router-link :to="{ name: 'SignUp'}" class="nav-link"><i class="bi bi-person-add"></i> S'inscrire</router-link>
       </li>
       <li class="nav-item" v-if="!authenticated" >

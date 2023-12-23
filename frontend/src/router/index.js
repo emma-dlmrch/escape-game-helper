@@ -1,140 +1,149 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import store from '../store/index.js'
+import { createRouter, createWebHistory } from "vue-router";
+import store from "../store/index.js";
 // import PlayApp from '../components/play/PlayApp.vue'
 
 const routes = [
     {
-        path: '/manage',
-        name : 'ManageGames',
-        component: () => import('../components/manage/ManageApp.vue'),
+        path: "/manage",
+        name: "ManageGames",
+        component: () => import("../components/manage/ManageApp.vue"),
         children: [
             {
-                path: 'signup',
-                name: 'SignUp',
+                path: "signup",
+                name: "SignUp",
                 component: () => import("../components/manage/SignUp.vue"),
-                meta: { title: 'Inscription - Escape Game Helper' }
+                meta: { title: "Inscription - Escape Game Helper" },
             },
             {
-                path: 'login',
-                name: 'LogIn',
+                path: "login",
+                name: "LogIn",
                 component: () => import("../components/manage/LogIn.vue"),
-                meta: { title: 'Login - Escape Game Helper' }
-            },
-            { 
-                path: 'update-account',
-                name: 'UpdateAccount',
-                component: () => import("../components/manage/UpdateAccount.vue"),
-                meta: { requiresLogin: true, title: 'Mon compte - Escape Game Helper'  }
+                meta: { title: "Login - Escape Game Helper" },
             },
             {
-                path: 'games',
-                name: 'GameList',
-                alias: [''],
+                path: "update-account",
+                name: "UpdateAccount",
+                component: () =>
+                    import("../components/manage/UpdateAccount.vue"),
+                meta: {
+                    requiresLogin: true,
+                    title: "Mon compte - Escape Game Helper",
+                },
+            },
+            {
+                path: "games",
+                name: "GameList",
+                alias: [""],
                 component: () => import("../components/manage/GameList.vue"),
-                meta: { requiresLogin: true, title: 'Mes jeux' }
+                meta: { requiresLogin: true, title: "Mes jeux" },
             },
-            { 
-                path: 'games/:id',
-                name: 'GameDetails',
+            {
+                path: "games/:id",
+                name: "GameDetails",
                 component: () => import("../components/manage/GameDetails.vue"),
-                meta: { requiresLogin: true, title: 'Gérer un jeu'  }
+                meta: { requiresLogin: true, title: "Gérer un jeu" },
             },
-            { 
-                path: 'games/:gameId/step/:stepId',
-                name: 'StepDetails',
+            {
+                path: "games/:gameId/step/:stepId",
+                name: "StepDetails",
                 component: () => import("../components/manage/StepDetails.vue"),
-                meta: { requiresLogin: true, title: 'Etape'  }
+                meta: { requiresLogin: true, title: "Etape" },
             },
-            { 
-                path: 'games/:gameId/step/:stepId/clue/:clueId',
-                name: 'UpdateClue',
+            {
+                path: "games/:gameId/step/:stepId/clue/:clueId",
+                name: "UpdateClue",
                 component: () => import("../components/manage/UpdateClue.vue"),
-                meta: { requiresLogin: true, title: 'Indice'  }
+                meta: { requiresLogin: true, title: "Indice" },
             },
-            { 
-                path: 'games/:gameId/scenario/:scenarioId',
-                name: 'ScenarioDetails',
-                component: () => import("../components/manage/ScenarioDetails.vue"),
-                meta: { requiresLogin: true }
+            {
+                path: "games/:gameId/scenario/:scenarioId",
+                name: "ScenarioDetails",
+                component: () =>
+                    import("../components/manage/ScenarioDetails.vue"),
+                meta: { requiresLogin: true },
             },
-            { 
-                path: 'games/:gameId/scenario/:scenarioId/node/:nodeId',
-                name: 'UpdateNode',
+            {
+                path: "games/:gameId/scenario/:scenarioId/node/:nodeId",
+                name: "UpdateNode",
                 component: () => import("../components/manage/UpdateNode.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true },
             },
-            { 
-                path: 'games/:gameId/scenario/:scenarioId/node/new/:parentNodeId',
-                name: 'CreateNode',
+            {
+                path: "games/:gameId/scenario/:scenarioId/node/new/:parentNodeId",
+                name: "CreateNode",
                 component: () => import("../components/manage/CreateNode.vue"),
-                meta: { requiresLogin: true }
+                meta: { requiresLogin: true },
             },
-        ]
+        ],
     },
     {
-        path: '/play',
-        component: () => import('../components/play/PlayApp.vue'),
+        path: "/play",
+        component: () => import("../components/play/PlayApp.vue"),
         children: [
-            { 
-                path: 'go',
-                alias: [''],
-                name: 'GameHomepage',
+            {
+                path: "go",
+                alias: [""],
+                name: "GameHomepage",
                 component: () => import("../components/play/GameHomepage.vue"),
-                children: [
-                    
-                ]
+                children: [],
             },
-            { 
-                path: '',
-                name: 'PlayView',
+            {
+                path: "",
+                name: "PlayView",
                 component: () => import("../components/play/PlayView.vue"),
                 children: [
-                    { 
-                        path: 'scenario/:scenarioId',
-                        name: 'ScenarioPage',
-                        component: () => import("../components/play/ScenarioPage.vue"),
-                        children: [
-        
-                        ]
+                    {
+                        path: "scenario/:scenarioId",
+                        name: "ScenarioPage",
+                        component: () =>
+                            import("../components/play/ScenarioPage.vue"),
+                        children: [],
                     },
-                    { 
-                        path: 'step/:scenarioNodeId',
-                        name: 'StepPage',
+                    {
+                        path: "step/:scenarioNodeId",
+                        name: "StepPage",
                         props: true,
-                        component: () => import("../components/play/StepPage.vue"),
+                        component: () =>
+                            import("../components/play/StepPage.vue"),
                     },
-                ]
+                ],
             },
-
-        ]
+        ],
     },
 
     {
         path: "/:pathMatch(.*)*",
-        name: 'ErrorView',
-        component: () => import('../components/common/Error.vue'),
-      },
+        name: "ErrorView",
+        component: () => import("../components/common/Error.vue"),
+    },
     {
-        path: '/',
-        name: 'WelcomePage',
-        component: () => import('../components/common/WelcomePage.vue'),
-    }
-
-]
+        path: "/",
+        name: "WelcomePage",
+        component: () => import("../components/common/WelcomePage.vue"),
+    },
+    {
+        path: "/about",
+        name: "AboutView",
+        component: () => import("../components/common/AboutView.vue"),
+    },
+];
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
-    routes
-})
+    routes,
+});
 
-export default router
+export default router;
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta?.title ?? 'Escape Game Helper'
+    document.title = to.meta?.title ?? "Escape Game Helper";
 
-    if (to.matched.some(record => record.meta.requiresLogin) && store.state.isAuthenticated === false) {
-        next({name :'LogIn'})
+    if (
+        to.matched.some((record) => record.meta.requiresLogin) &&
+        store.state.isAuthenticated === false
+    ) {
+        next({ name: "LogIn" });
     } else {
-        next()
+        next();
     }
-})
+});
