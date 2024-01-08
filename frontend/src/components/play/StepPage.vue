@@ -129,6 +129,7 @@ export default {
         },
 
         showClue(clueId) {
+            this.$store.state.playSeconds += 60; // 60s of cost for viewing a clue
             this.selectedClueId = clueId
             this.isClueModalEnabled = true
         },
