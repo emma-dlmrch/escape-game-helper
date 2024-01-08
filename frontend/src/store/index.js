@@ -34,6 +34,12 @@ export default createStore({
             }
             state.currentPlayedScenarioId = localStorage.getItem('currentPlayedScenarioId') ?? ''
             state.currentPlayedGameName = localStorage.getItem('currentPlayedGameName') ?? {}
+            state.playSeconds = localStorage.getItem('playSeconds') ?? ''
+            if (state.playSeconds == '') {
+                state.playSeconds = 0;
+            } else {
+                state.playSeconds = parseInt(state.playSeconds, 10);
+            }
         },
         setToken(state, token) {
             state.token = token
@@ -109,6 +115,12 @@ export default createStore({
             state.currentPlayedGameTheme = theme
             localStorage.setItem('currentPlayedGameName', theme)
         },
+
+        setPlaySeconds(state, seconds) {
+            state.playSeconds = seconds;
+            localStorage.setItem('playSeconds', seconds.toString());
+        },
+
     },
 
     actions: {
