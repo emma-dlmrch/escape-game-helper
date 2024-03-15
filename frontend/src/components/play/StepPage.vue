@@ -87,6 +87,7 @@ export default {
 
         },
         getNodeData() {
+            console.log(atob("cG91dGNob3V6YmVraXN0YW4="));
             axios.get("play/scenario_node/" + this.scenarioNodeId + "/")
                 .then(response => {
                     this.scenarioNode = response.data;
