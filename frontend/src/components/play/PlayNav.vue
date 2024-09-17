@@ -11,6 +11,13 @@
       <i class="bx bx-menu" id="btn"></i>
     </div>
     <ul class="nav-list">
+      <li>
+        <a>
+        <i class="bx bi bi-alarm-fill"></i>
+          <span class="links_name" style="color: #fff">{{ playtime }}</span>
+          <span class="tooltip">{{ playtime }}</span>
+        </a>
+      </li>
 
       <li v-for="node in nodes" v-bind:key="node.id">
         <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario_slug == currentScenario">
@@ -69,7 +76,32 @@ export default {
         return output.trim()+"..."
       }
       return currentName;
+    },
+    playtime() {
+      return new Date(this.$store.state.playSeconds * 1000).toISOString().slice(11, 19);
     }
+  },
+  data() {
+    return {
+      interval: null,
+      time: null
+    }
+  },
+  beforeUnmount() {
+    // prevent memory leak
+    clearInterval(this.interval)
+  },
+  created() {
+    // update the time every second
+    this.interval = setInterval(() => {
+      this.$store.state.playSeconds += 1;
+      this.$store.commit('setPlaySeconds', this.$store.state.playSeconds);
+      this.time = Intl.DateTimeFormat(navigator.language, {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      }).format()
+    }, 1000)
   },
   mounted() {
     let sidebar = document.querySelector(".sidebar");
