@@ -1,33 +1,37 @@
 <template>
     <h1>{{ step.title }}</h1>
-    <p v-html="$sanitize(step.text)"></p>
+    <div v-if="scenarioNode.resolved">
+            <p class="resolved-text"> <i class="bi bi-check-lg"></i> Enigme résolue</p>
+        </div>
+    <div class="riddle-section">
+        <div   v-html="$sanitize(step.text)"></div>
+        <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
+                <div class="button-general-div"><button class="btn btn-secondary btn-sm" @click="showClue(clue)"><i
+                            class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
+            </div>
+    </div>
+
 
     <div v-if="step.has_answer">
         <div v-if="!scenarioNode.resolved">
 
-            <form @submit="submitAnswer">
-                <div class="form-group">
-                    <label for="answer">Je réponds : </label>
-                    <input @click="disableWrongAnswerText" id="answer" type="text" class="form-control small-input"
+            <form @submit="submitAnswer" class = "reponse-section">
+                <div class="form-group reponse-input-container">
+                    <!-- <label for="answer">Je réponds : </label> -->
+                    <input id="answer" type="text" class="form-control small-input reponse-input"
                         v-model="submittedAnswer.answer" required>
                 </div>
-                <div class="button-general-div">
-                    <button type="submit" class="btn btn-dark"><i class="bi bi-send"></i> Je tente !</button>
+                <div class="reponse-button-container">
+                    <button type="submit" class="btn btn-dark reponse-button"><i class="bi bi-send"></i></button>
                 </div>
             </form>
-            <p v-if="isWrongAnswer"><i class="bi bi-x-lg"></i> Ce n'est pas la bonne réponse</p>
 
-            <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
-                <div class="button-general-div"><button class="btn btn-secondary btn-sm" @click="showClue(clue)"><i
-                            class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
-            </div>
+            
             <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
             <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
                 @message-read="disableSuccessModal"></success-modal>
         </div>
-        <div v-else>
-            <p> <i class="bi bi-check-lg"></i> Enigme résolue</p>
-        </div>
+
     </div>
 </template>
 
@@ -57,7 +61,6 @@ export default {
             },
             isClueModalEnabled: false,
             selectedClueId: '',
-            isWrongAnswer: false,
             isRightAnswer: false,
             nextNodes: [],
             scenarioNode: {
@@ -107,11 +110,11 @@ export default {
             e.preventDefault()
             axios.post('play/scenario_node/answer/' + this.scenarioNodeId + "/", this.submittedAnswer).then((response) => {
                 if (response.data.message == false) {
-                    this.isWrongAnswer = true
                     this.submittedAnswer.answer = '';
+                    window.alert("Ce n'est pas la bonne réponse")
+
                 } else {
                     this.submittedAnswer.answer = '';
-                    this.isWrongAnswer = false
                     this.nextNodes = response.data
                     this.nextNodes.forEach((node) => {
                         node.new = true
@@ -124,9 +127,6 @@ export default {
             }).catch((error) => {
                 console.error("Error during form submission:", error);
             });
-        },
-        disableWrongAnswerText() {
-            this.isWrongAnswer = false
         },
 
         showClue(clueId) {
