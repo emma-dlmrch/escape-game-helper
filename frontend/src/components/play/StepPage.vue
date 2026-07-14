@@ -17,7 +17,6 @@
 
             <form @submit="submitAnswer" class = "reponse-section">
                 <div class="form-group reponse-input-container">
-                    <!-- <label for="answer">Je réponds : </label> -->
                     <input id="answer" type="text" class="form-control small-input reponse-input"
                         v-model="submittedAnswer.answer" required>
                 </div>
@@ -30,6 +29,8 @@
             <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
             <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
                 @message-read="disableSuccessModal"></success-modal>
+            <wrong-modal v-if="isWrongModalEnabled" @wrong-read="disableWrongModal"></wrong-modal>
+                
         </div>
 
     </div>
@@ -39,13 +40,15 @@
 import axios from 'axios';
 import ClueModal from './ClueModal.vue';
 import SuccessModal from './SuccessModal.vue';
+import WrongModal from './WrongModal.vue';
 
 export default {
     name: 'StepPage',
     // props:['scenarioNodeId'],
     components: {
         ClueModal,
-        SuccessModal
+        SuccessModal,
+        WrongModal
     },
     data() {
         return {
@@ -62,6 +65,7 @@ export default {
             isClueModalEnabled: false,
             selectedClueId: '',
             isRightAnswer: false,
+            isWrongModalEnabled: false,
             nextNodes: [],
             scenarioNode: {
                 id: '',
@@ -111,7 +115,7 @@ export default {
             axios.post('play/scenario_node/answer/' + this.scenarioNodeId + "/", this.submittedAnswer).then((response) => {
                 if (response.data.message == false) {
                     this.submittedAnswer.answer = '';
-                    window.alert("Ce n'est pas la bonne réponse")
+                    this.isWrongModalEnabled = true;
 
                 } else {
                     this.submittedAnswer.answer = '';
@@ -136,6 +140,9 @@ export default {
 
         disableClueModal() {
             this.isClueModalEnabled = false
+        },
+        disableWrongModal() {
+            this.isWrongModalEnabled = false
         },
         disableSuccessModal() {
             this.isRightAnswer = false
