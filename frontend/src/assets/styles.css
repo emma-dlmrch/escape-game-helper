@@ -22,6 +22,10 @@
   --modal-text-color: #2d1898;
 }
 
+body div.theme-futuriste .home-section {
+  background-image: url("logo.png") !important;
+  background-repeat: repeat !important;
+}
 
 
 
