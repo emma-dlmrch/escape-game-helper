@@ -1,9 +1,11 @@
 <template>
-    <PlayNav />
-
-  <section class="home-section">
-    <router-view />
-    </section>
+    <div :class="currentTheme ? `theme-${currentTheme}`:'default'">
+      <PlayNav />
+      
+      <section class="home-section">
+        <router-view />
+      </section>
+    </div>
 </template>
 
 <script>
@@ -13,6 +15,11 @@ export default {
   name: 'PlayView',
   components: {
     PlayNav
+  },
+  computed: {
+    currentTheme() {
+      return this.$store.state.currentPlayedGameTheme
+    },
   },
   beforeCreate(){
     

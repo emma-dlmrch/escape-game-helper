@@ -2,10 +2,10 @@
 <h1>{{ game.name }}</h1>
 <div v-html="$sanitize(game.description)"> </div>
 <div class="button-general-div">
-    <button class="btn btn-dark" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
+    <button class="btn btn-scenario" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
 <div class="button-general-div">
-<button class="btn btn-dark" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
+<button class="btn btn-scenario" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
 </div>
 </template>
 <script>
@@ -51,6 +51,7 @@ export default {
                 .then(response => {
                     this.game = response.data;
                     this.$store.commit('setCurrentPlayedGameName', this.game.name)
+                    this.$store.commit('setCurrentPlayedGameTheme', this.game.theme)
                     document.title = `${this.game.name}`
 
                 }, (error) => {

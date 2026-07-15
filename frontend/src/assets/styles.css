@@ -1,7 +1,30 @@
 :root {
   --main-bg-color: #E4E9F7;
-  --sidebar-width : 52px;
+  --sidebar-bg-color: #11101D;
+  --sidebar-hover-color: #fff;
+  /* PAS TOUCHE */
+  --sidebar-width: 52px;
+  --police: "Poppins", sans-serif;
+  --custom-btn-text-color: #fff;
+  --custom-btn-bg-color: #000;
+  --modal-bg-color: #fff;
+  --modal-text-color: #000;
 }
+
+.theme-futuriste {
+  --main-bg-color: lightblue;
+  --sidebar-bg-color: darkblue;
+  --sidebar-hover-color: lightblue;
+  --police: "Arial", sans-serif;
+  --custom-btn-text-color: purple;
+  --custom-btn-bg-color: lightpink;
+  --modal-bg-color: #5399c5;
+  --modal-text-color: #2d1898;
+}
+
+
+
+
 
 body {
   background: var(--main-bg-color);
@@ -71,6 +94,14 @@ body {
   padding-bottom: 5px;
 }
 
+.button-general-div button.clue-button,
+.button-general-div button.clue-button:focus,
+.button-general-div button.btn-scenario,
+.button-general-div button.btn-scenario:focus {
+  background-color: var(--custom-btn-bg-color);
+  color: var(--custom-btn-text-color);
+}
+
 h1 {
   padding-bottom: 10px;
 }
@@ -137,6 +168,11 @@ th {
 }
 
 /* MODAL SECTION */
+.background-modal .modal-content {
+  background-color: var(--modal-bg-color);
+  color: var(--modal-text-color);
+}
+
 .modal {
   z-index: 99;
   display: block;
@@ -148,9 +184,9 @@ th {
 }
 
 /* RESIZE IMAGES IN CLUE MODALS */
-.modal-body > * img {
+.modal-body>* img {
   max-width: 450px;
-  height:auto;
+  height: auto;
 }
 
 
@@ -163,7 +199,7 @@ th {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: var(--police);
 }
 
 .sidebar {
@@ -174,7 +210,7 @@ th {
   top: 0;
   height: 100%;
   width: var(--sidebar-width);
-  background: #11101D;
+  background: var(--sidebar-bg-color);
   /* padding: 6px 14px; */
   z-index: 1;
   transition: all 0.5s ease;
@@ -186,10 +222,10 @@ th {
 
 .game_name {
   /* margin: auto -35px auto   */
-  margin-left:-35px;
+  margin-left: -35px;
   transition: all 0.5s ease;
   /* white-space: nowrap; */
-  width:175px;
+  width: 175px;
   /* overflow-y: hidden; */
 }
 
@@ -222,7 +258,7 @@ th {
 .sidebar .logo-details #btn {
   position: absolute;
   top: 50%;
-  right : 2px;
+  right: 2px;
   transform: translateY(-50%);
   font-size: 22px;
   transition: all 0.4s ease;
@@ -292,11 +328,11 @@ th {
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: #11101D;
+  background: var(--sidebar-bg-color);
 }
 
 .sidebar li a:hover {
-  background: #FFF;
+  background: var(--sidebar-hover-color);
 }
 
 .sidebar li a .links_name {
@@ -459,7 +495,7 @@ th {
 
 /* HTML EDITOR SECTION */
 /* Copied/inspired from bootstrap input */
-.ql-toolbar.ql-snow  {
+.ql-toolbar.ql-snow {
   /* background: white; */
   /* border-radius: 5px; */
   display: block;
@@ -521,7 +557,7 @@ th {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
 }
 
 .reponse-input-container {
@@ -534,20 +570,21 @@ th {
   /* min-width: none; */
   max-width: none;
 }
+
 .reponse-button {
   height: 100%;
 }
 
 body:has(.sidebar.open) .reponse-section {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .riddle-section {
-  padding-bottom : 70px;
+  padding-bottom: 70px;
 }
 
 .resolved-text {
   font-size: small;
   font-style: italic;
-} 
+}

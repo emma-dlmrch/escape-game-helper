@@ -1,21 +1,21 @@
 <template>
     <h1>{{ step.title }}</h1>
     <div v-if="scenarioNode.resolved">
-            <p class="resolved-text"> <i class="bi bi-check-lg"></i> Enigme résolue</p>
-        </div>
+        <p class="resolved-text"> <i class="bi bi-check-lg"></i> Enigme résolue</p>
+    </div>
     <div class="riddle-section">
-        <div   v-html="$sanitize(step.text)"></div>
+        <div v-html="$sanitize(step.text)"></div>
         <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
-                <div class="button-general-div"><button class="btn btn-secondary btn-sm" @click="showClue(clue)"><i
-                            class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
-            </div>
+            <div class="button-general-div"><button class="btn btn-secondary btn-sm clue-button"
+                    @click="showClue(clue)"><i class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
+        </div>
     </div>
 
 
     <div v-if="step.has_answer">
         <div v-if="!scenarioNode.resolved">
 
-            <form @submit="submitAnswer" class = "reponse-section">
+            <form @submit="submitAnswer" class="reponse-section">
                 <div class="form-group reponse-input-container">
                     <input id="answer" type="text" class="form-control small-input reponse-input"
                         v-model="submittedAnswer.answer" required>
@@ -25,12 +25,12 @@
                 </div>
             </form>
 
-            
+
             <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
             <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
                 @message-read="disableSuccessModal"></success-modal>
             <wrong-modal v-if="isWrongModalEnabled" @wrong-read="disableWrongModal"></wrong-modal>
-                
+
         </div>
 
     </div>
@@ -57,7 +57,8 @@ export default {
                 text: '',
                 clues: [],
                 has_answer: '',
-                game_name:''
+                game_name: '',
+                theme: ''
             },
             submittedAnswer: {
                 answer: ''
@@ -86,15 +87,14 @@ export default {
                         this.$store.commit('setNodeInfo', this.scenarioNode)
                     }
                     this.$store.commit('setCurrentPlayedGameName', this.step.game_name)
+                    this.$store.commit('setCurrentPlayedGameTheme', this.step.theme);
                     document.title = `${this.step.title} - ${this.step.game_name}`
                 }, (error) => {
                     console.log(error)
                 }
                 )
-
         },
         getNodeData() {
-            console.log(atob("cG91dGNob3V6YmVraXN0YW4="));
             axios.get("play/scenario_node/" + this.scenarioNodeId + "/")
                 .then(response => {
                     this.scenarioNode = response.data;
