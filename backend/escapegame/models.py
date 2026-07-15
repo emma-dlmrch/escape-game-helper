@@ -4,9 +4,11 @@ from django.db import models
 from django.conf import settings
 from authentication.models import User
 from django.core.files.storage import FileSystemStorage
-from rest_framework.serializers import ModelSerializer, ValidationError
 
 # Create your models here.
+
+class Theme(models.Model): ## theme pour css
+    label = models.CharField(max_length=25)
 
 class Game(models.Model):
 
@@ -15,6 +17,7 @@ class Game(models.Model):
     description = models.TextField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    theme = models.ForeignKey(Theme, on_delete=models.SET_NULL, null=True, blank = True)
 
     def __str__(self):
         return self.name
@@ -72,3 +75,4 @@ class Image(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=path_and_rename, storage=upload_storage) 
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='images')
+

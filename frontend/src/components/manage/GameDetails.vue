@@ -6,6 +6,13 @@
             <input type="text" id="name" class="form-control" v-model.lazy="game.name" @click="disableWasUpdatedMessage"
                 required>
         </div>
+        <div v-if="themes != null && themes.length >0" class="form-group">
+            <label for="theme">Thème :</label>
+            <select id="theme"   class="form-control" v-model="game.theme" @change="disableWasUpdatedMessage">
+                <option :value="null">Aucun</option>
+                <option v-for="theme in themes" :key="theme.id" :value="theme.id"> {{ theme.label }}</option>
+            </select>
+        </div>
         <div class="form-group">
             <label >Text descriptif :</label>
             <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
@@ -142,6 +149,7 @@ export default {
             game: {
                 name: '',
                 description: '',
+                theme: null
             },
             gameId: this.$route.params.id,
             steps: [],
@@ -180,7 +188,8 @@ export default {
                 'link', 
                 'image', 
                 'video'
-            ]
+            ],
+            themes: []
         }
 
     },
@@ -198,6 +207,14 @@ export default {
                     console.log(error)
                 }
                 )
+        },
+
+        getThemes() {
+            axios.get("themes/").then(response => {
+                this.themes = response.data.results
+            }, (error) => {
+                console.log(error)
+            } )
         },
 
         createNewStep() {
@@ -288,6 +305,7 @@ export default {
     },
 
     created() {
+        this.getThemes();
         this.getGameData();
     },
 }

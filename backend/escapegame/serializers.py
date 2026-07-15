@@ -6,17 +6,24 @@ from slugify import slugify
 
 from authentication.models import User
 
-from .models import Scenario, Game, ScenarioNode, Clue, Step, Image
+from .models import Scenario, Game, ScenarioNode, Clue, Step, Image, Theme
 import logging
 
 #ToDO: Implement unit tests
+class ThemeSerializer(ModelSerializer):
+
+    class Meta:
+        model = Theme
+        fields = ['id','label']
+
 class GameListSerializer(ModelSerializer):
 
     scenarios = serializers.SerializerMethodField()
-    
+    theme = serializers.SerializerMethodField() # surcharge theme pour envoyer directement le label
+
     class Meta:
         model = Game
-        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'scenarios']
+        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'scenarios', 'theme']
     
     def get_scenarios(self, instance):
         
@@ -29,17 +36,21 @@ class GameListSerializer(ModelSerializer):
         if data['author'].id !=  user.id:
             raise ValidationError('Creation not allowed: User Id not consistent with requester')
         return data
+    
+    def get_theme(self, instance):
+        if instance.theme:
+            return instance.theme.label 
+        return None
 
 
 class GameDetailSerializer(ModelSerializer):
 
     scenarios = serializers.SerializerMethodField()
-
     steps = serializers.SerializerMethodField()
     
     class Meta:
         model = Game
-        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'steps', 'scenarios']
+        fields = ['id', 'author', 'name', 'description', 'date_created', 'date_updated', 'steps', 'scenarios', 'theme']
     
         
     def get_scenarios(self, instance):
@@ -214,10 +225,11 @@ class ClueDetailSerializer(ModelSerializer):
 class ScenarioPlaySerializer(ModelSerializer):
 
     first_node = serializers.SerializerMethodField()
-    
+    theme = serializers.SerializerMethodField()
+
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'game','first_node']
+        fields = ['id', 'name', 'game','first_node', 'theme']
 
     def get_first_node(self, instance):
         queryset = instance.scenario_nodes.filter(parent_node = None)
@@ -226,15 +238,23 @@ class ScenarioPlaySerializer(ModelSerializer):
         serializer = ScenarioNodePlaySerializer(queryset[0], many=False)
         return serializer.data
     
+    def get_theme(self, instance):
+        if instance.game.theme:
+            return instance.game.theme.label 
+        return None
+    
 class StepPlaySerializer(ModelSerializer):
 
     game_name = serializers.SerializerMethodField()
 
     has_answer = serializers.SerializerMethodField()
+
+    theme = serializers.SerializerMethodField()
+
     
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name']
+        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name', 'theme']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
@@ -248,6 +268,11 @@ class StepPlaySerializer(ModelSerializer):
     
     def get_game_name(self, instance):
         return instance.game.name
+    
+    def get_theme(self, instance):
+        if instance.game.theme:
+            return instance.game.theme.label 
+        return None
     
 class ScenarioNodePlaySerializer(ModelSerializer):
 

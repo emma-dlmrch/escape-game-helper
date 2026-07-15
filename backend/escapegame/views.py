@@ -11,9 +11,9 @@ from .serializers import (
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
-    ClueListSerializer, ClueDetailSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer
+    ClueListSerializer, ClueDetailSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer, ThemeSerializer
     )
-from .models import Game, ScenarioNode, Step, Scenario, Clue
+from .models import Game, ScenarioNode, Step, Scenario, Clue, Theme
 from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
 
 
@@ -81,7 +81,7 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         return queryset
     
     
-class GamePlayViewSet(ReadOnlyModelViewSet):
+class GamePlayViewSet(ReadOnlyModelViewSet): #on s'en sert de ça ??
     serializer_class = GameListSerializer
 
     def get_queryset(self):
@@ -167,3 +167,9 @@ class ImageView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ThemeViewSet(ReadOnlyModelViewSet):
+    serializer_class = ThemeSerializer
+
+    def get_queryset(self):
+        queryset = Theme.objects.all()
+        return queryset
