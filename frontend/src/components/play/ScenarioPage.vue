@@ -1,12 +1,11 @@
 <template>
-<h1>{{ game.name }}</h1>
+    <div class= "game-title">
+        <h1>{{ game.name }}</h1>
+    </div> 
 <div v-html="$sanitize(game.description)"> </div>
 <div class="button-general-div">
     <button class="btn btn-scenario" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
-<!-- <div class="button-general-div">
-<button class="btn btn-scenario" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
-</div> -->
 </template>
 <script>
 import axios from 'axios'

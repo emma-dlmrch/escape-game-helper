@@ -1,5 +1,7 @@
 <template>
-    <h1>{{ step.title }}</h1>
+    <div class= "game-title">
+        <h1>{{ step.title }}</h1>
+    </div>
     <div v-if="scenarioNode.resolved">
         <p class="resolved-text"> <i class="bi bi-check-lg"></i> Enigme résolue</p>
     </div>

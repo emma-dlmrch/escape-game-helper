@@ -118,10 +118,55 @@ body div.theme-medieval .home-section {
 }
 
 
+/* THEME ENQUETE */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+.theme-enquete {
+  --main-bg-color: #161614;
+  --text-color-futuriste: #D8D4C4;
+  --text-color: var(--text-color-futuriste);
 
+  --police: "Special Elite", "Courier Prime", monospace;
+  --police-title: "Bebas Neue", sans-serif;
+
+  --sidebar-bg-color: #22251E;
+  --sidebar-hover-color: #7C9A5A;
+  --sidebar-title-color: #E6DFC8;
+  --sidebar-icon-color: #BFAE77;
+  --sidebar-icon-txt-color: #E6DFC8;
+
+  --custom-btn-text-color: #E6DFC8;
+  --custom-btn-bg-color: #4B5D3A;
+
+  --modal-bg-color: #2A2D26;
+  --modal-text-color: #F0E9D2;
+}
+
+body div.theme-enquete .home-section {
+  background:
+    linear-gradient(rgba(22,22,20,0.92), rgba(22,22,20,0.92)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 32px,
+      rgba(120, 135, 95, 0.05) 33px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 32px,
+      rgba(120, 135, 95, 0.05) 33px
+    ),
+    radial-gradient(circle at 20% 30%, rgba(191,174,119,.08), transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(124,154,90,.06), transparent 40%) !important;
+
+  color: var(--text-color) !important;
+}
 
 body {
   background: var(--main-bg-color);
+}
+.game-title {
+  padding-bottom: 10px;
 }
 
 
