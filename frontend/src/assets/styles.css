@@ -162,6 +162,53 @@ body div.theme-enquete .home-section {
   color: var(--text-color) !important;
 }
 
+
+/* THEME CYBER */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+.theme-cyber {
+  --main-bg-color: #0B1220;
+  --text-color-futuriste: #D8F3FF;
+  --text-color: var(--text-color-futuriste);
+
+  --police: "IBM Plex Mono", monospace;
+  --police-title: "Orbitron", sans-serif;
+
+  --sidebar-bg-color: #111827;
+  --sidebar-hover-color: #22D3EE;
+  --sidebar-title-color: #E0F7FF;
+  --sidebar-icon-color: #38BDF8;
+  --sidebar-icon-txt-color: #D8F3FF;
+
+  --custom-btn-text-color: #D8F3FF;
+  --custom-btn-bg-color: #0F3B57;
+
+  --modal-bg-color: #172033;
+  --modal-text-color: #F1FCFF;
+}
+
+body div.theme-cyber .home-section {
+  background:
+    linear-gradient(rgba(11,18,32,.96), rgba(11,18,32,.96)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(34,211,238,.05) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(34,211,238,.05) 40px
+    ),
+    radial-gradient(circle at 15% 20%, rgba(56,189,248,.08), transparent 35%),
+    radial-gradient(circle at 85% 80%, rgba(34,211,238,.06), transparent 40%) !important;
+
+  color: var(--text-color) !important;
+}
+
+
+/* FIN DES THEMES */
 body {
   background: var(--main-bg-color);
 }
