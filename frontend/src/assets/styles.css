@@ -1,18 +1,68 @@
 :root {
+  --police: "Poppins", sans-serif;
+  --police-title:"Poppins", sans-serif;
+  --text-color: rgb(33, 37, 41);
+
   --main-bg-color: #E4E9F7;
+
   --sidebar-bg-color: #11101D;
   --sidebar-hover-color: #fff;
-  /* PAS TOUCHE */
-  --sidebar-width: 52px;
-  --police: "Poppins", sans-serif;
+  --sidebar-title-color: #fff;
+  --sidebar-icon-color: #fff;
+  --sidebar-icon-txt-color: #fff;
+  --sidebar-width: 52px;   /* PAS TOUCHE */
+
   --custom-btn-text-color: #fff;
   --custom-btn-bg-color: #000;
   --modal-bg-color: #fff;
   --modal-text-color: #000;
 }
 
+
+/* THEME ETOILES */
+
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
+
+.theme-etoiles {
+  --main-bg-color: black;
+  --text-color-futuriste: #E5E7EB;
+  --text-color: var(--text-color-futuriste);
+
+  --police: "Chakra Petch", sans-serif;
+  --police-title: "Audiowide", "sans-serif";
+
+  --sidebar-bg-color: #0d1423;
+  --sidebar-hover-color: lightblue;
+  --sidebar-title-color: var(--text-color-futuriste); 
+  --sidebar-icon-color: var(--text-color-futuriste);
+  --sidebar-icon-txt-color: var(--text-color-futuriste);
+
+  --custom-btn-text-color: #75a3ed;
+  --custom-btn-bg-color: #273549;
+ 
+  --modal-bg-color: #1E293B;
+  --modal-text-color: #F8FAFC;  
+}
+
+body div.theme-etoiles .home-section {
+  background-image:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px),
+        radial-gradient(rgba(255, 255, 255, .4), rgba(255, 255, 255, .1) 2px, transparent 30px) !important;
+    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px !important;
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px !important;
+
+    color: var(--text-color)  !important;
+}
+
+
+/* THEME FUTURISTE TODO */
 .theme-futuriste {
   --main-bg-color: lightblue;
+  --text-color: rgb(33, 37, 41);
+
   --sidebar-bg-color: darkblue;
   --sidebar-hover-color: lightblue;
   --police: "Arial", sans-serif;
@@ -20,11 +70,51 @@
   --custom-btn-bg-color: lightpink;
   --modal-bg-color: #5399c5;
   --modal-text-color: #2d1898;
+  --sidebar-title-color: #fff;
+  --sidebar-icon-color: #fff;
+  --sidebar-icon-txt-color: #fff;
+
 }
 
 body div.theme-futuriste .home-section {
   background-image: url("logo.png") !important;
   background-repeat: repeat !important;
+  color: var(--text-color) !important;
+
+}
+
+/* THEME MEDIEVAL */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+.theme-medieval {
+    --main-bg-color: #E7D7B4;
+
+    --text-color: #35281D;
+
+    --police: "Cormorant Garamond", serif;
+    font-size: 1.1rem;
+    --police-title: "Cinzel", serif;
+
+    --sidebar-bg-color: #5E4328;
+    --sidebar-hover-color: #B08D57;
+
+    --sidebar-title-color: #F5E6C8;
+    --sidebar-icon-color: #D9C28A;
+    --sidebar-icon-txt-color: #F5E6C8;
+
+    --custom-btn-bg-color: #8A6238;
+    --custom-btn-text-color: #FFF8E8;
+
+    --modal-bg-color: #F1E4C7;
+    --modal-text-color: #35281D;
+}
+body div.theme-medieval .home-section {
+    background: linear-gradient(
+        180deg,
+        #E8D8B8,
+        #D8C3A5
+    );
+
+    color: #3B2A1F !important;
 }
 
 
@@ -100,6 +190,8 @@ body {
 
 .button-general-div button.clue-button,
 .button-general-div button.clue-button:focus,
+.close-button,
+.close-button:focus,
 .button-general-div button.btn-scenario,
 .button-general-div button.btn-scenario:focus {
   background-color: var(--custom-btn-bg-color);
@@ -183,6 +275,14 @@ th {
   background-color: rgba(0.5, 0.5, 0.5, 0.4);
 }
 
+.close-croix {
+    background: none;
+    border: none;
+    color: var(--modal-text-color);
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
 .home-section .modal-dialog {
   max-width: 500px;
 }
@@ -191,6 +291,20 @@ th {
 .modal-body>* img {
   max-width: 450px;
   height: auto;
+}
+
+/* pour les barres de modales */
+.modal-header,
+.modal-footer {
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255,255,255,.08);
 }
 
 
@@ -204,6 +318,13 @@ th {
   padding: 0;
   box-sizing: border-box;
   font-family: var(--police);
+}
+
+h1, h2, h3, h4, .modal-title {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--police-title);
 }
 
 .sidebar {
@@ -247,7 +368,8 @@ th {
 }
 
 .sidebar .logo-details .logo_name {
-  color: #fff;
+  color: var(--sidebar-title-color);
+
   font-size: 20px;
   font-weight: 600;
   opacity: 0;
@@ -277,7 +399,7 @@ th {
 }
 
 .sidebar i {
-  color: #fff;
+  color: var(--sidebar-icon-color);
   height: 60px;
   min-width: 50px;
   font-size: 28px;
@@ -340,7 +462,7 @@ th {
 }
 
 .sidebar li a .links_name {
-  color: #fff;
+  color: var(--sidebar-icon-txt-color);
   font-size: 15px;
   font-weight: 400;
   white-space: nowrap;

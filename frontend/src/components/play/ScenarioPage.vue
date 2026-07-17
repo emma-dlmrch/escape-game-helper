@@ -4,9 +4,9 @@
 <div class="button-general-div">
     <button class="btn btn-scenario" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
-<div class="button-general-div">
+<!-- <div class="button-general-div">
 <button class="btn btn-scenario" @click="cancel"><i class="bi bi-arrow-left"></i> Retour</button>
-</div>
+</div> -->
 </template>
 <script>
 import axios from 'axios'

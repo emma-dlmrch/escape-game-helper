@@ -40,11 +40,10 @@ export default {
         }
     },
     methods: {
-        checkScenarioExists() {
-
-
-        },
         playGame() {
+            if (this.scenarioId) {
+                this.scenarioId = this.scenarioId.trim()
+            }
             axios.get("play/scenario/" + this.scenarioId + "/")
                 .then(response => {
                     if (response.data.id) {

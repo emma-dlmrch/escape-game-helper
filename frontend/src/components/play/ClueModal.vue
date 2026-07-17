@@ -4,16 +4,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{clue.title}}</h5>
-                    <button type="button" class="btn-close close-btn" aria-label="Close" @click="goBack"></button>
+                    <button type="button" class="close-btn close-croix" aria-label="Close" @click="goBack">✕</button>
                 </div>
                 <div class="modal-body">
                     <p v-html="$sanitize(clue.text)"></p>
-
+                </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm close-btn" @click="goBack">Fermer</button>
+                        <button type="button" class="btn btn-secondary btn-sm close-btn close-button" @click="goBack">Fermer</button>
                 </div>
 
-                </div>
+                
             </div>
         </div>
     </div>

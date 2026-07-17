@@ -9,7 +9,7 @@
         <div v-if="themes != null && themes.length >0" class="form-group">
             <label for="theme">Thème :</label>
             <select id="theme"   class="form-control" v-model="game.theme" @change="disableWasUpdatedMessage">
-                <option :value="null">Aucun</option>
+                <option :value="null">par défaut</option>
                 <option v-for="theme in themes" :key="theme.id" :value="theme.id"> {{ theme.label }}</option>
             </select>
         </div>
