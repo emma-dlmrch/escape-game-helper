@@ -225,11 +225,10 @@ class ClueDetailSerializer(ModelSerializer):
 class ScenarioPlaySerializer(ModelSerializer):
 
     first_node = serializers.SerializerMethodField()
-    theme = serializers.SerializerMethodField()
 
     class Meta:
         model = Scenario
-        fields = ['id', 'name', 'game','first_node', 'theme']
+        fields = ['id', 'name', 'game','first_node']
 
     def get_first_node(self, instance):
         queryset = instance.scenario_nodes.filter(parent_node = None)
@@ -238,10 +237,6 @@ class ScenarioPlaySerializer(ModelSerializer):
         serializer = ScenarioNodePlaySerializer(queryset[0], many=False)
         return serializer.data
     
-    def get_theme(self, instance):
-        if instance.game.theme:
-            return instance.game.theme.label 
-        return None
     
 class StepPlaySerializer(ModelSerializer):
 
