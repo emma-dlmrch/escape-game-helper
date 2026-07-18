@@ -421,7 +421,7 @@ h1, h2, h3, h4, .modal-title {
 
 .sidebar {
   overflow-y: auto;
-  overflow-x: none;
+  overflow-x: hidden;
   position: fixed;
   left: 0;
   top: 0;
