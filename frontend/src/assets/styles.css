@@ -776,6 +776,14 @@ h1, h2, h3, h4, .modal-title {
   backdrop-filter: blur(8px);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
+
+  /* transition */
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: auto;
 }
 
 .reponse-input-container {
@@ -796,6 +804,11 @@ h1, h2, h3, h4, .modal-title {
 body:has(.sidebar.open) .reponse-section {
   opacity: 0;
   pointer-events: none;
+  transform: translateY(8px);
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+
 }
 
 .riddle-section {
@@ -816,4 +829,19 @@ body:has(.sidebar.open) .reponse-section {
 
 .link-unlocked-step:hover {
     cursor:pointer;
+}
+
+
+/* quill */
+.ql-toolbar button.ql-audio {
+    width: 28px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ql-toolbar button.ql-audio::before {
+    content: '🎵';
+    font-size: 15px;
+    line-height: 1;
 }

@@ -14,26 +14,24 @@
     </div>
 
 
-    <div v-if="step.has_answer">
-        <div v-if="!scenarioNode.resolved">
+    <div v-if="step.has_answer && !scenarioNode.resolved">
 
-            <form @submit="submitAnswer" class="reponse-section">
-                <div class="form-group reponse-input-container">
-                    <input id="answer" type="text" class="form-control small-input reponse-input"
-                        v-model="submittedAnswer.answer" required :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer">
-                </div>
-                <div class="reponse-button-container">
-                    <button type="submit" class="btn btn-dark reponse-button" :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer"><i class="bi bi-send"></i></button>
-                </div>
-            </form>
+        <form @submit="submitAnswer" class="reponse-section">
+            <div class="form-group reponse-input-container">
+                <input id="answer" type="text" class="form-control small-input reponse-input"
+                    v-model="submittedAnswer.answer" required :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer">
+            </div>
+            <div class="reponse-button-container">
+                <button type="submit" class="btn btn-dark reponse-button" :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer"><i class="bi bi-send"></i></button>
+            </div>
+        </form>
 
 
-            <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
-            <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
-                @message-read="disableSuccessModal"></success-modal>
-            <wrong-modal v-if="isWrongModalEnabled" @wrong-read="disableWrongModal"></wrong-modal>
+        <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
+        <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
+            @message-read="disableSuccessModal"></success-modal>
+        <wrong-modal v-if="isWrongModalEnabled" @wrong-read="disableWrongModal"></wrong-modal>
 
-        </div>
 
     </div>
 </template>

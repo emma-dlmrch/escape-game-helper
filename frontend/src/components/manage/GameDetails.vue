@@ -14,8 +14,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label >Text descriptif :</label>
-            <QuillEditor v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
+            <label >Texte descriptif :</label>
+            <QuillEditor v-if="quillReady" v-model:content="game.description" contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
         </div>
@@ -96,6 +96,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
 import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
+import { registerAudioBlot, audioHandler } from '@/quill/audio';
 
 export function imageHandler (file, gameId) {
     // if (file.size > 100000) {
@@ -146,6 +147,7 @@ export default {
     },
     data() {
         return {
+            quillReady:false,
             game: {
                 name: '',
                 description: '',
@@ -178,17 +180,22 @@ export default {
                 // options: {/* options */}
             },
             ],
-            toolbarOptions: [
-                {'header': [1, 2, 3, false] }, 
-                'bold', 
-                'italic', 
-                'underline', 
-                { 'list': 'ordered' }, 
-                { 'list': 'bullet' }, 
-                'link', 
-                'image', 
-                'video'
-            ],
+            toolbarOptions: { 
+                container : [
+                    {'header': [1, 2, 3, false] }, 
+                    'bold', 
+                    'italic', 
+                    'underline', 
+                    { 'list': 'ordered' }, 
+                    { 'list': 'bullet' }, 
+                    'link', 
+                    'image', 
+                    'video',
+                    'audio' 
+                ],                 
+                handlers : {
+                    audio : audioHandler
+                } },
             themes: []
         }
 
@@ -304,9 +311,11 @@ export default {
         },
     },
 
-    created() {
+    async created() {
         this.getThemes();
         this.getGameData();
+        await registerAudioBlot()
+        this.quillReady = true
     },
 }
 </script>

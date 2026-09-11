@@ -8,7 +8,7 @@
         <div class="form-group">
             <label >Texte :</label>
             <!-- <textarea id="step-text" class="form-control" v-model="step.text" rows="5" @click="disableWasUpdatedMessage" required></textarea> -->
-            <QuillEditor v-model:content="step.text"  contentType="html" theme="snow" :modules="modules"
+            <QuillEditor v-if="quillReady" v-model:content="step.text"  contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
         </div>
@@ -68,6 +68,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
 import BlotFormatter from 'quill-blot-formatter'
 import store from '@/store';
+import { registerAudioBlot, audioHandler } from '@/quill/audio';
 
 export function imageHandler (file, gameId) {
     return new Promise((resolve, reject) => {
@@ -100,6 +101,8 @@ export default {
     },
     data() {
         return {
+            quillReady: false,
+
             gameId: this.$route.params.gameId,
             stepId: this.$route.params.stepId,
             step: {
@@ -127,17 +130,23 @@ export default {
                 // options: {/* options */}
             },
             ],
-            toolbarOptions: [
-                {'header': [1, 2, 3, false] }, 
-                'bold', 
-                'italic', 
-                'underline', 
-                { 'list': 'ordered' }, 
-                { 'list': 'bullet' }, 
-                'link', 
-                'image', 
-                'video'
-            ]
+            toolbarOptions: { 
+                container : [
+                    {'header': [1, 2, 3, false] }, 
+                    'bold', 
+                    'italic', 
+                    'underline', 
+                    { 'list': 'ordered' }, 
+                    { 'list': 'bullet' }, 
+                    'link', 
+                    'image', 
+                    'video',
+                    'audio'
+                ],
+                handlers : {
+                    audio : audioHandler
+                }
+            }
 
         }
     },
@@ -202,8 +211,10 @@ export default {
 
 
     },
-    created() {
-        this.getStepData();
-    },
+    async created() {
+        this.getStepData();   
+        await registerAudioBlot()
+        this.quillReady = true
+    }
 }
 </script>

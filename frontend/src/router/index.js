@@ -102,7 +102,7 @@ const routes = [
                     {
                         path: "step/:scenarioNodeId",
                         name: "StepPage",
-                        props: true,
+                        // props: true,
                         component: () =>
                             import("../components/play/StepPage.vue"),
                     },

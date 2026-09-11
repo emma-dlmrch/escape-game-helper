@@ -5,6 +5,7 @@ import logging
 from slugify import slugify
 
 from authentication.models import User
+from .utils.sanitizer import sanitize_html
 
 from .models import Scenario, Game, ScenarioNode, Clue, Step, Image, Theme
 import logging
@@ -66,6 +67,9 @@ class GameDetailSerializer(ModelSerializer):
         serializer = StepListSerializer(queryset, many=True)
         return serializer.data
 
+    def validate_description(self, value):
+        return sanitize_html(value)
+
 
 class StepListSerializer(ModelSerializer):
     
@@ -91,6 +95,9 @@ class StepDetailSerializer(ModelSerializer):
         queryset = instance.clues.all()
         serializer = ClueListSerializer(queryset, many=True)
         return serializer.data
+
+    def validate_text(self, value):
+        return sanitize_html(value)
 
 
 class ScenarioListSerializer(ModelSerializer):
