@@ -20,10 +20,10 @@
             <form @submit="submitAnswer" class="reponse-section">
                 <div class="form-group reponse-input-container">
                     <input id="answer" type="text" class="form-control small-input reponse-input"
-                        v-model="submittedAnswer.answer" required>
+                        v-model="submittedAnswer.answer" required :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer">
                 </div>
                 <div class="reponse-button-container">
-                    <button type="submit" class="btn btn-dark reponse-button"><i class="bi bi-send"></i></button>
+                    <button type="submit" class="btn btn-dark reponse-button" :disabled="isClueModalEnabled || isWrongModalEnabled || isRightAnswer"><i class="bi bi-send"></i></button>
                 </div>
             </form>
 

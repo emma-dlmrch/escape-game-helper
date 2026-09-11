@@ -10,7 +10,10 @@
                     <p>C'est la bonne réponse ! </p>
                     <div v-if="unlockedNodes.length">
                     <p >Vous avez débloqué les étapes suivantes : </p>
-                    <p v-for="node in unlockedNodes" v-bind:key="node.id"> {{ node.label }}</p>
+                    
+                    <div v-for="node in unlockedNodes" v-bind:key="node.id" class="link-unlocked-step">
+                        <p @click="redirectToNewStep(node.id)"><i class="bi bi-unlock"></i> {{ node.label }} </p>
+                    </div>
                 </div>
                 </div>
                 <div class="modal-footer">
@@ -48,6 +51,11 @@ export default {
                 this.$emit('message-read');
             }
         },
+
+        redirectToNewStep(id) {
+            this.$router.push({ name: 'StepPage', params: { scenarioNodeId: id }})
+            this.$emit('message-read');
+        }
     },
 
 

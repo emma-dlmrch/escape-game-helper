@@ -24,13 +24,13 @@
         </router-link>
       </li>   
       
-      <li>
+      <!-- <li>
         <router-link :to="{name: 'WelcomePage'}">
         <i class="bx bi bi-house-fill"></i>
           <span class="links_name">Accueil</span>
           <span class="tooltip">Accueil</span>
         </router-link>
-        </li>
+        </li> -->
     </ul>
   </div>
 </template>

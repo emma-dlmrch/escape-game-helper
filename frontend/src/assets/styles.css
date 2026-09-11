@@ -806,3 +806,14 @@ body:has(.sidebar.open) .reponse-section {
   font-size: small;
   font-style: italic;
 }
+
+.link-unlocked-step {
+  font-weight: bold;
+  font-style:italic;
+  text-decoration: none !important;
+  color: var(--modal-text-color);
+}
+
+.link-unlocked-step:hover {
+    cursor:pointer;
+}
