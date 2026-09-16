@@ -835,13 +835,17 @@ body:has(.sidebar.open) .reponse-section {
 /* quill */
 .ql-toolbar button.ql-audio {
     width: 28px !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .ql-toolbar button.ql-audio::before {
     content: '🎵';
     font-size: 15px;
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 0.5px;
+    padding: 0;
+    /* line-height: 1; */
 }
