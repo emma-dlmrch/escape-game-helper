@@ -222,11 +222,17 @@ class ClueListSerializer(ModelSerializer):
             raise ValidationError('Creation not allowed: game not owned by requester')
         return data
 
+    def validate_text(self, value):
+        return sanitize_html(value)
+
 class ClueDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Clue
         fields = ['id','step', 'title', 'text']
+
+    def validate_text(self, value):
+        return sanitize_html(value)
 
 
 class ScenarioPlaySerializer(ModelSerializer):
