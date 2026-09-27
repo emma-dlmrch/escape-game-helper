@@ -27,13 +27,13 @@
         </form>
 
 
-        <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
         <success-modal :unlockedNodes="nextNodes" v-if="isRightAnswer"
-            @message-read="disableSuccessModal"></success-modal>
+        @message-read="disableSuccessModal"></success-modal>
         <wrong-modal v-if="isWrongModalEnabled" @wrong-read="disableWrongModal"></wrong-modal>
-
-
+        
+        
     </div>
+    <clue-modal :clueId="selectedClueId" v-if="isClueModalEnabled" @clue-read="disableClueModal"></clue-modal>
 </template>
 
 <script>
