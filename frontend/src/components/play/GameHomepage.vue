@@ -52,6 +52,7 @@ export default {
                         }
                         this.$store.commit('setCurrentPlayedScenarioId', this.scenarioId)
                         this.$router.push({ name: 'ScenarioPage', params: { scenarioId: this.scenarioId } })
+                        this.$store.commit("startTimer", {scenarioId:this.scenarioId, deleteHistory:this.deleteScenarioHistory});
                     } else {
                         this.wrongScenarioCode = true
                     }
