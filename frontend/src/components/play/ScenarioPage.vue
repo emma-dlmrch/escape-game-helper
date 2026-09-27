@@ -38,6 +38,7 @@ export default {
             axios.get("play/scenario/"+ this.scenarioId + "/")
                 .then(response => {
                     this.scenario = response.data;
+                    this.$store.commit("startTimer", {scenarioId:this.scenario.first_node.scenario_slug, deleteHistory:false});
                     this.getGameData();
 
                 }, (error) => {
@@ -64,6 +65,7 @@ export default {
             this.scenario.first_node.info = false
             this.$store.commit('unlockNode', this.scenario.first_node)
             this.$router.push({ name: 'StepPage', params: { scenarioNodeId: this.scenario.first_node.id }})
+            // this.$store.commit("startTimer", {scenarioId:this.scenario.first_node.scenario_slug, deleteHistory:false});
         },
 
         cancel(){

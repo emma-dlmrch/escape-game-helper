@@ -9,7 +9,7 @@
         <div v-html="$sanitize(step.text)"></div>
 
         <div v-if="step.is_last" class = "final-time">
-            <h3> <i class="bi bi-alarm"></i> {{ finalTime }}</h3>
+            <h3> <i class="bi bi-trophy"></i> {{ finalTime }}</h3>
         </div>
 
         <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
