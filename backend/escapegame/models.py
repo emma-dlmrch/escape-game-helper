@@ -28,6 +28,8 @@ class Step(models.Model):
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=5000)
     answer = models.CharField(max_length=128, null=True, blank=True)
+    is_last = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.title 

@@ -11,7 +11,9 @@ export default createStore({
         unlockedNodes: [],
         currentPlayedScenarioId: '',
         currentPlayedGameName: "",
-        currentPlayedGameTheme: ""
+        currentPlayedGameTheme: "",
+        startDateTime : {},
+        stopDateTime : {}
     },
 
     mutations: {
@@ -29,18 +31,40 @@ export default createStore({
 
             try {
                 state.unlockedNodes = JSON.parse(localStorage.getItem('unlockedNodes') ?? "[]")
+                state.startDateTime = JSON.parse(localStorage.getItem('startDateTime') ?? "{}");
+                state.stopDateTime = JSON.parse(localStorage.getItem('stopDateTime') ?? "{}");
             } catch (e) {
                 state.unlockedNodes = "[]"
+                state.startDateTime = {}
+                state.stopDateTime = {}
             }
             state.currentPlayedScenarioId = localStorage.getItem('currentPlayedScenarioId') ?? ''
             state.currentPlayedGameName = localStorage.getItem('currentPlayedGameName') ?? {}
-            state.playSeconds = localStorage.getItem('playSeconds') ?? ''
-            if (state.playSeconds == '') {
-                state.playSeconds = 0;
-            } else {
-                state.playSeconds = parseInt(state.playSeconds, 10);
+        },
+        startTimer(state, params) {
+            const {scenarioId, deleteHistory} = params;
+
+            if(!state.startDateTime[scenarioId] || deleteHistory){
+                state.startDateTime[scenarioId] =  Date.now()
+                delete state.stopDateTime[scenarioId]
+                localStorage.setItem("startDateTime", JSON.stringify(state.startDateTime))
+                localStorage.setItem("stopDateTime", JSON.stringify(state.stopDateTime))
             }
         },
+
+        addTimePenalty(state, scenarioId) { //slug
+            if(state.startDateTime[scenarioId]) {
+                state.startDateTime[scenarioId] =  new Date (state.startDateTime[scenarioId] - 60000);
+                localStorage.setItem("startDateTime", JSON.stringify(state.startDateTime))
+            }
+        },
+        stopTimer(state, scenarioId) { //slug
+            if(!state.stopDateTime[scenarioId]) { //on ne stoppe que la premiere fois
+                state.stopDateTime[scenarioId] =  Date.now();
+                localStorage.setItem("stopDateTime", JSON.stringify(state.stopDateTime))
+            }
+        },
+
         setToken(state, token) {
             state.token = token
             state.isAuthenticated = true
@@ -114,11 +138,6 @@ export default createStore({
         setCurrentPlayedGameTheme(state, theme) {
             state.currentPlayedGameTheme = theme
             localStorage.setItem('currentPlayedGameName', theme)
-        },
-
-        setPlaySeconds(state, seconds) {
-            state.playSeconds = seconds;
-            localStorage.setItem('playSeconds', seconds.toString());
         },
 
     },

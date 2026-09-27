@@ -856,3 +856,7 @@ body:has(.sidebar.open) .reponse-section {
     padding: 0;
     /* line-height: 1; */
 }
+
+.final-time {
+  margin-bottom: 20px;
+}

@@ -7,6 +7,11 @@
     </div>
     <div class="riddle-section">
         <div v-html="$sanitize(step.text)"></div>
+
+        <div v-if="step.is_last" class = "final-time">
+            <h3> <i class="bi bi-alarm"></i> {{ finalTime }}</h3>
+        </div>
+
         <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
             <div class="button-general-div"><button class="btn btn-secondary btn-sm clue-button"
                     @click="showClue(clue)"><i class="bi bi-search"></i> Indice #{{ index + 1 }}</button></div>
@@ -44,7 +49,6 @@ import WrongModal from './WrongModal.vue';
 
 export default {
     name: 'StepPage',
-    // props:['scenarioNodeId'],
     components: {
         ClueModal,
         SuccessModal,
@@ -58,7 +62,8 @@ export default {
                 clues: [],
                 has_answer: '',
                 game_name: '',
-                theme: ''
+                theme: '',
+                is_last: ''
             },
             submittedAnswer: {
                 answer: ''
@@ -75,6 +80,7 @@ export default {
                 scenario_slug: '',
             },
             scenarioNodeId: this.$route.params.scenarioNodeId,
+            finalTime : ''
 
         }
     },
@@ -89,6 +95,9 @@ export default {
                     this.$store.commit('setCurrentPlayedGameName', this.step.game_name)
                     this.$store.commit('setCurrentPlayedGameTheme', this.step.theme);
                     document.title = `${this.step.title} - ${this.step.game_name}`
+                    if(this.step.is_last) {
+                        this.stopTimer();
+                    }
                 }, (error) => {
                     console.log(error)
                 }
@@ -134,9 +143,17 @@ export default {
         },
 
         showClue(clueId) {
-            this.$store.state.playSeconds += 60; // 60s of cost for viewing a clue
+            if(!this.scenarioNode.resolved){
+                this.$store.commit('addTimePenalty', this.scenarioNode.scenario_slug)
+            }
             this.selectedClueId = clueId
             this.isClueModalEnabled = true
+        },
+        stopTimer(){
+            this.$store.commit("stopTimer", this.scenarioNode.scenario_slug);
+            if (this.$store.state.startDateTime[this.scenarioNode.scenario_slug] && this.$store.state.stopDateTime[this.scenarioNode.scenario_slug]) {
+                this.finalTime = new Date((this.$store.state.stopDateTime[this.scenarioNode.scenario_slug] - this.$store.state.startDateTime[this.scenarioNode.scenario_slug])).toISOString().slice(11,19)
+            }
         },
 
         disableClueModal() {

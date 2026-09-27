@@ -89,7 +89,7 @@ class StepDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'answer', 'clues']
+        fields = ['id', 'game', 'title', 'text', 'answer', 'clues', 'is_last']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
@@ -262,7 +262,7 @@ class StepPlaySerializer(ModelSerializer):
     
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name', 'theme']
+        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name', 'theme', 'is_last']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()

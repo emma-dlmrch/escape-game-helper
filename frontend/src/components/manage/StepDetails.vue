@@ -18,6 +18,11 @@
             <small id="answer-help" class="form-text text-muted">Laisse le champ vide si l'étape ne requiert pas de
                 réponse</small>
         </div>
+         <div class="form-group">
+            <input id="is_last" type="checkbox" class="form-check-input" v-model="step.is_last" @click="disableWasUpdatedMessage">
+            <label for="step-is_last">Dernière étape ?</label>
+            <!-- <small id="is_last-help" class="form-text text-muted">Permet de stopper le chronomètre</small> -->
+        </div>
         <div>
             <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-pencil"></i> Enregistrer</button>
             

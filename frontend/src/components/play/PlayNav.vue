@@ -14,8 +14,8 @@
       <li>
         <a>
         <i class="bx bi bi-alarm-fill"></i>
-          <span class="links_name" style="color: #fff">{{ playtime }}</span>
-          <span class="tooltip">{{ playtime }}</span>
+          <span class="links_name timer">{{ timer }}</span>
+          <span class="tooltip">{{ timer }}</span>
         </a>
       </li>
 
@@ -45,6 +45,14 @@
 <script>
 export default {
   name: 'PlayNav',
+    data() {
+    return {
+      interval: null,
+      time: null,
+      timer :''
+    }
+  },
+
   components: {
   },
   computed: {
@@ -76,32 +84,35 @@ export default {
         return output.trim()+"..."
       }
       return currentName;
+    }
+  },
+   methods: {
+    setPlaytime() {
+      if (this.$store.state.startDateTime[this.currentScenario]) {
+        //si une fin -> on fige le temps
+
+        if (this.$store.state.stopDateTime[this.currentScenario]) {
+          return new Date((this.$store.state.stopDateTime[this.currentScenario] - this.$store.state.startDateTime[this.currentScenario])).toISOString().slice(11,19);
+        } else {
+          //sinon on calcule selon date now - le timer tourne
+          return new Date((Date.now() - this.$store.state.startDateTime[this.currentScenario])).toISOString().slice(11,19);
+        }
+
+      }
+      return ''
     },
-    playtime() {
-      return new Date(this.$store.state.playSeconds * 1000).toISOString().slice(11, 19);
-    }
-  },
-  data() {
-    return {
-      interval: null,
-      time: null
-    }
-  },
+   },
+
+
   beforeUnmount() {
     // prevent memory leak
     clearInterval(this.interval)
   },
   created() {
-    // update the time every second
+    //TODO - ne pas actualiser si timer fini ?
     this.interval = setInterval(() => {
-      this.$store.state.playSeconds += 1;
-      this.$store.commit('setPlaySeconds', this.$store.state.playSeconds);
-      this.time = Intl.DateTimeFormat(navigator.language, {
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      }).format()
-    }, 1000)
+      this.timer = this.setPlaytime()
+        }, 1000)
   },
   mounted() {
     let sidebar = document.querySelector(".sidebar");
