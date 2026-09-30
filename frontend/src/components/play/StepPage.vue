@@ -9,7 +9,8 @@
         <div v-html="$sanitize(step.text)"></div>
 
         <div v-if="step.is_last" class = "final-time">
-            <h3> <i class="bi bi-trophy"></i> {{ finalTime }}</h3>
+            <h3> <i class="bi bi-trophy"></i> {{ finalTimeForDisplay }}</h3>
+            <div v-if="textForTime != null"> <div v-html="$sanitize(textForTime)"></div></div>
         </div>
 
         <div v-for="(clue, index) in step.clues" v-bind:key="clue.id">
@@ -63,7 +64,8 @@ export default {
                 has_answer: '',
                 game_name: '',
                 theme: '',
-                is_last: ''
+                is_last: '',
+                end_game_texts : []
             },
             submittedAnswer: {
                 answer: ''
@@ -80,7 +82,9 @@ export default {
                 scenario_slug: '',
             },
             scenarioNodeId: this.$route.params.scenarioNodeId,
-            finalTime : ''
+            finalTime : '',
+            finalTimeForDisplay : '',
+            textForTime: null
 
         }
     },
@@ -152,8 +156,19 @@ export default {
         stopTimer(){
             this.$store.commit("stopTimer", this.scenarioNode.scenario_slug);
             if (this.$store.state.startDateTime[this.scenarioNode.scenario_slug] && this.$store.state.stopDateTime[this.scenarioNode.scenario_slug]) {
-                this.finalTime = new Date((this.$store.state.stopDateTime[this.scenarioNode.scenario_slug] - this.$store.state.startDateTime[this.scenarioNode.scenario_slug])).toISOString().slice(11,19)
+                this.finalTimeForDisplay = new Date((this.$store.state.stopDateTime[this.scenarioNode.scenario_slug] - this.$store.state.startDateTime[this.scenarioNode.scenario_slug])).toISOString().slice(11,19)
+                this.finalTime = (this.$store.state.stopDateTime[this.scenarioNode.scenario_slug] - this.$store.state.startDateTime[this.scenarioNode.scenario_slug]) / 1000
+                this.textForTime = this.getFinalText();
             }
+        },
+
+        getFinalText() {
+            for (const egt of Object.values(this.step.end_game_texts)) {
+                if (egt.min_time < this.finalTime && (egt.max_time > this.finalTime || egt.max_time == null)) {
+                    return egt.text
+                }
+            }     
+            return null;
         },
 
         disableClueModal() {

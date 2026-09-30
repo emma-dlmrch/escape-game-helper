@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from escapegame.views import GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet, GamePlayViewSet, ScenarioPlayViewSet, StepPlayViewSet, ScenarioNodePlayViewSet, CluePlayViewSet, ImageView, ThemeViewSet
+from escapegame.views import EndGameTextViewSet, GameViewSet, StepViewSet, ScenarioViewSet, ScenarioNodeViewSet, ClueViewSet, GamePlayViewSet, ScenarioPlayViewSet, StepPlayViewSet, ScenarioNodePlayViewSet, CluePlayViewSet, ImageView, ThemeViewSet
 from authentication.views import SignUpView, GetUserView
 
 # URLs require slash
@@ -14,6 +14,7 @@ router.register('step', StepViewSet, basename = 'step')
 router.register('scenario', ScenarioViewSet, basename = 'scenario')
 router.register('scenario_node', ScenarioNodeViewSet, basename = 'scenario_node')
 router.register('clue', ClueViewSet, basename = 'clue')
+router.register('end_game_text', EndGameTextViewSet, basename = 'end_game_text')
 router.register('themes', ThemeViewSet, basename = 'themes')
 
 

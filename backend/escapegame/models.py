@@ -34,6 +34,16 @@ class Step(models.Model):
     def __str__(self):
         return self.title 
 
+#texte aleternatif selon temps
+class EndGameText(models.Model):
+    title = models.CharField(max_length=255)
+    text = models.CharField(max_length=5000)
+    min_time = models.IntegerField() #nombre de secondes borne min
+    max_time = models.IntegerField() #nombre de secondes borne max
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='end_game_texts')
+
+    def __str__(self):
+        return self.title 
 
 class Clue(models.Model):
 

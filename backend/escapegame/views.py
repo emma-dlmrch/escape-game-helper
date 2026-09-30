@@ -7,14 +7,14 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from .serializers import (
-    GameDetailSerializer, GameListSerializer, ImageSerializer,
+    EndGameTextSerializer, GameDetailSerializer, GameListSerializer, ImageSerializer,
     StepListSerializer, StepDetailSerializer,
     ScenarioListSerializer, ScenarioDetailSerializer, 
     ScenarioNodeListSerializer, ScenarioNodeDetailSerializer,
     ClueListSerializer, ClueDetailSerializer, ScenarioPlaySerializer, StepPlaySerializer, ScenarioNodePlaySerializer, ThemeSerializer
     )
-from .models import Game, ScenarioNode, Step, Scenario, Clue, Theme
-from .permissions import IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
+from .models import EndGameText, Game, ScenarioNode, Step, Scenario, Clue, Theme
+from .permissions import IsEndGameTextAuthor, IsGameAuthor, IsScenarioAuthor, IsStepAuthor, IsClueAuthor, IsScenarioNodeAuthor
 
 
 class MultipleSerializerMixin:
@@ -80,7 +80,19 @@ class ClueViewSet(MultipleSerializerMixin,ModelViewSet):
         queryset = Clue.objects.filter(step__game__author=self.request.user)
         return queryset
     
+class EndGameTextViewSet(MultipleSerializerMixin,ModelViewSet):
+    permission_classes = [IsEndGameTextAuthor]
+    serializer_class = EndGameTextSerializer
+    detail_serializer_class = EndGameTextSerializer
+
+    def get_queryset(self):
+        
+        queryset = EndGameText.objects.filter(step__game__author=self.request.user)
+        return queryset
     
+
+
+#PLAY SECTION    
 class GamePlayViewSet(ReadOnlyModelViewSet): #on s'en sert de ça ??
     serializer_class = GameListSerializer
 

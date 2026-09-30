@@ -17,6 +17,15 @@ class IsScenarioAuthor(BasePermission):
     def has_object_permission(self, request, view, scenario):
         
         return scenario.game.author.id == request.user.id
+
+class IsEndGameTextAuthor(BasePermission):
+    """
+    Custom permission to only allow owners to edit resource.
+    """
+
+    def has_object_permission(self, request, view, end_game_text):
+        
+        return end_game_text.step.game.author.id == request.user.id
     
 class IsStepAuthor(BasePermission):
     """

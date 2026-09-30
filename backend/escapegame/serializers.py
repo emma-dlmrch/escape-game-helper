@@ -7,7 +7,7 @@ from slugify import slugify
 from authentication.models import User
 from .utils.sanitizer import sanitize_html
 
-from .models import Scenario, Game, ScenarioNode, Clue, Step, Image, Theme
+from .models import EndGameText, Scenario, Game, ScenarioNode, Clue, Step, Image, Theme
 import logging
 
 #ToDO: Implement unit tests
@@ -86,10 +86,11 @@ class StepListSerializer(ModelSerializer):
 class StepDetailSerializer(ModelSerializer):
     
     clues = serializers.SerializerMethodField()
+    end_game_texts = serializers.SerializerMethodField()
 
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'answer', 'clues', 'is_last']
+        fields = ['id', 'game', 'title', 'text', 'answer', 'clues', 'is_last', 'end_game_texts']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
@@ -99,6 +100,10 @@ class StepDetailSerializer(ModelSerializer):
     def validate_text(self, value):
         return sanitize_html(value)
 
+    def get_end_game_texts(self, instance):
+        queryset = instance.end_game_texts.all()
+        serializer = EndGameTextSerializer(queryset, many=True)
+        return serializer.data
 
 class ScenarioListSerializer(ModelSerializer):
     
@@ -235,6 +240,12 @@ class ClueDetailSerializer(ModelSerializer):
         return sanitize_html(value)
 
 
+class EndGameTextSerializer(ModelSerializer):
+    class Meta:
+        model = EndGameText
+        fields = ['id', 'step', 'title', 'text', 'min_time', 'max_time']
+
+#SECTION PLAY
 class ScenarioPlaySerializer(ModelSerializer):
 
     first_node = serializers.SerializerMethodField()
@@ -258,15 +269,21 @@ class StepPlaySerializer(ModelSerializer):
     has_answer = serializers.SerializerMethodField()
 
     theme = serializers.SerializerMethodField()
+    end_game_texts = serializers.SerializerMethodField()
 
     
     class Meta:
         model = Step
-        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name', 'theme', 'is_last']
+        fields = ['id', 'game', 'title', 'text', 'clues','has_answer', 'game_name', 'theme', 'is_last', 'end_game_texts']
 
     def get_clues(self, instance):
         queryset = instance.clues.all()
         serializer = ClueListSerializer(queryset, many=True)
+        return serializer.data
+
+    def get_end_game_texts(self, instance):
+        queryset = instance.end_game_texts.all()
+        serializer = EndGameTextSerializer(queryset, many=True)
         return serializer.data
     
     def get_has_answer(self, instance):
