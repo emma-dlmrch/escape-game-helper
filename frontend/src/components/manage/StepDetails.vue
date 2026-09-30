@@ -264,8 +264,8 @@ export default {
 
         //TETE DE FIN ALTERNATIF
         createDefaultNewEndGameText() {
-            this.newEndGameText.title = ""
-            this.newEndGameText.text = "Text alternatif"
+            this.newEndGameText.title = "Title"
+            this.newEndGameText.text = "Texte"
             this.newEndGameText.min_time = 0
             this.newEndGameText.max_time = 3600
             this.createNewEndGameText();
