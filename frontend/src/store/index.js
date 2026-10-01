@@ -54,7 +54,6 @@ export default createStore({
 
         addTimePenalty(state, scenarioId) { //slug
             if(state.startDateTime[scenarioId]) {
-                // state.startDateTime[scenarioId] =  new Date (state.startDateTime[scenarioId] - 60000);
                 state.startDateTime[scenarioId] =  Number(state.startDateTime[scenarioId]) - 60000;
                 localStorage.setItem("startDateTime", JSON.stringify(state.startDateTime))
             }

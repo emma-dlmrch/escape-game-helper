@@ -129,6 +129,8 @@ export default {
                 if (response.data.message == false) {
                     this.submittedAnswer.answer = '';
                     this.isWrongModalEnabled = true;
+                    this.$store.commit('addTimePenalty', this.scenarioNode.scenario_slug) //penalty
+
 
                 } else {
                     this.submittedAnswer.answer = '';
