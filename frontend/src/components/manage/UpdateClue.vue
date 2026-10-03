@@ -8,7 +8,7 @@
         <div class="form-group">
             <label>Texte :</label>
             <!-- <textarea  id="text" class="form-control" v-model="clue.text" rows="5" @click="disableWasUpdatedMessage"></textarea> -->
-            <QuillEditor v-model:content="clue.text" contentType="html" theme="snow" :modules="modules"
+            <QuillEditor ref="quill" v-model:content="clue.text" contentType="html" theme="snow" :modules="modules"
                 :toolbar="toolbarOptions"
                 @click="disableWasUpdatedMessage" />
         </div>
@@ -25,8 +25,8 @@
 import axios from 'axios';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import ImageUploader from 'quill-image-uploader';
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from '@enzedonline/quill-blot-formatter2'
+import { registerAudioBlot, audioHandler } from '@/quill/audio';
 import { imageHandler } from '@/quill/image';
 
 
@@ -46,29 +46,31 @@ export default {
                 text:'',
             },
             wasUpdated : false,
-            modules: [{
-                name: 'imageUploader',
-                module: ImageUploader,
-                options: {
-                    upload: (f) => imageHandler(f, this.gameId)
-                }
-            },
+            modules: [
             {
                 name: 'blotFormatter',  
                 module: BlotFormatter, 
                 // options: {/* options */}
             },
             ],
-            toolbarOptions: [ 
-                'bold', 
-                'italic', 
-                'underline', 
-                { 'list': 'ordered' }, 
-                { 'list': 'bullet' }, 
-                'link', 
-                'image', 
-                'video'
-            ]
+            toolbarOptions: { 
+                container : [
+                    {'header': [1, 2, 3, false] }, 
+                    'bold', 
+                    'italic', 
+                    'underline', 
+                    { 'list': 'ordered' }, 
+                    { 'list': 'bullet' }, 
+                    'link', 
+                    'image', 
+                    'video',
+                    'audio' 
+                ],                 
+                handlers : {
+                    image: this.imageUploadHandler,
+                    audio : audioHandler
+                }
+            },
         }
     },
     methods: {
@@ -98,10 +100,15 @@ export default {
         },
         disableWasUpdatedMessage(){
             this.wasUpdated = false
-        }
+        },
+        
+        async imageUploadHandler() {
+            await imageHandler(this.$refs.quill.getQuill(), this.gameId);
+        },
     },
-    created(){
-        this.getClueData()
+    async created(){
+        this.getClueData();
+        await registerAudioBlot();
     }
 }
 </script>

@@ -9,7 +9,7 @@
         <div class="form-group">
             <label>Texte :</label>
             <!-- <textarea id="step-text" class="form-control" v-model="step.text" rows="5" @click="disableWasUpdatedMessage" required></textarea> -->
-            <QuillEditor v-if="quillReady" v-model:content="step.text" contentType="html" theme="snow"
+            <QuillEditor ref="quill" v-if="quillReady" v-model:content="step.text" contentType="html" theme="snow"
                 :modules="modules" :toolbar="toolbarOptions" @click="disableWasUpdatedMessage" />
         </div>
         <div class="form-group">
@@ -109,8 +109,7 @@
 import axios from 'axios'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import ImageUploader from 'quill-image-uploader';
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from '@enzedonline/quill-blot-formatter2'
 import { imageHandler } from '@/quill/image';
 import { registerAudioBlot, audioHandler } from '@/quill/audio';
 
@@ -148,13 +147,7 @@ export default {
             },
             wasUpdated: false,
             endGameTextUpdatePending: [],
-            modules: [{
-                name: 'imageUploader',
-                module: ImageUploader,
-                options: {
-                    upload: (f) => imageHandler(f, this.gameId)
-                }
-            },
+            modules: [
             {
                 name: 'blotFormatter',
                 module: BlotFormatter,
@@ -175,7 +168,8 @@ export default {
                     'audio'
                 ],
                 handlers: {
-                    audio: audioHandler
+                    audio: audioHandler,
+                    image: this.imageUploadHandler
                 }
             }
 
@@ -308,8 +302,11 @@ export default {
             var nbM=  Math.floor((s-nbH*3600)  / 60);
             var nbS=  s-nbH*3600 -nbM*60;
             return nbH + ' h ' + nbM + ' min ' + nbS + ' s'
-        }
+        },
 
+        async imageUploadHandler() {
+            await imageHandler(this.$refs.quill.getQuill(), this.gameId);
+        },
 
     },
     async created() {
