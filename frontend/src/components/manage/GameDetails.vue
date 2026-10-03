@@ -16,7 +16,7 @@
         <div class="form-group">
             <label >Texte descriptif :</label>
             <QuillEditor 
-                v-on:ready="onReady($event)"
+                v-if="quillReady"
                 ref="quill"
                 v-model:content="game.description"
                 contentType="html"
@@ -123,7 +123,7 @@ export default {
     },
     data() {
         return {
-            quillInstance: null,
+            quillReady: false,
             game: {
                 name: '',
                 description: '',
@@ -284,15 +284,13 @@ export default {
         async imageUploadHandler() {
             await imageHandler(this.$refs.quill.getQuill(), this.gameId);
         },
-        onReady(quill) {
-            this.quillInstance = quill
-        }
     },
 
     async created() {
         this.getThemes();
         this.getGameData();
         await registerAudioBlot()
+        this.quillReady = true
     },
 }
 </script>
