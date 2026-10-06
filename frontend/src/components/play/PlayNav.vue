@@ -20,8 +20,12 @@
       </li>
 
       <li v-for="node in nodes" v-bind:key="node.id">
-        <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario_slug == currentScenario">
-
+        <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario_slug == currentScenario" 
+        @click="setLastClickedNode(node.id)"
+        :class="{'nav-icon-active' : node.id == lastNodeIdClicked }">
+          <div v-if="node.id == lastNodeIdClicked" class="nav-icon-active-triangle">
+            ▶
+          </div>
           <i v-if="node.new" class="bx bi bi-exclamation-square-fill"></i>
           <i v-else-if="node.info" class="bx bi bi-info-square"></i>
           <i v-else-if="node.resolved" class="bx bi bi-check-square"></i>
@@ -49,7 +53,8 @@ export default {
     return {
       interval: null,
       time: null,
-      timer :''
+      timer :'',
+      lastNodeIdClicked : null
     }
   },
 
@@ -101,6 +106,10 @@ export default {
       }
       return ''
     },
+
+    setLastClickedNode(id) {
+      this.lastNodeIdClicked =id;
+    }
    },
 
 

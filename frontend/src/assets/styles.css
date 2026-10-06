@@ -10,6 +10,7 @@
   --sidebar-title-color: #fff;
   --sidebar-icon-color: #fff;
   --sidebar-icon-txt-color: #fff;
+  --sidebar-icon-txt-color-hover: #11101D;
   --sidebar-width: 52px;   /* PAS TOUCHE */
 
   --custom-btn-text-color: #fff;
@@ -37,6 +38,7 @@
   --sidebar-title-color: var(--text-color-futuriste); 
   --sidebar-icon-color: var(--text-color-futuriste);
   --sidebar-icon-txt-color: var(--text-color-futuriste);
+  --sidebar-icon-txt-color-hover: #0d1423;
 
   --custom-btn-text-color: #75a3ed;
   --custom-btn-bg-color: #273549;
@@ -73,6 +75,7 @@ body div.theme-etoiles .home-section {
   --sidebar-title-color: #fff;
   --sidebar-icon-color: #fff;
   --sidebar-icon-txt-color: #fff;
+  --sidebar-icon-txt-color-hover: darkblue;
 
 }
 
@@ -100,6 +103,7 @@ body div.theme-futuriste .home-section {
     --sidebar-title-color: #F5E6C8;
     --sidebar-icon-color: #D9C28A;
     --sidebar-icon-txt-color: #F5E6C8;
+    --sidebar-icon-txt-color-hover: #493420;
 
     --custom-btn-bg-color: #8A6238;
     --custom-btn-text-color: #FFF8E8;
@@ -133,6 +137,8 @@ body div.theme-medieval .home-section {
   --sidebar-title-color: #E6DFC8;
   --sidebar-icon-color: #BFAE77;
   --sidebar-icon-txt-color: #E6DFC8;
+  --sidebar-icon-txt-color-hover: #22251E;
+
 
   --custom-btn-text-color: #E6DFC8;
   --custom-btn-bg-color: #4B5D3A;
@@ -178,6 +184,7 @@ body div.theme-enquete .home-section {
   --sidebar-title-color: #E0F7FF;
   --sidebar-icon-color: #38BDF8;
   --sidebar-icon-txt-color: #D8F3FF;
+  --sidebar-icon-txt-color-hover: #111827;
 
   --custom-btn-text-color: #D8F3FF;
   --custom-btn-bg-color: #0F3B57;
@@ -214,6 +221,7 @@ body {
 }
 .game-title {
   padding-bottom: 10px;
+  overflow-x: scroll;
 }
 
 
@@ -574,7 +582,7 @@ h1, h2, h3, h4, .modal-title {
 .sidebar li a:hover .links_name,
 .sidebar li a:hover i {
   transition: all 0.5s ease;
-  color: #11101D;
+  color: var(--sidebar-icon-txt-color-hover);
 }
 
 .sidebar li i {
@@ -820,8 +828,21 @@ body:has(.sidebar.open) .reponse-section {
 
 .riddle-section {
   padding-bottom: 70px;
+  overflow-x: scroll;
 }
 
+.nav-icon-active {
+  -webkit-text-stroke: 0.4px currentColor;
+}
+.nav-icon-active-triangle {
+  font-size: 10px !important;
+  color: var(--sidebar-icon-color);
+  position: absolute;
+  filter: blur(0.7px);
+}
+.nav-icon-active:hover .nav-icon-active-triangle {
+  display:none;
+}
 .resolved-text {
   font-size: small;
   font-style: italic;
