@@ -21,9 +21,8 @@
 
       <li v-for="node in nodes" v-bind:key="node.id">
         <router-link :to="{ name: 'StepPage', params: { 'scenarioNodeId': node.id } }" v-if="node.scenario_slug == currentScenario" 
-        @click="setLastClickedNode(node.id)"
-        :class="{'nav-icon-active' : node.id == lastNodeIdClicked }">
-          <div v-if="node.id == lastNodeIdClicked" class="nav-icon-active-triangle">
+        :class="{'nav-icon-active' : node.id == currentNodeId }">
+          <div v-if="node.id == currentNodeId" class="nav-icon-active-triangle">
             ▶
           </div>
           <i v-if="node.new" class="bx bi bi-exclamation-square-fill"></i>
@@ -53,8 +52,7 @@ export default {
     return {
       interval: null,
       time: null,
-      timer :'',
-      lastNodeIdClicked : null
+      timer :''
     }
   },
 
@@ -69,6 +67,9 @@ export default {
     },
     currentGame(){
       return this.$store.state.currentPlayedGameName
+    },
+    currentNodeId() {
+      return this.$route.params.scenarioNodeId
     },
     navbarTitle() {
       const currentName = this.$store.state.currentPlayedGameName
@@ -105,10 +106,6 @@ export default {
 
       }
       return ''
-    },
-
-    setLastClickedNode(id) {
-      this.lastNodeIdClicked =id;
     }
    },
 

@@ -219,9 +219,20 @@ body div.theme-cyber .home-section {
 body {
   background: var(--main-bg-color);
 }
+
 .game-title {
   padding-bottom: 10px;
-  overflow-x: scroll;
+  overflow-x: scroll; /* autorise scroll sinon moche */
+}
+/*enleve les barres de scroll sur navigateur */
+@media (min-width: 768px) {
+  .game-title, .riddle-section {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .game-title::-webkit-scrollbar, .riddle-section::-webkit-scrollbar {
+    display: none; /* Chrome / Safari / Edge */
+  }
 }
 
 

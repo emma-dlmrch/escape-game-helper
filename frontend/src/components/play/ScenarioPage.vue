@@ -2,7 +2,7 @@
     <div class= "game-title">
         <h1>{{ game.name }}</h1>
     </div> 
-<div v-html="$sanitize(game.description)"> </div>
+<div class= "riddle-section" v-html="$sanitize(game.description)"> </div>
 <div class="button-general-div">
     <button class="btn btn-scenario" @click="startGame"><i class="bi bi-send"></i> C'est parti !</button>
 </div>
